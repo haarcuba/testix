@@ -11,7 +11,7 @@ rule TestisEgg
 
 actions Delete
 {
-	rm $(1)
+	rm -f $(1)
 }
 
 actions CompileAllPythons
