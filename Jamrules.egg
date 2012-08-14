@@ -4,8 +4,14 @@ rule TestisEgg
 	Depends egg : $(1) ;
 	Always $(1) ;
 	directory = $(2) ;
+	Delete $(eggName) ;
 	CompileAllPythons $(eggName) $(directory) ;
 	ZipAllPYC $(eggName) : $(directory) ;
+}
+
+actions Delete
+{
+	rm $(1)
 }
 
 actions CompileAllPythons
