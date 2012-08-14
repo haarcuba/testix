@@ -5,7 +5,7 @@ rule PythonTest
 
 actions RunPythonTest
 {
-	PYTHONPATH=$TOP/testix.egg:$PYTHONPATH python $(TOP)/testix.egg $(TEST_SUITES)
+	python $(TOP)/testix.egg $(TEST_SUITES)
 }
 
 RunPythonTest python-test ;
