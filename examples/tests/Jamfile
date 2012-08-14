@@ -1,0 +1,3 @@
+SubDir TOP examples tests ;
+PythonTest 	test_calculator.py
+			test_daylight.py ;

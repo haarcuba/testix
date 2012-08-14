@@ -1,0 +1,12 @@
+rule PythonTest
+{
+	TEST_SUITES on python-test += $(SEARCH_SOURCE)/$(1) ;
+}
+
+actions RunPythonTest
+{
+	python $(TOP)/testix/runner.py $(TEST_SUITES)
+}
+
+RunPythonTest python-test ;
+Depends test : python-test ;

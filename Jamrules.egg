@@ -1,0 +1,25 @@
+rule TestisEgg 
+{
+	eggName = $(1) ;
+	Depends egg : $(1) ;
+	Always $(1) ;
+	directory = $(2) ;
+	CompileAllPythons $(eggName) $(directory) ;
+	ZipAllPYC $(eggName) : $(directory) ;
+}
+
+actions CompileAllPythons
+{
+	directory= $(2) ;
+	for name in `find $(directory) -name '*py'` ; do
+		echo compiling $name
+		python -c "import compiler ; compiler.compileFile( '$name' )" || exit -1
+	done
+}
+
+actions ZipAllPYC
+{
+	directory=$(2) ;
+	eggName=$(1) ;
+	zip -r $(eggName) __main__.py `find $(directory) -name '*pyc' | grep -v startertests`
+}

@@ -1,0 +1,6 @@
+SubInclude TOP testix ;
+SubInclude TOP examples ;
+
+Depends all : egg ;
+TestisEgg testix.egg : testix ;
+CompileAllPythons testix ;

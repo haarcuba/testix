@@ -1,0 +1,4 @@
+include $(TOP)/Jamrules.cleanpyc ;
+include $(TOP)/Jamrules.startertests ;
+include $(TOP)/Jamrules.testix ;
+include $(TOP)/Jamrules.egg ;

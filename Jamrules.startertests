@@ -1,0 +1,16 @@
+rule PythonStarterTest
+{
+	STARTER_TEST_SUITES on python-starter-test += $(SEARCH_SOURCE)/$(1) ;
+}
+
+actions PythonStarterTest
+{
+	for suite in $(STARTER_TEST_SUITES) ; do
+		echo -n "Running starter test suite: $suite => "
+		python $suite || exit 255
+	done
+	echo "Starter tests OK!"
+}
+
+PythonStarterTest python-starter-test ;
+Depends test : python-starter-test ;
