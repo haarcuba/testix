@@ -1,0 +1,12 @@
+rule PythonTest
+{
+	TEST_SUITES on python-test += $(SEARCH_SOURCE)/$(1) ;
+}
+
+actions RunPythonTest
+{
+	PYTHONPATH=$TOP/testix.egg:$PYTHONPATH python $(TOP)/testix.egg $(TEST_SUITES)
+}
+
+RunPythonTest python-test ;
+Depends test : python-test ;
