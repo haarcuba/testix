@@ -1,4 +1,4 @@
-rule TestisEgg 
+rule TestixEgg 
 {
 	eggName = $(1) ;
 	Depends egg : $(1) ;
