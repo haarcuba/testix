@@ -26,6 +26,9 @@ if __name__ == '__main__':
 	parser.add_argument( 'tests', nargs = '*', metavar = 'TEST', help = 'each test should be a python file implementing a test suite' )
 	parser.add_argument( '--find', '-f', action = 'store_true', default = False, help = 'find all test_*.py files and run them' )
 	arguments = parser.parse_args()
+	if len( arguments.tests ) == 0 and not arguments.find:
+		parser.print_help()
+		parser.exit( status = 1 )
 	tests = []
 	if arguments.find: 
 		tests += testFiles()
