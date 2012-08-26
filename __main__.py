@@ -1,4 +1,5 @@
 from testix import runner
+import version
 import argparse
 import sys
 import os
@@ -20,8 +21,8 @@ def testFiles():
 
 if __name__ == '__main__':
 	letSubprocessesInheritEggNamespace()
-	description = 	"testix - a Python unit test framework. " \
-					"this is free software, available under the GNU General Public License version 3.0"
+	description = 	"testix (version %s) - a Python unit test framework. " \
+					"this is free software, available under the GNU General Public License version 3.0" % version.VERSION[ -5: ]
 	parser = argparse.ArgumentParser( description = description )
 	parser.add_argument( 'tests', nargs = '*', metavar = 'TEST', help = 'each test should be a python file implementing a test suite' )
 	parser.add_argument( '--find', '-f', action = 'store_true', default = False, help = 'find all test_*.py files and run them' )

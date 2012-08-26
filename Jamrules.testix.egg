@@ -5,8 +5,21 @@ rule TestixEgg
 	Always $(1) ;
 	directory = $(2) ;
 	Delete $(eggName) ;
+	CreateVersion $(eggName) ;
 	CompileAllPythons $(eggName) $(directory) ;
 	ZipAllPYC $(eggName) : $(directory) ;
+	ResetVersion $(eggName) ;
+}
+
+actions CreateVersion
+{
+	 gitHash=`git log | head -1 | awk '{ print $2; }'`
+	 echo "VERSION = '$gitHash'" > version.py 
+}
+
+actions ResetVersion
+{
+	echo "VERSION = 'development'" > version.py
 }
 
 actions Delete
@@ -27,5 +40,5 @@ actions ZipAllPYC
 {
 	directory=$(2) ;
 	eggName=$(1) ;
-	zip -r $(eggName) __main__.py `find $(directory) -name '*pyc' | grep -v startertests`
+	zip -r $(eggName) version.py __main__.py `find $(directory) -name '*pyc' | grep -v startertests`
 }
