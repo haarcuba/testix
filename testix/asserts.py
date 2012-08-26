@@ -9,11 +9,16 @@ def TS_ASSERT( condition ):
 class TestEqualsFailed( TestAssertionFailed ):
 	def __init__( self, actual, expected ):
 		TestAssertionFailed.__init__( self, '%s (actual) does not equal %s (expected)' % ( actual, expected ) )
-
 def TS_ASSERT_EQUALS( a, b ):
 	condition = ( a == b )
 	if not condition:
 		raise TestEqualsFailed( a, b )
+
+def TS_ASSERT_LESS_THAN( a, b ):
+	condition = ( a < b )
+	if not condition:
+		raise TestAssertionFailed( '%s is not less than %s' % ( a, b ) )
+
 	
 class TestAssertThrowsFailed( TestAssertionFailed ):
 	def __init__( self, call ):
