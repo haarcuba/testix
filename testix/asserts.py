@@ -46,7 +46,7 @@ def TS_ASSERT_THROWS_SPECIFIC_EXCEPTION( exceptionType, call, * args, ** kwargs 
 		pass
 	except testix.exception.Exception:
 		raise
-	except Exception as e:
+	except Exception, e:
 		raise TestAssertThrowsSpecificExceptionFailed( exceptionType, call, e )
 	else:
 		raise TestAssertThrowsSpecificExceptionFailed( exceptionType, call )
