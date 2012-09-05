@@ -30,7 +30,8 @@ class Runner( object ):
 			self._runPythonCode( directory, code )
 
 	def _runPythonCode( self, directory, code ):
-			process = subprocess.Popen( "python -c '%s'" % code, cwd = directory, shell = True, stdout = subprocess.PIPE, stderr = subprocess.STDOUT )
+			pythonExecutable = os.environ.get( 'PYTHON', 'python' )
+			process = subprocess.Popen( "%s -c '%s'" % ( pythonExecutable, code ), cwd = directory, shell = True, stdout = subprocess.PIPE, stderr = subprocess.STDOUT )
 			output, unused = process.communicate()
 			if process.returncode != 0:
 				print output
