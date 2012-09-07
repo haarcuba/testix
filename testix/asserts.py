@@ -1,6 +1,6 @@
 import testix.exception
 
-class TestAssertionFailed( Exception ): pass
+class TestAssertionFailed( testix.exception.Exception ): pass
 
 def TS_ASSERT( condition ):
 	if not condition:

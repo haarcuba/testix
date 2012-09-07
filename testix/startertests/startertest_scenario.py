@@ -110,15 +110,14 @@ class StarterTestScenario( startertestcollection.StarterTestCollection ):
 		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( exception.ExpectationException, testix.asserts.TS_ASSERT_THROWS_SPECIFIC_EXCEPTION, MyException, fakeObject, unexpectedArgumentValue )
 		aScenario.end()
 
-	def starter_test_Bugfix_AssertThrows_DoesNot_Block_TestAssertionFailures( self ):
-		class MyException( Exception ): pass
+	def starter_test_Bugfix_AssertThrows_DoesNot_Block_TestSuiteAssertionFailures( self ):
+		class MyException( testix.asserts.TestAssertionFailed ): pass
 
 		aScenario = scenario.Scenario()
 		aScenario <<\
 			expectations.ThrowingCall( 'some object', [ 10 ], MyException )
 		fakeObject = fakeobject.FakeObject( 'some object' )
-		unexpectedArgumentValue = 11
-		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( exception.ExpectationException, testix.asserts.TS_ASSERT_THROWS, fakeObject, unexpectedArgumentValue )
+		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( MyException, testix.asserts.TS_ASSERT_THROWS, fakeObject, 10 )
 		aScenario.end()
 
 StarterTestScenario()
