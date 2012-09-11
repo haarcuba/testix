@@ -38,4 +38,20 @@ class StarterTestArgumentExpectations( startertestcollection.StarterTestCollecti
 		STS_ASSERT_EQUALS( fakeObject( "this doens't matter" ), 'second' )
 		aScenario.end()
 
+	def starter_test_KeywordArguments( self ):
+		fakeObject = fakeobject.FakeObject( 'some object' )
+		aScenario = scenario.Scenario() <<\
+			expectations.Call( 'some object', [ 10 ], 'first', kwargExpectations = { 'name': 'Lancelot' } ) <<\
+			expectations.Call( 'some object', [ 11 ], 'second', kwargExpectations = { 'name': 'Galahad' } )
+		STS_ASSERT_EQUALS( fakeObject( 10, name = 'Lancelot' ), 'first' )
+		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( exception.ExpectationException, fakeObject, 11, name = 'not Galahad'  )
+		aScenario.end()
+
+	def starter_test_KeywordArgumentsExpected_NoneGiven( self ):
+		fakeObject = fakeobject.FakeObject( 'some object' )
+		aScenario = scenario.Scenario() <<\
+			expectations.Call( 'some object', [ 11 ], 'result', kwargExpectations = { 'name': 'Galahad' } )
+		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( exception.ExpectationException, fakeObject, 11 )
+		aScenario.end()
+
 StarterTestArgumentExpectations()

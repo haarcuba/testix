@@ -12,12 +12,12 @@ class Scenario( object ):
 	def addCall( self, call ):
 		self._expected.append( call )
 
-	def resultFor( self, fakeObjectPath, * args ):
+	def resultFor( self, fakeObjectPath, * args, ** kwargs ):
 		if len( self._expected ) == 0:
 			raise exception.ExpectationException( "unexpected call '%s'( %s ). Expected nothing" % ( fakeObjectPath, args ) )
 		expected = self._expected.pop( 0 )
-		if not expected.fits( fakeObjectPath, args ):
-			raise exception.ExpectationException( "unexpected call '%s'( %s ). Expected %s" % ( fakeObjectPath, args, expected ) )
+		if not expected.fits( fakeObjectPath, args, kwargs ):
+			raise exception.ExpectationException( "unexpected call '%s'( %s, kwargs = %s ). Expected %s" % ( fakeObjectPath, args, kwargs, expected ) )
 		return expected.result()
 		
 	@staticmethod

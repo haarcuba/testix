@@ -1,9 +1,9 @@
-from testix.asserts import *
-from testix import suite
+from testix.frequentlyused import *
 
+fakeModule( 'multiplier' )
 from examples import calculator
 
-class Test_Calculator( suite.Suite ):
+class Test_Calculator( testix.suite.Suite ):
 	def construct( self, value ):
 		self.tested = calculator.Calculator( value )
 
@@ -13,3 +13,14 @@ class Test_Calculator( suite.Suite ):
 		TS_ASSERT_EQUALS( self.tested.result(), 12 )
 		self.tested.add( 1.5 )
 		TS_ASSERT_EQUALS( self.tested.result(), 13.5 )
+
+	def test_MultiplicationUsesMultiplier( self ):
+		self.construct( 5 )
+		scenario = Scenario() <<\
+			Call( 'multiplier.multiply', [], 35, kwargExpectations = { 'first': 5, 'second': 7 } ) <<\
+			Call( 'multiplier.multiply', [], 350, kwargExpectations = { 'first': 35, 'second': 10 } )
+		self.tested.multiply( 7 )
+		TS_ASSERT_EQUALS( self.tested.result(), 35 )
+		self.tested.multiply( 10 )
+		TS_ASSERT_EQUALS( self.tested.result(), 350 )
+		scenario.end()

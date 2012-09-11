@@ -19,7 +19,6 @@ def TS_ASSERT_LESS_THAN( a, b ):
 	if not condition:
 		raise TestAssertionFailed( '%s is not less than %s' % ( a, b ) )
 
-	
 class TestAssertThrowsFailed( TestAssertionFailed ):
 	def __init__( self, call ):
 		TestAssertionFailed.__init__( self, "function '%s' should have thrown an exception, but it didn't" % call )
