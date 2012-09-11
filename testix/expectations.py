@@ -50,9 +50,9 @@ class Call( object ):
 		return True
 
 class ThrowingCall( Call ):
-	def __init__( self, fakeObjectPath, arguments, exceptionType ):
+	def __init__( self, fakeObjectPath, arguments, exceptionType, kwargExpectations = None ):
 		self._exceptionType = exceptionType
-		Call.__init__( self, fakeObjectPath, arguments, None )
+		Call.__init__( self, fakeObjectPath, arguments, None, kwargExpectations = kwargExpectations )
 
 	def result( self ):
 		raise self._exceptionType()

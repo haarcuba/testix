@@ -54,4 +54,18 @@ class StarterTestArgumentExpectations( startertestcollection.StarterTestCollecti
 		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( exception.ExpectationException, fakeObject, 11 )
 		aScenario.end()
 
+	def starter_test_KeywordArgumentsForThrowingCall( self ):
+		class MyException( Exception ): pass
+
+		fakeObject = fakeobject.FakeObject( 'some object' )
+		aScenario = scenario.Scenario() <<\
+			expectations.ThrowingCall( 'some object', [ 'no kwargs will violate expectation' ], MyException, kwargExpectations = { 'name': 'Galahad' } )
+		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( exception.ExpectationException, fakeObject, 'no kwargs will violate expectation' )
+		aScenario.end()
+
+		aScenario = scenario.Scenario() <<\
+			expectations.ThrowingCall( 'some object', [ 11 ], MyException, kwargExpectations = { 'name': 'Galahad' } )
+		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( MyException, fakeObject, 11, name = 'Galahad' )
+		aScenario.end()
+
 StarterTestArgumentExpectations()
