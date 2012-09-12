@@ -1,4 +1,5 @@
 import testix.exception
+import pprint
 
 class TestAssertionFailed( testix.exception.Exception ): pass
 
@@ -16,7 +17,9 @@ def TS_ASSERT_EQUALS( a, b ):
 
 class TestSetsEqualFailed( TestAssertionFailed ):
 	def __init__( self, actualSet, expectedSet ):
-		TestAssertionFailed.__init__( self, '%s (actual) does not equal %s (expected)' % ( actualSet, expectedSet ) )
+		actualString = pprint.pformat( actualSet )
+		expectedString = pprint.pformat( expectedSet )
+		TestAssertionFailed.__init__( self, '%s (actual) does not equal %s (expected)' % ( actualString, expectedString ) )
 def TS_ASSERT_SETS_EQUAL( actual, expected ):
 	actualSet = set( actual )
 	expectedSet = set( expected )
