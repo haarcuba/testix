@@ -14,6 +14,15 @@ def TS_ASSERT_EQUALS( a, b ):
 	if not condition:
 		raise TestEqualsFailed( a, b )
 
+class TestSetsEqualFailed( TestAssertionFailed ):
+	def __init__( self, actualSet, expectedSet ):
+		TestAssertionFailed.__init__( self, '%s (actual) does not equal %s (expected)' % ( actualSet, expectedSet ) )
+def TS_ASSERT_SETS_EQUAL( actual, expected ):
+	actualSet = set( actual )
+	expectedSet = set( expected )
+	if not actualSet == expectedSet:
+		raise TestSetsEqualFailed( actualSet, expectedSet )
+
 def TS_ASSERT_LESS_THAN( a, b ):
 	condition = ( a < b )
 	if not condition:

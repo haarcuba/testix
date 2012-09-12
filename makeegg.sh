@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [[ -z "$PYTHON" ]]; then
+	PYTHON=python
+fi
+
 _createVersion()
 {
 	 gitHash=`git log | head -1 | awk '{ print $2; }'`
@@ -10,7 +14,7 @@ _compileAllPythons()
 {
 	for name in $(find testix -name '*py') ; do
 		echo compiling $name
-		python -c "import compiler ; compiler.compileFile( '$name' )" || exit -1
+		$PYTHON -c "import compiler ; compiler.compileFile( '$name' )" || exit -1
 	done
 }
 
