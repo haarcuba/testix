@@ -14,12 +14,12 @@ class ArgumentEquals( ArgumentExpectation ):
 	def ok( self, value ):
 		return self.expectedValue == value
 
-class ArgumentIsAFakeObjectWithPath( ArgumentExpectation ):
+class ArgumentIsFakeObjectWithPath( ArgumentExpectation ):
 	def ok( self, value ):
 		if not isinstance( value, fakeobject.FakeObject ):
 			return False
 		expectedPath = self.expectedValue
-		return fakeobject.exposePath( value ) == expectedPath
+		return value is fakeobject.FakeObject( expectedPath )
 
 class IgnoreArgument( ArgumentExpectation ):
 	def __init__( self ):

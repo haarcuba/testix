@@ -16,13 +16,13 @@ class StarterTestArgumentExpectations( startertestcollection.StarterTestCollecti
 		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( exception.ExpectationException, fakeObject, 10 )
 		aScenario.end()
 
-	def starter_test_ArgumentIsAFakeObjectWithPath( self ):
+	def starter_test_ArgumentIsFakeObjectWithPath( self ):
 		fakeObject = fakeobject.FakeObject( 'some object' )
 		anotherFakeObject = fakeobject.FakeObject( 'another fake object' )
 		aScenario = scenario.Scenario() <<\
-			expectations.Call( 	'some object', [ argumentexpectations.ArgumentIsAFakeObjectWithPath( 'another fake object' ) ], 
+			expectations.Call( 	'some object', [ argumentexpectations.ArgumentIsFakeObjectWithPath( 'another fake object' ) ], 
 								'the result' ) <<\
-			expectations.Call( 	'some object', [ argumentexpectations.ArgumentIsAFakeObjectWithPath( 'yet another' ) ], 
+			expectations.Call( 	'some object', [ argumentexpectations.ArgumentIsFakeObjectWithPath( 'yet another' ) ], 
 								'another result' )
 
 		STS_ASSERT_EQUALS( fakeObject( anotherFakeObject ), 'the result' )

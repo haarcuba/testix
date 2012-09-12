@@ -19,6 +19,5 @@ def STS_ASSERT_EQUALS( a, b ):
 		raise StarterTestAssertionFailed( "%s != %s" % ( a, b ) )
 
 def STS_ASSERT_IS_FAKE_OBJECT( candidate, fakeObjectPath ):
-	candidatePath = fakeobject.exposePath( candidate )
-	if candidatePath != fakeObjectPath:
-		raise StarterTestAssertionFailed( 'got "%s", expected "%s"' % ( candidatePath, fakeObjectPath ) )
+	if candidate is not fakeobject.FakeObject( fakeObjectPath ):
+		raise StarterTestAssertionFailed( 'got "%s", expected "%s"' % ( candidate, fakeObjectPath ) )

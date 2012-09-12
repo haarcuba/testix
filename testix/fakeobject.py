@@ -1,18 +1,20 @@
 from testix import scenario
 from testix import exception
 
-_registry = {}
-class _MagicExposePath( object ): pass
-
 class FakeObject( object ):
+	_registry = {}
+
+	def __new__( cls, path ):
+		if path in FakeObject._registry:
+			return FakeObject._registry[ path ]
+		instance = super( FakeObject, cls ).__new__( cls )
+		FakeObject._registry[ path ] = instance
+		return instance
+
 	def __init__( self, path ):
 		self._path = path
-		_registry[ path ] = self
 
 	def __call__( self, * args, ** kwargs ):
-		if len( args ) == 1:
-			if args[ 0 ] is _MagicExposePath:
-				return self._path
 		return self._returnResultFromScenario( * args, ** kwargs )
 
 	def _returnResultFromScenario( self, * args, ** kwargs ):
@@ -28,10 +30,4 @@ class FakeObject( object ):
 
 	def __getattr__( self, name ):
 		childsName = '%s.%s' % ( self._path, name )
-		if childsName in _registry:
-			return _registry[ childsName ]
-		else:
-			return FakeObject( childsName )
-
-def exposePath( fakeObject ):
-	return fakeObject( _MagicExposePath )
+		return FakeObject( childsName )
