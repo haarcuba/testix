@@ -33,6 +33,8 @@ class Call( object ):
 	def _verifyArguments( self, args ):
 		args = list( args )
 		argumentExpectations = list( self._argumentExpectations )
+		if len( argumentExpectations ) != len( args ):
+			return False
 		while len( argumentExpectations ) > 0:
 			argumentExpectation = argumentExpectations.pop( 0 )
 			actualArgument = args.pop( 0 )

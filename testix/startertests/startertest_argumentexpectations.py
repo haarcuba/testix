@@ -68,4 +68,11 @@ class StarterTestArgumentExpectations( startertestcollection.StarterTestCollecti
 		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( MyException, fakeObject, 11, name = 'Galahad' )
 		aScenario.end()
 
+	def starter_test_Bugfix_NumberOfArguments_can_be_different_FromExpectedNumberOfArguments( self ):
+		fakeObject = fakeobject.FakeObject( 'some object' )
+		aScenario = scenario.Scenario() <<\
+			expectations.Call( 'some object', [ argumentexpectations.IgnoreArgument(), argumentexpectations.IgnoreArgument() ], 'result' )
+		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( exception.ExpectationException, fakeObject, 1, 2, 3 )
+		aScenario.end()
+
 StarterTestArgumentExpectations()
