@@ -1,11 +1,11 @@
-from testix import exception
+from testix import testixexception
 
 class Scenario( object ):
 	_current = None
 
 	def __init__( self ):
 		if Scenario._current is not None:
-			raise exception.Exception( "New scenario started before previous one ended" )
+			raise testixexception.TestixException( "New scenario started before previous one ended" )
 		self._expected = []
 		Scenario._current = self
 
@@ -14,10 +14,10 @@ class Scenario( object ):
 
 	def resultFor( self, fakeObjectPath, * args, ** kwargs ):
 		if len( self._expected ) == 0:
-			raise exception.ExpectationException( "unexpected call '%s'( %s ). Expected nothing" % ( fakeObjectPath, args ) )
+			raise testixexception.ExpectationException( "unexpected call '%s'( %s ). Expected nothing" % ( fakeObjectPath, args ) )
 		expected = self._expected.pop( 0 )
 		if not expected.fits( fakeObjectPath, args, kwargs ):
-			raise exception.ExpectationException( "unexpected call '%s'( %s, kwargs = %s ). Expected %s" % ( fakeObjectPath, args, kwargs, expected ) )
+			raise testixexception.ExpectationException( "unexpected call '%s'( %s, kwargs = %s ). Expected %s" % ( fakeObjectPath, args, kwargs, expected ) )
 		return expected.result()
 		
 	@staticmethod
@@ -26,7 +26,7 @@ class Scenario( object ):
 
 	def end( self ):
 		if len( self._expected ) > 0:
-			raise exception.ExpectationException( "Scenario ended, but not all expectations were met. Pending expectations: %s" % self._expected )
+			raise testixexception.ExpectationException( "Scenario ended, but not all expectations were met. Pending expectations: %s" % self._expected )
 		Scenario._current = None
 
 	def __lshift__( self, expectation ):

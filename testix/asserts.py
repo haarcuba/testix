@@ -1,7 +1,7 @@
-import testix.exception
+from testix import testixexception
 import pprint
 
-class TestAssertionFailed( testix.exception.Exception ): pass
+class TestAssertionFailed( testixexception.TestixException ): pass
 
 def TS_ASSERT( condition ):
 	if not condition:
@@ -37,7 +37,7 @@ class TestAssertThrowsFailed( TestAssertionFailed ):
 def TS_ASSERT_THROWS( call, * args, ** kwargs ):
 	try:
 		call( * args, ** kwargs )
-	except testix.exception.Exception:
+	except testixexception.TestixException:
 		raise
 	except:
 		pass
@@ -55,7 +55,7 @@ def TS_ASSERT_THROWS_SPECIFIC_EXCEPTION( exceptionType, call, * args, ** kwargs 
 		call( * args, ** kwargs )
 	except exceptionType:
 		pass
-	except testix.exception.Exception:
+	except testixexception.TestixException:
 		raise
 	except Exception, e:
 		raise TestAssertThrowsSpecificExceptionFailed( exceptionType, call, e )

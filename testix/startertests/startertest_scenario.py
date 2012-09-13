@@ -1,5 +1,5 @@
 from testix import scenario
-from testix import exception
+from testix import testixexception
 from testix import expectations
 import testix.asserts
 from testix.startertests.asserts import *
@@ -13,7 +13,7 @@ class StarterTestScenario( startertestcollection.StarterTestCollection ):
 
 	def starter_test_OnlyOneScenarioMayExistAtAnyOneTime( self ):
 		aScenario = scenario.Scenario()
-		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( exception.Exception, scenario.Scenario )
+		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( testixexception.TestixException, scenario.Scenario )
 
 	def starter_test_TwoScenariosOneAfterTheOther( self ):
 		aScenario = scenario.Scenario()
@@ -45,7 +45,7 @@ class StarterTestScenario( startertestcollection.StarterTestCollection ):
 		aScenario.addCall( expectations.Call( 'another object', [ 20, 50 ], 30 ) )
 		fakeObject1 = fakeobject.FakeObject( 'some object' )
 		fakeObject2 = fakeobject.FakeObject( 'another object' )
-		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( exception.ExpectationException, fakeObject2, 20, 50 )
+		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( testixexception.ExpectationException, fakeObject2, 20, 50 )
 
 	def starter_test_Four_FakeCalls_MustBeInOrder( self ):
 		aScenario = scenario.Scenario()
@@ -68,13 +68,13 @@ class StarterTestScenario( startertestcollection.StarterTestCollection ):
 		fakeObject1 = fakeobject.FakeObject( 'some object' )
 		fakeObject2 = fakeobject.FakeObject( 'another object' )
 		STS_ASSERT_EQUALS( fakeObject1( 10 ), 15 )
-		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( exception.ExpectationException, aScenario.end )
+		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( testixexception.ExpectationException, aScenario.end )
 
 	def starter_test_CallParametersDontMatch( self ):
 		aScenario = scenario.Scenario()
 		aScenario.addCall( expectations.Call( 'some object', [ 10 ], 15 ) )
 		fakeObject1 = fakeobject.FakeObject( 'some object' )
-		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( exception.ExpectationException, fakeObject1, 1024 )
+		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( testixexception.ExpectationException, fakeObject1, 1024 )
 
 	def tearDown( self ):
 		scenario.clearAllScenarios()
@@ -107,7 +107,7 @@ class StarterTestScenario( startertestcollection.StarterTestCollection ):
 			expectations.ThrowingCall( 'some object', [ 10 ], MyException )
 		fakeObject = fakeobject.FakeObject( 'some object' )
 		unexpectedArgumentValue = 11
-		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( exception.ExpectationException, testix.asserts.TS_ASSERT_THROWS_SPECIFIC_EXCEPTION, MyException, fakeObject, unexpectedArgumentValue )
+		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( testixexception.ExpectationException, testix.asserts.TS_ASSERT_THROWS_SPECIFIC_EXCEPTION, MyException, fakeObject, unexpectedArgumentValue )
 		aScenario.end()
 
 	def starter_test_Bugfix_AssertThrows_DoesNot_Block_TestSuiteAssertionFailures( self ):
