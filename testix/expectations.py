@@ -19,7 +19,12 @@ class Call( object ):
 		return self._result
 
 	def __repr__( self ):
-		return 'Call( "%s", %s, %s, %s )' % ( self._fakeObjectPath, self._argumentExpectations, self._result, self._kwargExpectations )
+		argumentExpectationString = ', '.join( [ str( argExp ) for argExp in self._argumentExpectations ] )
+		if len( self._kwargExpectations ) > 0:
+			kwargsString = ', '.join( '%s = %s' % tupl for tupl in self._kwargExpectations.iteritems() )
+			return '%s( %s, %s )' % ( self._fakeObjectPath, argumentExpectationString, kwargsString )
+		else:
+			return '%s( %s )' % ( self._fakeObjectPath, argumentExpectationString )
 
 	def fits( self, fakeObjectPath, args, kwargs ):
 		if fakeObjectPath != self._fakeObjectPath:

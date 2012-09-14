@@ -1,4 +1,5 @@
 from testix import testixexception
+import pprint
 
 class Scenario( object ):
 	_current = None
@@ -14,11 +15,19 @@ class Scenario( object ):
 
 	def resultFor( self, fakeObjectPath, * args, ** kwargs ):
 		if len( self._expected ) == 0:
-			raise testixexception.ExpectationException( "unexpected call '%s'( %s ). Expected nothing" % ( fakeObjectPath, args ) )
+			raise testixexception.ExpectationException( "unexpected call %s. Expected nothing" % self._formatActualCall( fakeObjectPath, args, kwargs ) )
 		expected = self._expected.pop( 0 )
 		if not expected.fits( fakeObjectPath, args, kwargs ):
-			raise testixexception.ExpectationException( "unexpected call '%s'( %s, kwargs = %s ). Expected %s" % ( fakeObjectPath, args, kwargs, expected ) )
+			raise testixexception.ExpectationException( "unexpected call %s. Expected %s" % ( self._formatActualCall( fakeObjectPath, args, kwargs ), expected ) )
 		return expected.result()
+
+	def _formatActualCall( self, fakeObjectPath, args, kwargs ):
+		argsString = ', '.join( [ str( arg ) for arg in args ] )
+		if len( kwargs ) > 0:
+			kwargsString = ', '.join( '%s = %s' % ( key, pprint.pformat( val ) ) for (key, val) in kwargs.iteritems() )
+			return '%s( %s, %s )' % ( fakeObjectPath, argsString, kwargsString )
+		else:
+			return '%s( %s )' % ( fakeObjectPath, argsString )
 		
 	@staticmethod
 	def current():
