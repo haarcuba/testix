@@ -120,4 +120,21 @@ class StarterTestScenario( startertestcollection.StarterTestCollection ):
 		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( MyException, testix.asserts.TS_ASSERT_THROWS, fakeObject, 10 )
 		aScenario.end()
 
+	def starter_test_Bugfix_TestSuiteExceptions_dont_get_caught_by_Except_Exception( self ):
+		def catcher( call ):
+			try:
+				call()
+			except( Exception ):
+				pass
+
+		class Thrower( object ):
+			def __init__( self, exceptionType ):
+				self._exceptionType = exceptionType
+			def __call__( self ):
+				raise self._exceptionType()
+
+		STS_ASSERT_DOES_NOT_THROW( catcher, Thrower( Exception ) )
+		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( testixexception.TestixException, catcher, Thrower( testixexception.TestixException ) )
+
+
 StarterTestScenario()
