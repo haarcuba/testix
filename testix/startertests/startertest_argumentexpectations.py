@@ -2,6 +2,7 @@ from testix import scenario
 from testix import testixexception
 from testix import expectations
 from testix import argumentexpectations
+from testix import saveargument
 from testix import fakeobject
 from testix.startertests import startertestcollection
 from testix.startertests.asserts import *
@@ -74,5 +75,21 @@ class StarterTestArgumentExpectations( startertestcollection.StarterTestCollecti
 			expectations.Call( 'some object', [ argumentexpectations.IgnoreArgument(), argumentexpectations.IgnoreArgument() ], 'result' )
 		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( testixexception.ExpectationException, fakeObject, 1, 2, 3 )
 		aScenario.end()
+
+	def starter_test_SaveArgument( self ):
+		fakeObject = fakeobject.FakeObject( 'some object' )
+		aScenario = scenario.Scenario() <<\
+			expectations.Call( 'some object', [ 'first', saveargument.SaveArgument( 'second' ) ], None )
+		fakeObject( 'first', 'value of second argument' )
+		aScenario.end()
+		STS_ASSERT_EQUALS( saveargument.saved()[ 'second' ], 'value of second argument' )
+
+	def starter_test_SaveArgument_With_KeyworkArgument( self ):
+		fakeObject = fakeobject.FakeObject( 'some object' )
+		aScenario = scenario.Scenario() <<\
+			expectations.Call( 'some object', [ 'first'  ], None, kwargExpectations = { 'god': saveargument.SaveArgument( 'god' ) } )
+		fakeObject( 'first', god = 'Zeus' )
+		aScenario.end()
+		STS_ASSERT_EQUALS( saveargument.saved()[ 'god' ], 'Zeus' )
 
 StarterTestArgumentExpectations()

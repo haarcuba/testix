@@ -1,11 +1,6 @@
-rule PythonStarterTest
-{
-	STARTER_TEST_SUITES on python-starter-test += $(SEARCH_SOURCE)/$(1) ;
-}
-
 actions PythonStarterTest
 {
-	for suite in $(STARTER_TEST_SUITES) ; do
+	for suite in `find testix/startertests/startertest_*.py` ; do
 		echo -n "Running starter test suite: $suite => "
 		python $suite || exit 255
 	done
