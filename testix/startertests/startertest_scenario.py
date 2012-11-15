@@ -136,5 +136,37 @@ class StarterTestScenario( startertestcollection.StarterTestCollection ):
 		STS_ASSERT_DOES_NOT_THROW( catcher, Thrower( Exception ) )
 		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( testixexception.TestixException, catcher, Thrower( testixexception.TestixException ) )
 
+	def starter_test_UnorderedExpectation( self ):
+		aScenario = scenario.Scenario()
+		aScenario <<\
+			expectations.UnorderedCall( 'some object', [ 10 ], None ) << \
+			expectations.UnorderedCall( 'some object', [ 11 ], None )
+
+		fakeObject = fakeobject.FakeObject( 'some object' )
+		fakeObject( 10 )
+		fakeObject( 11 )
+		aScenario.end()
+
+		aScenario = scenario.Scenario()
+		aScenario <<\
+			expectations.UnorderedCall( 'some object', [ 10 ], None ) << \
+			expectations.UnorderedCall( 'some object', [ 11 ], None )
+
+		fakeObject = fakeobject.FakeObject( 'some object' )
+		fakeObject( 11 )
+		fakeObject( 10 )
+		aScenario.end()
+
+	def starter_test_UnorderedExpectationsRunOut( self ):
+		aScenario = scenario.Scenario()
+		aScenario <<\
+			expectations.UnorderedCall( 'some object', [ 10 ], None ) << \
+			expectations.UnorderedCall( 'some object', [ 11 ], None )
+
+		fakeObject = fakeobject.FakeObject( 'some object' )
+		fakeObject( 10 )
+		fakeObject( 11 )
+		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( testixexception.ExpectationException, fakeObject, 11 )
+		aScenario.end()
 
 StarterTestScenario()

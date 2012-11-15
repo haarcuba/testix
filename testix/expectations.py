@@ -56,6 +56,9 @@ class Call( object ):
 				return False
 		return True
 
+	def unordered( self ):
+		return False
+
 class ThrowingCall( Call ):
 	def __init__( self, fakeObjectPath, arguments, exceptionType, kwargExpectations = None ):
 		self._exceptionType = exceptionType
@@ -63,3 +66,7 @@ class ThrowingCall( Call ):
 
 	def result( self ):
 		raise self._exceptionType()
+
+class UnorderedCall( Call ):
+	def unordered( self ):
+		return True

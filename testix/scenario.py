@@ -8,18 +8,39 @@ class Scenario( object ):
 		if Scenario._current is not None:
 			raise testixexception.TestixException( "New scenario started before previous one ended" )
 		self._expected = []
+		self._unorderedExpectations = set()
 		Scenario._current = self
 
 	def addCall( self, call ):
-		self._expected.append( call )
+		if call.unordered():
+			self._unorderedExpectations.add( call )
+		else:
+			self._expected.append( call )
 
 	def resultFor( self, fakeObjectPath, * args, ** kwargs ):
+		unorderedCall = self._findUnorderedCall( fakeObjectPath, args, kwargs )
+		if unorderedCall is not None:
+			return unorderedCall.result()
+
+		return self._resultForOrderedCall( fakeObjectPath, args, kwargs )
+
+	def _resultForOrderedCall( self, fakeObjectPath, args, kwargs ):
 		if len( self._expected ) == 0:
 			raise testixexception.ExpectationException( "unexpected call %s. Expected nothing" % self._formatActualCall( fakeObjectPath, args, kwargs ) )
 		expected = self._expected.pop( 0 )
+		self._verifyCallExpected( expected, fakeObjectPath, args, kwargs )
+		return expected.result()
+
+	def _findUnorderedCall( self, fakeObjectPath, args, kwargs ):
+		for call in self._unorderedExpectations:
+			if call.fits( fakeObjectPath, args, kwargs ):
+				self._unorderedExpectations.remove( call )
+				return call
+		return None
+
+	def _verifyCallExpected( self, expected, fakeObjectPath, args, kwargs ):
 		if not expected.fits( fakeObjectPath, args, kwargs ):
 			raise testixexception.ExpectationException( "unexpected call %s. Expected %s" % ( self._formatActualCall( fakeObjectPath, args, kwargs ), expected ) )
-		return expected.result()
 
 	def _formatActualCall( self, fakeObjectPath, args, kwargs ):
 		argsString = ', '.join( [ pprint.pformat( arg ) for arg in args ] )
