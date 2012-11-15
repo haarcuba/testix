@@ -184,4 +184,43 @@ class StarterTestScenario( startertestcollection.StarterTestCollection ):
 		fakeObject( 11 )
 		aScenario.end()
 
+	def starter_test_Everlasting_Unorderd_and_Regular_Calls( self ):
+		aScenario = scenario.Scenario()
+		aScenario <<\
+			expectations.Call( 'everlasting', [ 10 ], 'ten', unordered = True, everlasting = True ) << \
+			expectations.Call( 'everlasting', [ 11 ], 'eleven', unordered = True, everlasting = True ) << \
+			expectations.Call( 'unordered', [ 20 ], 'twenty', unordered = True ) << \
+			expectations.Call( 'ordered', [ 1 ], 'one' ) << \
+			expectations.Call( 'ordered', [ 2 ], 'two' ) << \
+			expectations.Call( 'ordered', [ 3 ], 'three' )
+
+		ordered = fakeobject.FakeObject( 'ordered' )
+		everlasting = fakeobject.FakeObject( 'everlasting' )
+		unordered = fakeobject.FakeObject( 'unordered' )
+
+		STS_ASSERT_EQUALS( everlasting( 10 ), 'ten' )
+		STS_ASSERT_EQUALS( ordered( 1 ), 'one' )
+		STS_ASSERT_EQUALS( ordered( 2 ), 'two' )
+		STS_ASSERT_EQUALS( everlasting( 10 ), 'ten' )
+		STS_ASSERT_EQUALS( everlasting( 11 ), 'eleven' )
+		STS_ASSERT_EQUALS( everlasting( 11 ), 'eleven' )
+		STS_ASSERT_EQUALS( everlasting( 10 ), 'ten' )
+		STS_ASSERT_EQUALS( ordered( 3 ), 'three' )
+		STS_ASSERT_EQUALS( everlasting( 11 ), 'eleven' )
+		STS_ASSERT_EQUALS( everlasting( 10 ), 'ten' )
+		STS_ASSERT_EQUALS( unordered( 20 ), 'twenty' )
+		STS_ASSERT_EQUALS( everlasting( 10 ), 'ten' )
+
+		aScenario.end()
+
+	def starter_test_Everlasting_Calls_Have_ArgumentExpectations( self ):
+		aScenario = scenario.Scenario()
+		aScenario <<\
+			expectations.Call( 'some object', [ 10 ], 'ten', unordered = True, everlasting = True )
+		
+		someObject = fakeobject.FakeObject( 'some object' )
+		STS_ASSERT_EQUALS( someObject( 10 ), 'ten' )
+		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( testixexception.TestixException, someObject, 11 )
+		aScenario.end()
+
 StarterTestScenario()
