@@ -59,6 +59,9 @@ class Call( object ):
 	def unordered( self ):
 		return False
 
+	def everlasting( self ):
+		return False
+
 class ThrowingCall( Call ):
 	def __init__( self, fakeObjectPath, arguments, exceptionType, kwargExpectations = None ):
 		self._exceptionType = exceptionType
@@ -69,4 +72,8 @@ class ThrowingCall( Call ):
 
 class UnorderedCall( Call ):
 	def unordered( self ):
+		return True
+
+class EverlastingCall( UnorderedCall ):
+	def everlasting( self ):
 		return True

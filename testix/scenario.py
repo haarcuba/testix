@@ -34,7 +34,8 @@ class Scenario( object ):
 	def _findUnorderedCall( self, fakeObjectPath, args, kwargs ):
 		for call in self._unorderedExpectations:
 			if call.fits( fakeObjectPath, args, kwargs ):
-				self._unorderedExpectations.remove( call )
+				if not call.everlasting():
+					self._unorderedExpectations.remove( call )
 				return call
 		return None
 

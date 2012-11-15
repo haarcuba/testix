@@ -169,4 +169,19 @@ class StarterTestScenario( startertestcollection.StarterTestCollection ):
 		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( testixexception.ExpectationException, fakeObject, 11 )
 		aScenario.end()
 
+	def starter_test_EverlastingCall( self ):
+		aScenario = scenario.Scenario()
+		aScenario <<\
+			expectations.EverlastingCall( 'some object', [ 10 ], None ) << \
+			expectations.EverlastingCall( 'some object', [ 11 ], None )
+
+		fakeObject = fakeobject.FakeObject( 'some object' )
+		fakeObject( 10 )
+		fakeObject( 10 )
+		fakeObject( 10 )
+		fakeObject( 10 )
+		fakeObject( 11 )
+		fakeObject( 11 )
+		aScenario.end()
+
 StarterTestScenario()
