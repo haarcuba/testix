@@ -139,8 +139,8 @@ class StarterTestScenario( startertestcollection.StarterTestCollection ):
 	def starter_test_UnorderedExpectation( self ):
 		aScenario = scenario.Scenario()
 		aScenario <<\
-			expectations.UnorderedCall( 'some object', [ 10 ], None ) << \
-			expectations.UnorderedCall( 'some object', [ 11 ], None )
+			expectations.Call( 'some object', [ 10 ], None, unordered = True ) << \
+			expectations.Call( 'some object', [ 11 ], None, unordered = True )
 
 		fakeObject = fakeobject.FakeObject( 'some object' )
 		fakeObject( 10 )
@@ -149,8 +149,8 @@ class StarterTestScenario( startertestcollection.StarterTestCollection ):
 
 		aScenario = scenario.Scenario()
 		aScenario <<\
-			expectations.UnorderedCall( 'some object', [ 10 ], None ) << \
-			expectations.UnorderedCall( 'some object', [ 11 ], None )
+			expectations.Call( 'some object', [ 10 ], None, unordered = True ) << \
+			expectations.Call( 'some object', [ 11 ], None, unordered = True )
 
 		fakeObject = fakeobject.FakeObject( 'some object' )
 		fakeObject( 11 )
@@ -160,8 +160,8 @@ class StarterTestScenario( startertestcollection.StarterTestCollection ):
 	def starter_test_UnorderedExpectationsRunOut( self ):
 		aScenario = scenario.Scenario()
 		aScenario <<\
-			expectations.UnorderedCall( 'some object', [ 10 ], None ) << \
-			expectations.UnorderedCall( 'some object', [ 11 ], None )
+			expectations.Call( 'some object', [ 10 ], None, unordered = True ) << \
+			expectations.Call( 'some object', [ 11 ], None, unordered = True )
 
 		fakeObject = fakeobject.FakeObject( 'some object' )
 		fakeObject( 10 )
@@ -172,8 +172,8 @@ class StarterTestScenario( startertestcollection.StarterTestCollection ):
 	def starter_test_EverlastingCall( self ):
 		aScenario = scenario.Scenario()
 		aScenario <<\
-			expectations.EverlastingCall( 'some object', [ 10 ], None ) << \
-			expectations.EverlastingCall( 'some object', [ 11 ], None )
+			expectations.Call( 'some object', [ 10 ], None, unordered = True, everlasting = True ) << \
+			expectations.Call( 'some object', [ 11 ], None, unordered = True, everlasting = True )
 
 		fakeObject = fakeobject.FakeObject( 'some object' )
 		fakeObject( 10 )

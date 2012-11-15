@@ -1,13 +1,16 @@
 from testix import argumentexpectations
 
 class Call( object ):
-	def __init__( self, fakeObjectPath, arguments, result, kwargExpectations = None ):
+	def __init__( self, fakeObjectPath, arguments, result, unordered = False, everlasting = False, kwargExpectations = None ):
+		assert not ( everlasting and ( not unordered ) )
 		if kwargExpectations == None:
 			kwargExpectations = {}
 		self._fakeObjectPath = fakeObjectPath
 		self._argumentExpectations = [ self._expectation( arg ) for arg in arguments ]
 		self._result = result
 		self._kwargExpectations = { name: self._expectation( kwargExpectations[ name ] ) for name in kwargExpectations }
+		self._unordered = unordered
+		self._everlasting = everlasting
 
 	def _expectation( self, arg ):
 		if isinstance( arg, argumentexpectations.ArgumentExpectation ):
@@ -57,10 +60,10 @@ class Call( object ):
 		return True
 
 	def unordered( self ):
-		return False
+		return self._unordered
 
 	def everlasting( self ):
-		return False
+		return self._everlasting
 
 class ThrowingCall( Call ):
 	def __init__( self, fakeObjectPath, arguments, exceptionType, kwargExpectations = None ):
@@ -69,11 +72,3 @@ class ThrowingCall( Call ):
 
 	def result( self ):
 		raise self._exceptionType()
-
-class UnorderedCall( Call ):
-	def unordered( self ):
-		return True
-
-class EverlastingCall( UnorderedCall ):
-	def everlasting( self ):
-		return True
