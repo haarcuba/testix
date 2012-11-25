@@ -92,4 +92,10 @@ class StarterTestArgumentExpectations( startertestcollection.StarterTestCollecti
 		aScenario.end()
 		STS_ASSERT_EQUALS( saveargument.saved()[ 'god' ], 'Zeus' )
 
+	def starter_test_Bugfix_UnexpectedKeywordArgument( self ):
+		fakeObject = fakeobject.FakeObject( 'some object' )
+		aScenario = scenario.Scenario() <<\
+			expectations.Call( 'some object', [ 11 ], 'some result', kwargExpectations = { 'name': 'Lancelot' } )
+		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( testixexception.ExpectationException, fakeObject, 11, name = 'Lancelot', maidenName = 'Sarah' )
+		aScenario.end()
 StarterTestArgumentExpectations()

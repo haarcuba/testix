@@ -57,7 +57,14 @@ class Call( object ):
 			actualArgument = kwargs[ name ]
 			if not argumentExpectation.ok( actualArgument ):
 				return False
+		if self._unexpectedKeyworkArgument( kwargs ):
+			return False
 		return True
+
+	def _unexpectedKeyworkArgument( self, kwargs ):
+		for name in kwargs:
+			if name not in self._kwargExpectations:
+				return True
 
 	def unordered( self ):
 		return self._unordered
