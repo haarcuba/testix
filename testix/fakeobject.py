@@ -1,5 +1,6 @@
 from testix import scenario
 from testix import testixexception
+import sys
 
 class FakeObject( object ):
 	_registry = {}
@@ -31,3 +32,6 @@ class FakeObject( object ):
 	def __getattr__( self, name ):
 		childsName = '%s.%s' % ( self._path, name )
 		return FakeObject( childsName )
+
+def fakeBuiltIn( name ):
+	setattr( sys.modules[ '__builtin__' ], name, FakeObject( name ) )

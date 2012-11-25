@@ -2,6 +2,8 @@ from testix import fakeobject
 from testix import testixexception
 from testix.startertests import startertestcollection
 from testix.startertests.asserts import *
+from testix import scenario
+from testix import expectations
 
 class StarterTestFakeObject( startertestcollection.StarterTestCollection ):
 	def starter_test_CallingFakeObject_WhileNoScenario_MustThrow( self ):
@@ -18,5 +20,12 @@ class StarterTestFakeObject( startertestcollection.StarterTestCollection ):
 		fakeObject1 = fakeobject.FakeObject( 'hi there' )
 		fakeObject2 = fakeobject.FakeObject( 'hi there' )
 		STS_ASSERT( fakeObject1 is fakeObject2 )
+
+	def starter_test_FakeBuiltinObject( self ):
+		fakeobject.fakeBuiltIn( 'open' )
+		aScenario = scenario.Scenario() <<\
+			expectations.Call( 'open', [ 'some_file' ], 1234 )
+		STS_ASSERT_EQUALS( open( 'some_file' ), 1234 )
+		aScenario.end()
 		
 StarterTestFakeObject()
