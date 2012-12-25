@@ -13,6 +13,7 @@ class Runner( object ):
 
 	def _work( self ):
 		for path in self._pythonFiles:
+			self._currentPath = path
 			directory, sourceFile = os.path.dirname( path ), os.path.basename( path )
 			moduleName = sourceFile.split( '.' )[ 0 ]
 			self._runModule( directory, moduleName )
@@ -34,6 +35,7 @@ class Runner( object ):
 			process = subprocess.Popen( "%s -c '%s'" % ( pythonExecutable, code ), cwd = directory, shell = True, stdout = subprocess.PIPE, stderr = subprocess.STDOUT )
 			output, unused = process.communicate()
 			if process.returncode != 0:
+				print self._red( '\nFAILED! test %s' % self._currentPath )
 				print output
 				quit( -1 )
 			else:
@@ -42,6 +44,11 @@ class Runner( object ):
 				testsRun = int( lastLine.strip() )
 				print '%d test(s)' % testsRun
 				self._total += testsRun
+
+	def _red( self, text ):
+		RED = '\033[31m' 
+		RESET = '\033[0m' 
+		return '%s%s%s' % ( RED, text, RESET )
 
 if __name__ == '__main__':
 	Runner( sys.argv[ 1: ] )
