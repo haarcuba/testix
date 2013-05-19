@@ -30,6 +30,14 @@ class StarterTestArgumentExpectations( startertestcollection.StarterTestCollecti
 		STS_ASSERT_EQUALS( fakeObject( fakeobject.FakeObject( 'yet another' ) ), 'another result' )
 		aScenario.end()
 
+	def starter_test_FakeObjectExpectation( self ):
+		fakeObject = fakeobject.FakeObject( 'some object' )
+		fakeArgument = fakeobject.FakeObject( 'fake argument' )
+		aScenario = scenario.Scenario() <<\
+			expectations.Call( 'some object', [ fakeobject.FakeObject( 'fake argument' ) ], None )
+		fakeObject( fakeArgument )
+		aScenario.end()
+
 	def starter_test_IgnoreArgument( self ):
 		fakeObject = fakeobject.FakeObject( 'some object' )
 		aScenario = scenario.Scenario() <<\
