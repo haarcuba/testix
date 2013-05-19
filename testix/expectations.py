@@ -1,4 +1,5 @@
 from testix import argumentexpectations
+from testix import hook
 
 class Call( object ):
 	def __init__( self, fakeObjectPath, arguments, result, unordered = False, everlasting = False, kwargExpectations = None ):
@@ -11,15 +12,22 @@ class Call( object ):
 		self._kwargExpectations = { name: self._expectation( kwargExpectations[ name ] ) for name in kwargExpectations }
 		self._unordered = unordered
 		self._everlasting = everlasting
+		self._hook = hook.Hook( lambda: None )
 
 	def _expectation( self, arg ):
 		if isinstance( arg, argumentexpectations.ArgumentExpectation ):
 			return arg
 		defaultExpectation = argumentexpectations.ArgumentEquals
 		return defaultExpectation( arg )
+	
+	def setHook( self, hook ):
+		self._hook = hook
 
 	def result( self ):
-		return self._result
+		try:
+			return self._result
+		finally:
+			self._hook.execute()
 
 	def __repr__( self ):
 		argumentExpectationString = ', '.join( [ str( argExp ) for argExp in self._argumentExpectations ] )
@@ -78,4 +86,5 @@ class ThrowingCall( Call ):
 		Call.__init__( self, fakeObjectPath, arguments, None, kwargExpectations = kwargExpectations )
 
 	def result( self ):
+		Call.result( self )
 		raise self._exceptionType()

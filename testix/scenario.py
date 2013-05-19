@@ -1,4 +1,5 @@
 from testix import testixexception
+from testix import hook
 import pprint
 
 class Scenario( object ):
@@ -11,7 +12,11 @@ class Scenario( object ):
 		self._unorderedExpectations = set()
 		Scenario._current = self
 
-	def addCall( self, call ):
+	def addEvent( self, event ):
+		if isinstance( event, hook.Hook ):
+			self._expected[ -1 ].setHook( event )
+			return
+		call = event
 		if call.unordered():
 			self._unorderedExpectations.add( call )
 		else:
@@ -61,7 +66,7 @@ class Scenario( object ):
 		Scenario._current = None
 
 	def __lshift__( self, expectation ):
-		self.addCall( expectation )
+		self.addEvent( expectation )
 		return self
 
 def clearAllScenarios():

@@ -1,6 +1,7 @@
 from testix import scenario
 from testix import testixexception
 from testix import expectations
+from testix import hook
 import testix.asserts
 from testix.startertests.asserts import *
 from testix import fakeobject
@@ -23,7 +24,7 @@ class StarterTestScenario( startertestcollection.StarterTestCollection ):
 
 	def starter_test_CallExpectationReturnsFakeValue( self ):
 		aScenario = scenario.Scenario()
-		aScenario.addCall( expectations.Call( 'some object', [ 10 ], 15 ) )
+		aScenario.addEvent( expectations.Call( 'some object', [ 10 ], 15 ) )
 		fakeObject = fakeobject.FakeObject( 'some object' )
 		result = fakeObject( 10 )
 		STS_ASSERT_EQUALS( result, 15 )
@@ -31,8 +32,8 @@ class StarterTestScenario( startertestcollection.StarterTestCollection ):
 
 	def starter_test_TwoFakeCallsGetCorrectValues( self ):
 		aScenario = scenario.Scenario()
-		aScenario.addCall( expectations.Call( 'some object', [ 10 ], 15 ) )
-		aScenario.addCall( expectations.Call( 'another object', [ 20, 50 ], 30 ) )
+		aScenario.addEvent( expectations.Call( 'some object', [ 10 ], 15 ) )
+		aScenario.addEvent( expectations.Call( 'another object', [ 20, 50 ], 30 ) )
 		fakeObject1 = fakeobject.FakeObject( 'some object' )
 		fakeObject2 = fakeobject.FakeObject( 'another object' )
 		STS_ASSERT_EQUALS( fakeObject1( 10 ), 15 )
@@ -41,18 +42,18 @@ class StarterTestScenario( startertestcollection.StarterTestCollection ):
 
 	def starter_test_TwoFakeCalls_MustBeInOrder( self ):
 		aScenario = scenario.Scenario()
-		aScenario.addCall( expectations.Call( 'some object', [ 10 ], 15 ) )
-		aScenario.addCall( expectations.Call( 'another object', [ 20, 50 ], 30 ) )
+		aScenario.addEvent( expectations.Call( 'some object', [ 10 ], 15 ) )
+		aScenario.addEvent( expectations.Call( 'another object', [ 20, 50 ], 30 ) )
 		fakeObject1 = fakeobject.FakeObject( 'some object' )
 		fakeObject2 = fakeobject.FakeObject( 'another object' )
 		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( testixexception.ExpectationException, fakeObject2, 20, 50 )
 
 	def starter_test_Four_FakeCalls_MustBeInOrder( self ):
 		aScenario = scenario.Scenario()
-		aScenario.addCall( expectations.Call( 'some object', [ 10 ], 15 ) )
-		aScenario.addCall( expectations.Call( 'another object', [ 20, 50 ], 30 ) )
-		aScenario.addCall( expectations.Call( 'some object', [ 'x' ], 'y' ) )
-		aScenario.addCall( expectations.Call( 'another object', [ 'X', 'Y' ], 'Z' ) )
+		aScenario.addEvent( expectations.Call( 'some object', [ 10 ], 15 ) )
+		aScenario.addEvent( expectations.Call( 'another object', [ 20, 50 ], 30 ) )
+		aScenario.addEvent( expectations.Call( 'some object', [ 'x' ], 'y' ) )
+		aScenario.addEvent( expectations.Call( 'another object', [ 'X', 'Y' ], 'Z' ) )
 		fakeObject1 = fakeobject.FakeObject( 'some object' )
 		fakeObject2 = fakeobject.FakeObject( 'another object' )
 		STS_ASSERT_EQUALS( fakeObject1( 10 ), 15 )
@@ -63,8 +64,8 @@ class StarterTestScenario( startertestcollection.StarterTestCollection ):
 
 	def starter_test_ScenarioEndsPrematurely( self ):
 		aScenario = scenario.Scenario()
-		aScenario.addCall( expectations.Call( 'some object', [ 10 ], 15 ) )
-		aScenario.addCall( expectations.Call( 'another object', [ 20, 50 ], 30 ) )
+		aScenario.addEvent( expectations.Call( 'some object', [ 10 ], 15 ) )
+		aScenario.addEvent( expectations.Call( 'another object', [ 20, 50 ], 30 ) )
 		fakeObject1 = fakeobject.FakeObject( 'some object' )
 		fakeObject2 = fakeobject.FakeObject( 'another object' )
 		STS_ASSERT_EQUALS( fakeObject1( 10 ), 15 )
@@ -72,7 +73,7 @@ class StarterTestScenario( startertestcollection.StarterTestCollection ):
 
 	def starter_test_CallParametersDontMatch( self ):
 		aScenario = scenario.Scenario()
-		aScenario.addCall( expectations.Call( 'some object', [ 10 ], 15 ) )
+		aScenario.addEvent( expectations.Call( 'some object', [ 10 ], 15 ) )
 		fakeObject1 = fakeobject.FakeObject( 'some object' )
 		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( testixexception.ExpectationException, fakeObject1, 1024 )
 
@@ -222,5 +223,24 @@ class StarterTestScenario( startertestcollection.StarterTestCollection ):
 		STS_ASSERT_EQUALS( someObject( 10 ), 'ten' )
 		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( testixexception.TestixException, someObject, 11 )
 		aScenario.end()
+
+	def starter_test_Hooks( self ):
+		func1Calls = []
+		def func1( * a, **k ):
+			func1Calls.append( ( a, k ) )
+
+		aScenario = scenario.Scenario()
+		aScenario <<\
+			expectations.Call( 'some object', [ 10 ], None ) <<\
+			hook.Hook( func1, 10, 20, name = 'Moshe' ) <<\
+			expectations.Call( 'some object', [ 11 ], None ) <<\
+			hook.Hook( func1, 11, 21, name = 'Haim' )
+
+		someObject = fakeobject.FakeObject( 'some object' )
+		someObject( 10 )
+		someObject( 11 )
+		STS_ASSERT_EQUALS( len( func1Calls ), 2 )
+		STS_ASSERT_EQUALS( func1Calls[ 0 ], ( ( 10, 20 ), { 'name': 'Moshe' } ) )
+		STS_ASSERT_EQUALS( func1Calls[ 1 ], ( ( 11, 21 ), { 'name': 'Haim' } ) )
 
 StarterTestScenario()
