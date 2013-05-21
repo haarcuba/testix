@@ -14,7 +14,7 @@ class Scenario( object ):
 
 	def addEvent( self, event ):
 		if isinstance( event, hook.Hook ):
-			self._expected[ -1 ].setHook( event )
+			self._expected.append( event )
 			return
 		call = event
 		if call.unordered():
@@ -34,7 +34,14 @@ class Scenario( object ):
 			raise testixexception.ExpectationException( "unexpected call %s. Expected nothing" % self._formatActualCall( fakeObjectPath, args, kwargs ) )
 		expected = self._expected.pop( 0 )
 		self._verifyCallExpected( expected, fakeObjectPath, args, kwargs )
-		return expected.result()
+		result = expected.result()
+		self._executeHooks()
+		return result
+
+	def _executeHooks( self ):
+		while len( self._expected ) > 0 and isinstance( self._expected[ 0 ], hook.Hook ):
+			currentHook = self._expected.pop( 0 )
+			currentHook.execute()
 
 	def _findUnorderedCall( self, fakeObjectPath, args, kwargs ):
 		for call in self._unorderedExpectations:

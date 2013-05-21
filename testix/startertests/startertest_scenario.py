@@ -233,14 +233,17 @@ class StarterTestScenario( startertestcollection.StarterTestCollection ):
 		aScenario <<\
 			expectations.Call( 'some object', [ 10 ], None ) <<\
 			hook.Hook( func1, 10, 20, name = 'Moshe' ) <<\
+			hook.Hook( func1, 70, 80, name = 'Avraham' ) <<\
 			expectations.Call( 'some object', [ 11 ], None ) <<\
 			hook.Hook( func1, 11, 21, name = 'Haim' )
 
 		someObject = fakeobject.FakeObject( 'some object' )
 		someObject( 10 )
-		someObject( 11 )
 		STS_ASSERT_EQUALS( len( func1Calls ), 2 )
 		STS_ASSERT_EQUALS( func1Calls[ 0 ], ( ( 10, 20 ), { 'name': 'Moshe' } ) )
-		STS_ASSERT_EQUALS( func1Calls[ 1 ], ( ( 11, 21 ), { 'name': 'Haim' } ) )
+		STS_ASSERT_EQUALS( func1Calls[ 1 ], ( ( 70, 80 ), { 'name': 'Avraham' } ) )
+		someObject( 11 )
+		STS_ASSERT_EQUALS( len( func1Calls ), 3 )
+		STS_ASSERT_EQUALS( func1Calls[ 2 ], ( ( 11, 21 ), { 'name': 'Haim' } ) )
 
 StarterTestScenario()
