@@ -27,5 +27,15 @@ class StarterTestFakeObject( startertestcollection.StarterTestCollection ):
 			expectations.Call( 'open', [ 'some_file' ], 1234 )
 		STS_ASSERT_EQUALS( open( 'some_file' ), 1234 )
 		aScenario.end()
+
+	def starter_test_ClearAllFakeObjects( self ):
+		fake1 = fakeobject.FakeObject( "one" )
+		fake2 = fakeobject.FakeObject( "two" )
+		STS_ASSERT( fake1 is fakeobject.FakeObject( "one" ) )
+		STS_ASSERT( fake2 is fakeobject.FakeObject( "two" ) )
+		fakeobject.clearAll()
+		STS_ASSERT( fake1 is not fakeobject.FakeObject( "one" ) )
+		STS_ASSERT( fake2 is not fakeobject.FakeObject( "two" ) )
+
 		
 StarterTestFakeObject()

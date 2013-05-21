@@ -12,6 +12,10 @@ class FakeObject( object ):
 		FakeObject._registry[ path ] = instance
 		return instance
 
+	@classmethod
+	def clearAll( cls ):
+		FakeObject._registry = {}
+
 	def __init__( self, path ):
 		self._path = path
 
@@ -35,3 +39,6 @@ class FakeObject( object ):
 
 def fakeBuiltIn( name ):
 	setattr( sys.modules[ '__builtin__' ], name, FakeObject( name ) )
+
+def clearAll():
+	FakeObject.clearAll()

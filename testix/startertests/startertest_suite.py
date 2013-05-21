@@ -47,4 +47,15 @@ class StarterTestSuite( startertestcollection.StarterTestCollection ):
 		tested.run()
 		STS_ASSERT_EQUALS( tested.wasRun, False )
 
+	def starter_test_SuiteClearsAllFakeObjectsBetweenTests( self ):
+		class SomeSuite( suite.Suite ):
+			def test_One( self ):
+				self.fake1 = fakeobject.FakeObject( "fake" )
+
+			def test_Two( self ):
+				STS_ASSERT( self.fake1 is not fakeobject.FakeObject( "fake" ) )
+
+		tested = SomeSuite()
+		tested.run()
+
 StarterTestSuite()
