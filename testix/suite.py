@@ -10,7 +10,9 @@ class Suite( object ):
 		for test in tests:
 			self._totalRun += 1
 			fakeobject.clearAll()
+			self.setup()
 			test()
+			self.teardown()
 
 	def totalTestsRun( self ):
 		return self._totalRun
@@ -23,3 +25,9 @@ class Suite( object ):
 				if name.startswith( 'test_' ):
 					tests.append( testCandidate )
 		return tests
+
+	def setup( self ):
+		pass
+
+	def teardown( self ):
+		pass

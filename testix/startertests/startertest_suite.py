@@ -58,4 +58,21 @@ class StarterTestSuite( startertestcollection.StarterTestCollection ):
 		tested = SomeSuite()
 		tested.run()
 
+	def starter_test_Setup_and_Teardown( self ):
+		class SetupAndTeardown( suite.Suite ):
+			def test_X( self ):
+				pass
+
+			def setup( self ):
+				self.calls.append( 'setup' )
+
+			def teardown( self ):
+				self.calls.append( 'teardown' )
+
+		tested = SetupAndTeardown()
+		tested.calls = []
+		tested.run()
+		tested.run()
+		STS_ASSERT_EQUALS( tested.calls, [ 'setup', 'teardown', 'setup', 'teardown' ] )
+
 StarterTestSuite()
