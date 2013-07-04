@@ -34,3 +34,10 @@ class IgnoreArgument( ArgumentExpectation ):
 
 	def __repr__( self ):
 		return '|IGNORED|'
+
+class ArgumentIs( ArgumentExpectation ):
+	def ok( self, value ):
+		return value is self.expectedValue
+
+	def __repr__( self ):
+		return '|IS %s|' % self.expectedValue

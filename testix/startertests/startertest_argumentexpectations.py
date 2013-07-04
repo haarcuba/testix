@@ -106,4 +106,21 @@ class StarterTestArgumentExpectations( startertestcollection.StarterTestCollecti
 			expectations.Call( 'some object', [ 11 ], 'some result', kwargExpectations = { 'name': 'Lancelot' } )
 		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( testixexception.ExpectationException, fakeObject, 11, name = 'Lancelot', maidenName = 'Sarah' )
 		aScenario.end()
+
+	def starter_test_ArgumentIs( self ):
+		class X( object ):
+			def __eq__( self, other ):
+				return True
+
+		x = X()
+		y = X()
+		STS_ASSERT_EQUALS( x, y )
+		fakeObject = fakeobject.FakeObject( 'some object' )
+		aScenario = scenario.Scenario() <<\
+			expectations.Call( 'some object', [ argumentexpectations.ArgumentIs( x ) ], 'first' ) <<\
+			expectations.Call( 'some object', [ argumentexpectations.ArgumentIs( y ) ], 'second' )
+		STS_ASSERT_EQUALS( fakeObject( x ), 'first' )
+		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( testixexception.ExpectationException, fakeObject, x )
+		aScenario.end()
+
 StarterTestArgumentExpectations()
