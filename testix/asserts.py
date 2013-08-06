@@ -3,6 +3,9 @@ import pprint
 
 class TestAssertionFailed( testixexception.TestixException ): pass
 
+def TS_FAIL( message ):
+	raise TestAssertionFailed( message )
+
 def TS_ASSERT( condition ):
 	if not condition:
 		raise TestAssertionFailed()
