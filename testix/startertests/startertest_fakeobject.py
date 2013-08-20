@@ -4,6 +4,8 @@ from testix.startertests import startertestcollection
 from testix.startertests.asserts import *
 from testix import scenario
 from testix import expectations
+from testix import fakemodule
+import sys
 
 class StarterTestFakeObject( startertestcollection.StarterTestCollection ):
 	def starter_test_CallingFakeObject_WhileNoScenario_MustThrow( self ):
@@ -33,9 +35,18 @@ class StarterTestFakeObject( startertestcollection.StarterTestCollection ):
 		fake2 = fakeobject.FakeObject( "two" )
 		STS_ASSERT( fake1 is fakeobject.FakeObject( "one" ) )
 		STS_ASSERT( fake2 is fakeobject.FakeObject( "two" ) )
-		fakeobject.clearAll()
+		fakeobject.clearNonModuleFakeObjects()
 		STS_ASSERT( fake1 is not fakeobject.FakeObject( "one" ) )
 		STS_ASSERT( fake2 is not fakeobject.FakeObject( "two" ) )
 
-		
+	def starter_test_ClearOnlyNonModuleObjects( self ):
+		fake1 = fakeobject.FakeObject( "one" )
+		fakemodule.fakeModule( 'mymodule' )
+		fakeModule = sys.modules[ 'mymodule' ]
+		STS_ASSERT( fake1 is fakeobject.FakeObject( "one" ) )
+		STS_ASSERT( fakeModule is fakeobject.FakeObject( "mymodule" ) )
+		fakeobject.clearNonModuleFakeObjects()
+		STS_ASSERT( fake1 is not fakeobject.FakeObject( "one" ) )
+		STS_ASSERT( fakeModule is fakeobject.FakeObject( "mymodule" ) )
+
 StarterTestFakeObject()

@@ -9,7 +9,7 @@ class Suite( object ):
 		tests = self._findTests()
 		for test in tests:
 			self._totalRun += 1
-			fakeobject.clearAll()
+			fakeobject.clearNonModuleFakeObjects()
 			self.setup()
 			test()
 			self.teardown()
