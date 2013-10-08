@@ -69,4 +69,4 @@ def TS_ASSERT_DOES_NOT_THROW( call, * args, ** kwargs ):
 	try:
 		call( * args, ** kwargs )
 	except Exception as e:
-		raise TestAssertionFailed( "call to %s should not have raised an exception, but it did: %s" % ( call, e ) )
+		raise TestAssertionFailed( "call to %s should not have raised an exception, but it did. Exception type %s with message %s" % ( call, type( e ),  e ) )
