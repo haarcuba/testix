@@ -64,3 +64,9 @@ def TS_ASSERT_THROWS_SPECIFIC_EXCEPTION( exceptionType, call, * args, ** kwargs 
 		raise TestAssertThrowsSpecificExceptionFailed( exceptionType, call, e )
 	else:
 		raise TestAssertThrowsSpecificExceptionFailed( exceptionType, call )
+
+def TS_ASSERT_DOES_NOT_THROW( call, * args, ** kwargs ):
+	try:
+		call( * args, ** kwargs )
+	except Exception as e:
+		raise TestAssertionFailed( "call to %s should not have raised an exception, but it did: %s" % ( call, e ) )
