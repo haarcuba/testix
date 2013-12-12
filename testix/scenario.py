@@ -1,16 +1,23 @@
 from testix import testixexception
 from testix import hook
 import pprint
+import sys
 
 class Scenario( object ):
 	_current = None
 
-	def __init__( self ):
+	def __init__( self, verbose = False ):
 		if Scenario._current is not None:
 			raise testixexception.TestixException( "New scenario started before previous one ended" )
+		self._verbose = verbose
 		self._expected = []
 		self._unorderedExpectations = set()
 		Scenario._current = self
+
+	def _debug( self, message ):
+		if not self._verbose:
+			return
+		sys.stderr.write( '%s\n' % message )
 
 	def addEvent( self, event ):
 		if isinstance( event, hook.Hook ):
@@ -25,6 +32,7 @@ class Scenario( object ):
 	def resultFor( self, fakeObjectPath, * args, ** kwargs ):
 		unorderedCall = self._findUnorderedCall( fakeObjectPath, args, kwargs )
 		if unorderedCall is not None:
+			self._debug( 'scenario: %s' % unorderedCall )
 			return unorderedCall.result()
 
 		return self._resultForOrderedCall( fakeObjectPath, args, kwargs )
@@ -36,6 +44,7 @@ class Scenario( object ):
 		self._verifyCallExpected( expected, fakeObjectPath, args, kwargs )
 		result = expected.result()
 		self._executeHooks()
+		self._debug( 'scenario: %s' % expected )
 		return result
 
 	def _executeHooks( self ):
