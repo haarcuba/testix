@@ -71,6 +71,15 @@ class StarterTestScenario( startertestcollection.StarterTestCollection ):
 		STS_ASSERT_EQUALS( fakeObject1( 10 ), 15 )
 		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( testixexception.ExpectationException, aScenario.end )
 
+	def starter_test_bugfix_ScenarioEndsPrematurely_With_UnorderedCalls( self ):
+		aScenario = scenario.Scenario()
+		aScenario.addEvent( expectations.Call( 'some object', [ 10 ], 15 ) )
+		aScenario.addEvent( expectations.Call( 'another object', [ 20, 50 ], 30, unordered = True ) )
+		fakeObject1 = fakeobject.FakeObject( 'some object' )
+		fakeObject2 = fakeobject.FakeObject( 'another object' )
+		STS_ASSERT_EQUALS( fakeObject1( 10 ), 15 )
+		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( testixexception.ExpectationException, aScenario.end )
+		
 	def starter_test_CallParametersDontMatch( self ):
 		aScenario = scenario.Scenario()
 		aScenario.addEvent( expectations.Call( 'some object', [ 10 ], 15 ) )

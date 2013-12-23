@@ -79,6 +79,9 @@ class Scenario( object ):
 	def end( self ):
 		if len( self._expected ) > 0:
 			raise testixexception.ExpectationException( "Scenario ended, but not all expectations were met. Pending expectations: %s" % self._expected )
+		unorderedMortalExpectations = [ expectation for expectation in self._unorderedExpectations if not expectation.everlasting() ]
+		if len( unorderedMortalExpectations ) > 0:
+			raise testixexception.ExpectationException( "Scenario ended, but not all expectations were met. Pending expectations: %s" % unorderedMortalExpectations )
 		Scenario._current = None
 
 	def __lshift__( self, expectation ):
