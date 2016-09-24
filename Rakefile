@@ -1,7 +1,7 @@
 tests = FileList[ 'startertests/**/startertest*.py' ]
 tests.each do |test|
     task test do
-        sh "python #{test}"
+        sh "python3 #{test}"
     end
 end
 

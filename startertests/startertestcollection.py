@@ -11,7 +11,7 @@ class StarterTestCollection( object ):
 				test()
 				testsRun += 1
 				self.tearDown()
-		print '%d tests' % testsRun
+		print( '%d tests' % testsRun )
 
 	def tearDown( self ):
 		pass

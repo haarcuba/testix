@@ -23,13 +23,6 @@ class StarterTestFakeObject( startertestcollection.StarterTestCollection ):
 		fakeObject2 = fakeobject.FakeObject( 'hi there' )
 		STS_ASSERT( fakeObject1 is fakeObject2 )
 
-	def starter_test_FakeBuiltinObject( self ):
-		fakeobject.fakeBuiltIn( 'open' )
-		aScenario = scenario.Scenario() <<\
-			expectations.Call( 'open', [ 'some_file' ], 1234 )
-		STS_ASSERT_EQUALS( open( 'some_file' ), 1234 )
-		aScenario.end()
-
 	def starter_test_ClearAllFakeObjects( self ):
 		fake1 = fakeobject.FakeObject( "one" )
 		fake2 = fakeobject.FakeObject( "two" )
