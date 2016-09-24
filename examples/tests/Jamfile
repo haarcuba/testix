@@ -1,4 +1,0 @@
-SubDir TOP examples tests ;
-PythonTest 	test_calculator.py
-			test_daylight.py 
-			test_bugfix_weird_fakeobject_bug.py ;

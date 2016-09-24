@@ -1,2 +1,0 @@
-SubDir TOP examples ;
-SubInclude 	TOP examples tests ;

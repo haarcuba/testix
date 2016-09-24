@@ -1,7 +1,0 @@
-SubDir TOP testix startertests ;
-PythonStarterTest 	startertest_suite.py
-					startertest_scenario.py
-					startertest_fakeobject.py
-					startertest_fakemodule.py
-					startertest_fakeclass.py
-					startertest_argumentexpectations.py ;
