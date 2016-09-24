@@ -1,3 +1,4 @@
+import unittest
 from testix.frequentlyused import *
 
 import datetime
@@ -8,7 +9,7 @@ class FakeDay( object ):
 	def __add__( self, other ):
 		return other
 
-class Test_Daylight( testix.suite.Suite ):
+class Test_Daylight( unittest.TestCase ):
 	def test_Main( self ):
 		scenario = Scenario()
 		fakeDay = FakeDay()
