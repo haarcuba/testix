@@ -67,7 +67,7 @@ class Scenario( object ):
 	def _formatActualCall( self, fakeObjectPath, args, kwargs ):
 		argsString = ', '.join( [ pprint.pformat( arg ) for arg in args ] )
 		if len( kwargs ) > 0:
-			kwargsString = ', '.join( '%s = %s' % ( key, pprint.pformat( val ) ) for (key, val) in kwargs.iteritems() )
+			kwargsString = ', '.join( '%s = %s' % ( key, pprint.pformat( val ) ) for (key, val) in kwargs.items() )
 			return '%s( %s, %s )' % ( fakeObjectPath, argsString, kwargsString )
 		else:
 			return '%s( %s )' % ( fakeObjectPath, argsString )

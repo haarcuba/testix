@@ -24,7 +24,7 @@ class Call( object ):
 	def __repr__( self ):
 		argumentExpectationString = ', '.join( [ str( argExp ) for argExp in self._argumentExpectations ] )
 		if len( self._kwargExpectations ) > 0:
-			kwargsString = ', '.join( '%s = %s' % tupl for tupl in self._kwargExpectations.iteritems() )
+			kwargsString = ', '.join( '%s = %s' % tupl for tupl in self._kwargExpectations.items() )
 			return '%s( %s, %s )' % ( self._fakeObjectPath, argumentExpectationString, kwargsString )
 		else:
 			return '%s( %s )' % ( self._fakeObjectPath, argumentExpectationString )
@@ -51,7 +51,7 @@ class Call( object ):
 		return True
 
 	def _verifyKeywordArguments( self, kwargs ):
-		for name, argumentExpectation in self._kwargExpectations.iteritems():
+		for name, argumentExpectation in self._kwargExpectations.items():
 			if name not in kwargs:
 				return False
 			actualArgument = kwargs[ name ]

@@ -18,7 +18,7 @@ class Test_Daylight( testix.suite.Suite ):
 			Call( 'datetime.datetime.today', [], fakeDay ) << \
 			Call( 'datetime.timedelta', [ IgnoreArgument() ], FakeDay() )
 		nextDay = daylight.nextDaylightDate()
-		TS_ASSERT( nextDay is not fakeDay )
+		self.assertTrue( nextDay is not fakeDay )
 		scenario.end()
 
 	def test_EarlyInTheMorningUsesSameDate( self ):
@@ -29,5 +29,5 @@ class Test_Daylight( testix.suite.Suite ):
 			Call( 'datetime.date.today', [], fakeDay ) << \
 			Call( 'datetime.datetime.today', [], fakeDay )
 		nextDay = daylight.nextDaylightDate()
-		TS_ASSERT( nextDay is fakeDay )
+		self.assertTrue( nextDay is fakeDay )
 		scenario.end()

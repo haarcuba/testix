@@ -6,3 +6,7 @@ tests.each do |test|
 end
 
 task :starter_tests => tests.to_a
+
+task :examples do
+    sh "python3 -m unittest examples/tests/test_*.py"
+end

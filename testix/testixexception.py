@@ -1,13 +1,4 @@
-class TestixException( BaseException ):
-	def __init__( self, message = '' ):
-		self.message = message
-		BaseException.__init__( self )
+import unittest
 
-	def __str__( self ):
-		return self.message
-
-	def __rper__( self ):
-		return str( self )
-
-class ExpectationException( TestixException ):
-	pass
+class TestixException( unittest.TestCase.failureException ): pass
+class ExpectationException( TestixException ): pass
