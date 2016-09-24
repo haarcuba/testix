@@ -4,8 +4,8 @@ from testix import expectations
 from testix import argumentexpectations
 from testix import saveargument
 from testix import fakeobject
-from testix.startertests import startertestcollection
-from testix.startertests.asserts import *
+from startertests import startertestcollection
+from startertests.asserts import *
 
 class StarterTestArgumentExpectations( startertestcollection.StarterTestCollection ):
 	def starter_test_ArgumentEquals( self ):

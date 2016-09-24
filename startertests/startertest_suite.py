@@ -1,6 +1,6 @@
 from testix import suite
-from testix.startertests.asserts import *
-from testix.startertests import startertestcollection
+from startertests.asserts import *
+from startertests import startertestcollection
 
 class StarterTestSuite( startertestcollection.StarterTestCollection ):
 	def starter_test_SuiteRunsOneTest( self ):

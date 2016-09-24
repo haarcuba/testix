@@ -3,9 +3,9 @@ from testix import testixexception
 from testix import expectations
 from testix import hook
 import testix.asserts
-from testix.startertests.asserts import *
+from startertests.asserts import *
 from testix import fakeobject
-from testix.startertests import startertestcollection
+from startertests import startertestcollection
 
 class StarterTestScenario( startertestcollection.StarterTestCollection ):
 	def starter_test_EmptyScenario( self ):

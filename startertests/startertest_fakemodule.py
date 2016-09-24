@@ -1,9 +1,9 @@
 from testix import scenario
 from testix import expectations
-from testix.startertests.asserts import *
+from startertests.asserts import *
 from testix import fakemodule
 from testix import fakeobject
-from testix.startertests import startertestcollection
+from startertests import startertestcollection
 
 fakemodule.fakeModule( 'socket' )
 import fakemoduleimporter

@@ -1,5 +1,5 @@
 from testix.frequentlyused import *
-from testix.startertests import startertestcollection
+from startertests import startertestcollection
 
 fakeModule( 'bogusmodule' )
 fakeClass( module = 'bogusmodule', className = 'BogusClass' )
