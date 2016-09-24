@@ -2,7 +2,6 @@ from testix import scenario
 from testix import testixexception
 from testix import expectations
 from testix import hook
-import testix.asserts
 from startertests.asserts import *
 from testix import fakeobject
 from startertests import startertestcollection
@@ -107,27 +106,6 @@ class StarterTestScenario( startertestcollection.StarterTestCollection ):
 			expectations.ThrowingCall( 'some object', [ 10 ], MyException )
 		fakeObject = fakeobject.FakeObject( 'some object' )
 		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( MyException, fakeObject, 10 )
-		aScenario.end()
-
-	def starter_test_Bugfix_AssertThrowsSpecific_DoesNot_Catch_TestSuiteExceptions( self ):
-		class MyException( Exception ): pass
-
-		aScenario = scenario.Scenario()
-		aScenario <<\
-			expectations.ThrowingCall( 'some object', [ 10 ], MyException )
-		fakeObject = fakeobject.FakeObject( 'some object' )
-		unexpectedArgumentValue = 11
-		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( testixexception.ExpectationException, testix.asserts.TS_ASSERT_THROWS_SPECIFIC_EXCEPTION, MyException, fakeObject, unexpectedArgumentValue )
-		aScenario.end()
-
-	def starter_test_Bugfix_AssertThrows_DoesNot_Block_TestSuiteAssertionFailures( self ):
-		class MyException( testix.asserts.TestAssertionFailed ): pass
-
-		aScenario = scenario.Scenario()
-		aScenario <<\
-			expectations.ThrowingCall( 'some object', [ 10 ], MyException )
-		fakeObject = fakeobject.FakeObject( 'some object' )
-		STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( MyException, testix.asserts.TS_ASSERT_THROWS, fakeObject, 10 )
 		aScenario.end()
 
 	def starter_test_UnorderedExpectation( self ):
