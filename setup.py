@@ -2,8 +2,8 @@ from distutils.core import setup
 setup(
     name = "testix",
     packages = ["testix", "examples", "examples.tests"],
-    version = "0.2",
-    description = "Scenario Mocking framework for Python",
+    version = "0.3",
+    description = "Mocking framework Python with *exact* Scenarios",
     author = "Yoav Kleinberger",
     author_email = "haarcuba@gmail.com",
     url = "https://github.com/haarcuba/testix",
