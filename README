@@ -1,9 +1,0 @@
-This is a python unit testing framework.
-It is a re-implementation of ideas from the Voodoo-Mock unit-testing framework (http://sourceforge.net/projects/voodoo-mock), which also supports C++ unit testing.
-
-
-I was introduced to the concepts of Mock Objects by the Voodoo Mock testing tool by S. Matichin. I was curious as to how it worked, but was impatient trying to decipher code I had not written, and so set out to write a similar framework for myself. 
-
-(c) Yoav Kleinberger 2012.
-This software is free software, and is distributed under the GNU General Public License version 3.0.
-See the COPYING file for details.
