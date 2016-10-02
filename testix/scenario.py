@@ -14,6 +14,12 @@ class Scenario( object ):
         self._unorderedExpectations = set()
         Scenario._current = self
 
+    def __enter__( self ):
+        return self
+
+    def __exit__( self, type, value, traceback ):
+        self.end()
+
     def _debug( self, message ):
         if not self._verbose:
                 return
