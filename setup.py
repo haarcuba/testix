@@ -3,7 +3,7 @@ LONG_DESCRIPTION = open( 'README.md' ).read()
 setup(
     name = "testix",
     packages = ["testix", "examples", "examples.tests"],
-    version = "0.4",
+    version = "0.5",
     description = "Mocking framework Python with *exact* Scenarios",
     author = "Yoav Kleinberger",
     author_email = "haarcuba@gmail.com",
