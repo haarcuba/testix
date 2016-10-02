@@ -1,13 +1,15 @@
 from distutils.core import setup
+LONG_DESCRIPTION = open( 'README.md' ).read()
 setup(
     name = "testix",
     packages = ["testix", "examples", "examples.tests"],
-    version = "0.3",
+    version = "0.4",
     description = "Mocking framework Python with *exact* Scenarios",
     author = "Yoav Kleinberger",
     author_email = "haarcuba@gmail.com",
     url = "https://github.com/haarcuba/testix",
     keywords = ["mock", "mocking", "unittest", "python", "unit testing"],
+    long_description = LONG_DESCRIPTION,
     classifiers = [
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
