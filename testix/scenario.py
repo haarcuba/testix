@@ -12,17 +12,16 @@ class Scenario( object ):
         self._verbose = verbose
         self._expected = []
         self._unorderedExpectations = set()
+        self._endingVerifications = True
         Scenario._current = self
 
     def __enter__( self ):
         return self
 
     def __exit__( self, type, value, traceback ):
-        verifications = True
         if type is not None:
-            if issubclass( type, testixexception.TestixException ):
-                verifications = False
-        self.end( verifications )
+            self._endingVerifications = False
+        self.end()
 
     def _debug( self, message ):
         if not self._verbose:
@@ -93,8 +92,8 @@ class Scenario( object ):
         if len( unorderedMortalExpectations ) > 0:
                 raise testixexception.ExpectationException( "Scenario ended, but not all expectations were met. There are still unordered pending expectations: %s" % unorderedMortalExpectations )
 
-    def end( self, verifications = True ):
-        if verifications:
+    def end( self ):
+        if self._endingVerifications:
             self._performEndVerifications()
         Scenario._current = None
 
