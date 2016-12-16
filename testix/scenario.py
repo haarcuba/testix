@@ -18,7 +18,11 @@ class Scenario( object ):
         return self
 
     def __exit__( self, type, value, traceback ):
-        self.end()
+        verifications = True
+        if type is not None:
+            if issubclass( type, testixexception.TestixException ):
+                verifications = False
+        self.end( verifications )
 
     def _debug( self, message ):
         if not self._verbose:
@@ -82,12 +86,16 @@ class Scenario( object ):
     def current():
         return Scenario._current
 
-    def end( self ):
+    def _performEndVerifications( self ):
         if len( self._expected ) > 0:
                 raise testixexception.ExpectationException( "Scenario ended, but not all expectations were met. Pending expectations: %s" % self._expected )
         unorderedMortalExpectations = [ expectation for expectation in self._unorderedExpectations if not expectation.everlasting() ]
         if len( unorderedMortalExpectations ) > 0:
                 raise testixexception.ExpectationException( "Scenario ended, but not all expectations were met. There are still unordered pending expectations: %s" % unorderedMortalExpectations )
+
+    def end( self, verifications = True ):
+        if verifications:
+            self._performEndVerifications()
         Scenario._current = None
 
     def __lshift__( self, expectation ):
