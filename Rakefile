@@ -7,7 +7,11 @@ end
 
 task :starter_tests => tests.to_a
 
-task :examples do
+task :pytest do
+    sh "pytest examples/tests/test_*.py"
+end
+
+task :unittest do
     sh "python3 -m unittest examples/tests/test_*.py"
 end
 
