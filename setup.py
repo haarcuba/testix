@@ -24,9 +24,9 @@ Testix has been tried with Python 3, but it may work with Python 2 as well.
 
 ## How to use it
 
-TBD - for the time being, look at the examples. 
+TBD - for the time being, look at the examples.
 
-Testix is intended to be used with `unittest`, the standrad Python unit testing framework. 
+Testix is intended to be used with `unittest`, the standrad Python unit testing framework.
 If you clone this repository you can run the examples like so
 
     $ python3 -m unittest examples/tests/test_*.py
@@ -40,7 +40,7 @@ Enjoy!
 setup(
     name = "testix",
     packages = ["testix", "examples", "examples.tests"],
-    version = "0.9",
+    version = '2.0.0',
     description = "Mocking framework Python with *exact* Scenarios",
     author = "Yoav Kleinberger",
     author_email = "haarcuba@gmail.com",
