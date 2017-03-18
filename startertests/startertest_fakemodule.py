@@ -12,7 +12,7 @@ class StarterTestFakeModule( startertestcollection.StarterTestCollection ):
 	def starter_test_FakeSocketCreated( self ):
 		aScenario = scenario.Scenario()
 		aScenario <<\
-			expectations.Call( 'socket.socket', [], 'fake_value' )
+			expectations.Call( 'socket.socket' ).returns( 'fake_value' )
 		fakeModuleUser = fakemoduleimporter.FakeModuleUser()
 		fakeModuleUser.createSocket()
 		STS_ASSERT_EQUALS( fakeModuleUser.socket(), 'fake_value' )
@@ -21,7 +21,7 @@ class StarterTestFakeModule( startertestcollection.StarterTestCollection ):
 	def starter_test_FakeObjectVerification( self ):
 		aScenario = scenario.Scenario()
 		aScenario <<\
-			expectations.Call( 'socket.socket', [], fakeobject.FakeObject( 'fake socket' ) )
+			expectations.Call( 'socket.socket' ).returns( fakeobject.FakeObject( 'fake socket' ) )
 		fakeModuleUser = fakemoduleimporter.FakeModuleUser()
 		fakeModuleUser.createSocket()
 		STS_ASSERT_IS_FAKE_OBJECT( fakeModuleUser.socket(), 'fake socket' )
@@ -34,5 +34,5 @@ class StarterTestFakeModule( startertestcollection.StarterTestCollection ):
 		from fathermodule import secondsubmodule
 		STS_ASSERT( firstsubmodule is fakeobject.FakeObject( 'fathermodule.firstsubmodule' ) )
 		STS_ASSERT( not isinstance( secondsubmodule, fakeobject.FakeObject ) )
-		
+
 StarterTestFakeModule()

@@ -15,9 +15,9 @@ class Test_Daylight( unittest.TestCase ):
 		fakeDay = FakeDay()
 		fakeDay.hour = 12
 		scenario << \
-			Call( 'datetime.date.today', [], fakeDay ) << \
-			Call( 'datetime.datetime.today', [], fakeDay ) << \
-			Call( 'datetime.timedelta', [ IgnoreArgument() ], FakeDay() )
+			Call( 'datetime.date.today' ).returns( fakeDay ) << \
+			Call( 'datetime.datetime.today' ).returns( fakeDay ) << \
+			Call( 'datetime.timedelta', IgnoreArgument() ).returns( FakeDay() )
 		nextDay = daylight.nextDaylightDate()
 		self.assertTrue( nextDay is not fakeDay )
 		scenario.end()
@@ -27,8 +27,8 @@ class Test_Daylight( unittest.TestCase ):
 		fakeDay = FakeDay()
 		fakeDay.hour = 2
 		scenario << \
-			Call( 'datetime.date.today', [], fakeDay ) << \
-			Call( 'datetime.datetime.today', [], fakeDay )
+			Call( 'datetime.date.today' ).returns( fakeDay ) << \
+			Call( 'datetime.datetime.today' ).returns( fakeDay )
 		nextDay = daylight.nextDaylightDate()
 		self.assertTrue( nextDay is fakeDay )
 		scenario.end()

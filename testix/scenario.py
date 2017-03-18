@@ -33,7 +33,7 @@ class Scenario( object ):
                 self._expected.append( event )
                 return
         call = event
-        if call.unordered():
+        if call.unordered_():
                 self._unorderedExpectations.add( call )
         else:
                 self._expected.append( call )
@@ -64,7 +64,7 @@ class Scenario( object ):
     def _findUnorderedCall( self, fakeObjectPath, args, kwargs ):
         for call in self._unorderedExpectations:
                 if call.fits( fakeObjectPath, args, kwargs ):
-                        if not call.everlasting():
+                        if not call.everlasting_():
                                 self._unorderedExpectations.remove( call )
                         return call
         return None
@@ -80,7 +80,7 @@ class Scenario( object ):
                 return '%s( %s, %s )' % ( fakeObjectPath, argsString, kwargsString )
         else:
                 return '%s( %s )' % ( fakeObjectPath, argsString )
-            
+
     @staticmethod
     def current():
         return Scenario._current
@@ -88,7 +88,7 @@ class Scenario( object ):
     def _performEndVerifications( self ):
         if len( self._expected ) > 0:
                 raise testixexception.ExpectationException( "Scenario ended, but not all expectations were met. Pending expectations: %s" % self._expected )
-        unorderedMortalExpectations = [ expectation for expectation in self._unorderedExpectations if not expectation.everlasting() ]
+        unorderedMortalExpectations = [ expectation for expectation in self._unorderedExpectations if not expectation.everlasting_() ]
         if len( unorderedMortalExpectations ) > 0:
                 raise testixexception.ExpectationException( "Scenario ended, but not all expectations were met. There are still unordered pending expectations: %s" % unorderedMortalExpectations )
 

@@ -9,7 +9,7 @@ import fakeclassderiver
 class StarterTestFakeClass( startertestcollection.StarterTestCollection ):
 	def starter_test_FakeABaseClass( self ):
 		scenario = Scenario() <<\
-			Call( 'bogusmodule.BogusClass', [ 'one', 'two' ], None )
+			Call( 'bogusmodule.BogusClass', 'one', 'two' )
 		derived = fakeclassderiver.Derived( 'one', 'two' )
 		scenario.end()
 
