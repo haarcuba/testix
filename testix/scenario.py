@@ -1,5 +1,6 @@
 from testix import testixexception
 from testix import hook
+from testix import mocks
 import pprint
 import sys
 
@@ -16,12 +17,12 @@ class Scenario( object ):
         Scenario._current = self
 
     def __enter__( self ):
-        return self
+        return mocks.Mocks(self)
 
     def __exit__( self, type, value, traceback ):
         if type is not None:
             self._endingVerifications = False
-        self.end()
+        self._end()
 
     def _debug( self, message ):
         if not self._verbose:
@@ -92,14 +93,10 @@ class Scenario( object ):
         if len( unorderedMortalExpectations ) > 0:
                 raise testixexception.ExpectationException( "Scenario ended, but not all expectations were met. There are still unordered pending expectations: %s" % unorderedMortalExpectations )
 
-    def end( self ):
+    def _end( self ):
         if self._endingVerifications:
             self._performEndVerifications()
         Scenario._current = None
-
-    def __lshift__( self, expectation ):
-        self.addEvent( expectation )
-        return self
 
 def clearAllScenarios():
     Scenario._current = None
