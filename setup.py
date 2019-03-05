@@ -38,9 +38,9 @@ Or, if you have [`rake`](http://rake.rubyforge.org/) you can run
 Enjoy!
 """
 setup(
-    name = "testix",
+    name="testix",
     packages = ["testix", "examples", "examples.tests"],
-    version = '2.0.0',
+    version='3.0.0b0',
     description = "Mocking framework Python with *exact* Scenarios",
     author = "Yoav Kleinberger",
     author_email = "haarcuba@gmail.com",

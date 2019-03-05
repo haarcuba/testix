@@ -1,6 +1,6 @@
 from testix import testixexception
 from testix import hook
-from testix import mocks
+from testix import scenario_mocks
 import pprint
 import sys
 
@@ -17,7 +17,7 @@ class Scenario( object ):
         Scenario._current = self
 
     def __enter__( self ):
-        return mocks.Mocks(self)
+        return scenario_mocks.ScenarioMocks(self)
 
     def __exit__( self, type, value, traceback ):
         if type is not None:

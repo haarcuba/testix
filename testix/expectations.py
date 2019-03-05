@@ -1,6 +1,6 @@
 from testix import argumentexpectations
 
-class Call( object ):
+class Call:
     def __init__( self, fakeObjectPath, * arguments, ** kwargExpectations ):
         self._fakeObjectPath = fakeObjectPath
         self._argumentExpectations = [ self._expectation( arg ) for arg in arguments ]
@@ -8,10 +8,18 @@ class Call( object ):
         self._kwargExpectations = { name: self._expectation( kwargExpectations[ name ] ) for name in kwargExpectations }
         self._unordered = False
         self._everlasting = False
+        self._throwing = False
 
     def returns( self, result ):
         self._result = result
         return self
+
+    def __rshift__( self, result ):
+        self.returns( result )
+
+    def throwing( self, exceptionFactory ):
+        self._throwing = True
+        self._exceptionFactory = exceptionFactory
 
     def unordered( self ):
         self._unordered = True
@@ -30,6 +38,8 @@ class Call( object ):
         return defaultExpectation( arg )
 
     def result( self ):
+        if self._throwing:
+            raise self._exceptionFactory()
         return self._result
 
     def __repr__( self ):
@@ -82,12 +92,3 @@ class Call( object ):
 
     def everlasting_( self ):
         return self._everlasting
-
-class ThrowingCall( Call ):
-    def __init__( self, exceptionType, fakeObjectPath, * arguments, ** kwargExpectations ):
-        self._exceptionType = exceptionType
-        Call.__init__( self, fakeObjectPath, * arguments, ** kwargExpectations )
-
-    def result( self ):
-        Call.result( self )
-        raise self._exceptionType()
