@@ -6,3 +6,7 @@ class ScenarioMocks:
 
     def __getattr__( self, name ):
         return expectationmaker.ExpectationMaker( self._scenario, self, name )
+
+    def __lshift__( self, expectation ):
+        self._scenario.addEvent( expectation )
+        return self
