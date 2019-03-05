@@ -20,6 +20,7 @@ class Call:
     def throwing( self, exceptionFactory ):
         self._throwing = True
         self._exceptionFactory = exceptionFactory
+        return self
 
     def unordered( self ):
         self._unordered = True
