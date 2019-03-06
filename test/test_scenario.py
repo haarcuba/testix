@@ -75,13 +75,13 @@ class TestScenario:
                 another_object = fakeobject.FakeObject( 'another_object' )
                 assert some_object( 10 ) == 15
 
-    @pytest.mark.skip(reason='will fix later')
     def test_bugfix_ScenarioEndsPrematurely_With_UnorderedCalls( self ):
         with pytest.raises( testixexception.ScenarioException ):
             with scenario.Scenario() as s:
                 s.some_object( 10 ).returns( 15 )
                 s.another_object( 20, 50 ).returns( 30 ).unordered()
                 some_object = fakeobject.FakeObject( 'some_object' )
+                another_object = fakeobject.FakeObject( 'another_object' )
                 assert some_object( 10 ) == 15
 
     def test_CallParametersDontMatch( self ):
@@ -109,19 +109,18 @@ class TestScenario:
             with pytest.raises( MyException ):
                 some_object( 10 )
 
-    @pytest.mark.skip(reason='will fix later')
-    @hypothesis.given( values=strategies.permutations( [ 10, 11 ] ) )
+    @hypothesis.given( values=strategies.permutations( [ 10, 11, 12 ] ) )
     def test_UnorderedExpectation( self, values ):
-        print( values )
         with scenario.Scenario() as s:
             s.some_object( 10 ).unordered()
             s.some_object( 11 ).unordered()
+            s.some_object( 12 ).unordered()
 
             some_object = fakeobject.FakeObject( 'some_object' )
             some_object( values[ 0 ] )
             some_object( values[ 1 ] )
+            some_object( values[ 2 ] )
 
-    @pytest.mark.skip(reason='will fix later')
     def test_UnorderedExpectationsRunOut( self ):
         with scenario.Scenario() as s:
             s.some_object( 10 ).unordered()
@@ -130,61 +129,57 @@ class TestScenario:
             some_object = fakeobject.FakeObject( 'some_object' )
             some_object( 11 )
             some_object( 10 )
-            with pytest.raises( testixexception.ScenarioException ):
+            with pytest.raises( testixexception.ExpectationException ):
                 some_object( 11 )
 
-    @pytest.mark.skip(reason='will fix later')
     def test_EverlastingCall( self ):
-        with scenario.Scenario() as aScenario:
-            aScenario <<\
-                    expectations.Call( 'some_object', 10 ).unordered().everlasting() << \
-                    expectations.Call( 'some_object', 11 ).unordered().everlasting()
+        with scenario.Scenario() as s:
+            s.some_object( 10 ).unordered().everlasting()
+            s.some_object( 11 ).unordered().everlasting()
+            some_object = fakeobject.FakeObject( 'some_object' )
+            some_object( 10 )
+            some_object( 10 )
+            some_object( 10 )
+            some_object( 10 )
+            some_object( 11 )
+            some_object( 11 )
 
-            fakeObject = fakeobject.FakeObject( 'some_object' )
-            fakeObject( 10 )
-            fakeObject( 10 )
-            fakeObject( 10 )
-            fakeObject( 10 )
-            fakeObject( 11 )
-            fakeObject( 11 )
-
-    @pytest.mark.skip(reason='will fix later')
     def test_Everlasting_Unorderd_and_Regular_Calls( self ):
-        with scenario.Scenario() as aScenario:
-            aScenario <<\
-                    expectations.Call( 'everlasting', 10 ).returns( 'ten' ).unordered().everlasting() << \
-                    expectations.Call( 'everlasting', 11 ).returns( 'eleven' ).unordered().everlasting() << \
-                    expectations.Call( 'unordered', 20 ).returns( 'twenty' ).unordered() << \
-                    expectations.Call( 'ordered', 1 ).returns( 'one' ) << \
-                    expectations.Call( 'ordered', 2 ).returns( 'two' ) << \
-                    expectations.Call( 'ordered', 3 ).returns( 'three' )
+        with scenario.Scenario() as s:
+            s.everlasting( 10 ).returns( 'ten' ).unordered().everlasting()
+            s.everlasting( 11 ).returns( 'eleven' ).unordered().everlasting()
+            s.unordered( 20 ).returns( 'twenty' ).unordered()
+            s.unordered( 19 ).returns( 'nineteen' ).unordered()
+            s.ordered( 1 ).returns( 'one' )
+            s.ordered( 2 ).returns( 'two' )
+            s.ordered( 3 ).returns( 'three' )
 
             ordered = fakeobject.FakeObject( 'ordered' )
             everlasting = fakeobject.FakeObject( 'everlasting' )
             unordered = fakeobject.FakeObject( 'unordered' )
 
-            STS_ASSERT_EQUALS( everlasting( 10 ), 'ten' )
-            STS_ASSERT_EQUALS( ordered( 1 ), 'one' )
-            STS_ASSERT_EQUALS( ordered( 2 ), 'two' )
-            STS_ASSERT_EQUALS( everlasting( 10 ), 'ten' )
-            STS_ASSERT_EQUALS( everlasting( 11 ), 'eleven' )
-            STS_ASSERT_EQUALS( everlasting( 11 ), 'eleven' )
-            STS_ASSERT_EQUALS( everlasting( 10 ), 'ten' )
-            STS_ASSERT_EQUALS( ordered( 3 ), 'three' )
-            STS_ASSERT_EQUALS( everlasting( 11 ), 'eleven' )
-            STS_ASSERT_EQUALS( everlasting( 10 ), 'ten' )
-            STS_ASSERT_EQUALS( unordered( 20 ), 'twenty' )
-            STS_ASSERT_EQUALS( everlasting( 10 ), 'ten' )
+            assert everlasting( 10 ) == 'ten'
+            assert ordered( 1 ) == 'one'
+            assert ordered( 2 ) == 'two'
+            assert everlasting( 10 ) == 'ten'
+            assert everlasting( 11 ) == 'eleven'
+            assert everlasting( 11 ) == 'eleven'
+            assert everlasting( 10 ) == 'ten'
+            assert ordered( 3 ) == 'three'
+            assert everlasting( 11 ) == 'eleven'
+            assert unordered( 20 ) == 'twenty'
+            assert everlasting( 10 ) == 'ten'
+            assert unordered( 19 ) == 'nineteen'
+            assert everlasting( 10 ) == 'ten'
 
-    @pytest.mark.skip(reason='will fix later')
     def test_Everlasting_Calls_Have_ArgumentExpectations( self ):
-        with scenario.Scenario() as aScenario:
-            aScenario <<\
-                    expectations.Call( 'some_object', 10 ).returns( 'ten' ).unordered().everlasting()
+        with scenario.Scenario() as s:
+            s.some_object( 10 ).returns( 'ten' ).unordered().everlasting()
 
-            someObject = fakeobject.FakeObject( 'some_object' )
-            STS_ASSERT_EQUALS( someObject( 10 ), 'ten' )
-            STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( testixexception.TestixException, someObject, 11 )
+            some_object = fakeobject.FakeObject( 'some_object' )
+            assert some_object( 10 ) == 'ten'
+            with pytest.raises( testixexception.ExpectationException ):
+                some_object( 11 )
 
     def test_Hooks( self ):
         func1Calls = []

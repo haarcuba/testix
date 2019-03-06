@@ -12,7 +12,6 @@ class Scenario( object ):
                 raise testixexception.TestixException( "New scenario started before previous one ended" )
         self._verbose = verbose
         self._expected = []
-        self._unorderedExpectations = set()
         self._endingVerifications = True
         Scenario._current = self
 
@@ -27,30 +26,30 @@ class Scenario( object ):
     def _debug( self, message ):
         if not self._verbose:
                 return
-        sys.stderr.write( '%s\n' % message )
+        sys.stderr.write( f'SCENARIO: {message}\n' )
 
     def addEvent( self, event ):
         if isinstance( event, hook.Hook ):
                 self._expected.append( event )
                 return
         call = event
-        if call.unordered_():
-                self._unorderedExpectations.add( call )
-        else:
-                self._expected.append( call )
+        self._expected.append( call )
 
     def resultFor( self, fakeObjectPath, * args, ** kwargs ):
+        self._debug( f'resultFor: {fakeObjectPath}, {args}, {kwargs}' )
         unorderedCall = self._findUnorderedCall( fakeObjectPath, args, kwargs )
         if unorderedCall is not None:
-                self._debug( 'scenario: %s' % unorderedCall )
-                return unorderedCall.result()
+            self._debug( f'found unordered call: {unorderedCall}' )
+            return unorderedCall.result()
 
         return self._resultForOrderedCall( fakeObjectPath, args, kwargs )
 
     def _resultForOrderedCall( self, fakeObjectPath, args, kwargs ):
-        if len( self._expected ) == 0:
+        self._debug( f'_resultForOrderedCall: {fakeObjectPath}, {args}, {kwargs}' )
+        if len( self._orderedExpectationsView() ) == 0:
                 raise testixexception.ExpectationException( "unexpected call %s. Expected nothing" % self._formatActualCall( fakeObjectPath, args, kwargs ) )
-        expected = self._expected.pop( 0 )
+        expected = self._findOrderedCall( fakeObjectPath, args, kwargs )
+        self._expected.remove( expected )
         self._verifyCallExpected( expected, fakeObjectPath, args, kwargs )
         result = expected.result()
         self._executeHooks()
@@ -62,15 +61,53 @@ class Scenario( object ):
                 currentHook = self._expected.pop( 0 )
                 currentHook.execute()
 
+    def _unorderedExpectationsView( self ):
+        result = []
+        for expectation in self._expected:
+            if isinstance( expectation, hook.Hook ):
+                continue
+            if not expectation.unordered_():
+                continue
+            result.append( expectation )
+
+        return result
+
+    def _orderedExpectationsView( self ):
+        result = []
+        for expectation in self._expected:
+            if isinstance( expectation, hook.Hook ):
+                continue
+            if expectation.unordered_():
+                continue
+            result.append( expectation )
+
+        return result
+
+    def _pendingExpectations( self ):
+        result = []
+        for expectation in self._expected:
+            if isinstance( expectation, hook.Hook ):
+                continue
+            if expectation.everlasting_():
+                continue
+            result.append( expectation )
+
+        return result
+
     def _findUnorderedCall( self, fakeObjectPath, args, kwargs ):
-        for call in self._unorderedExpectations:
-                if call.fits( fakeObjectPath, args, kwargs ):
-                        if not call.everlasting_():
-                                self._unorderedExpectations.remove( call )
-                        return call
+        for call in self._unorderedExpectationsView():
+            if call.fits( fakeObjectPath, args, kwargs ):
+                    if not call.everlasting_():
+                            self._expected.remove( call )
+                    return call
         return None
 
+    def _findOrderedCall( self, fakeObjectPath, args, kwargs ):
+        call, *_ = self._orderedExpectationsView()
+        return call
+
     def _verifyCallExpected( self, expected, fakeObjectPath, args, kwargs ):
+        self._debug( f'_verifyCallExpected: {expected}. actual={fakeObjectPath} args={args}, kwargs={kwargs}' )
         if not expected.fits( fakeObjectPath, args, kwargs ):
                 raise testixexception.ExpectationException( "unexpected call %s. Expected %s" % ( self._formatActualCall( fakeObjectPath, args, kwargs ), expected ) )
 
@@ -87,11 +124,8 @@ class Scenario( object ):
         return Scenario._current
 
     def _performEndVerifications( self ):
-        if len( self._expected ) > 0:
+        if len( self._pendingExpectations() ) > 0:
                 raise testixexception.ScenarioException( "Scenario ended, but not all expectations were met. Pending expectations: %s" % self._expected )
-        unorderedMortalExpectations = [ expectation for expectation in self._unorderedExpectations if not expectation.everlasting_() ]
-        if len( unorderedMortalExpectations ) > 0:
-                raise testixexception.ScenarioException( "Scenario ended, but not all expectations were met. There are still unordered pending expectations: %s" % unorderedMortalExpectations )
 
     def _end( self ):
         Scenario._current = None
