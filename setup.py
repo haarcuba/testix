@@ -2,41 +2,23 @@ import setuptools
 from distutils.core import setup
 LONG_DESCRIPTION =\
 """
-# TESTIX
+Testix is a Mocking framework for Python, meant to be used with [pytest](https://docs.pytest.org/en/latest/).
 
-Testix is a Mocking framework for Python.
+read the full docs at the [project's homepage](https://github.com/haarcuba/testix).
 
-## Credit Where it's due
-Testix started as a re-implementation of ideas from the Voodoo-Mock unit-testing framework (http://sourceforge.net/projects/voodoo-mock), which also supports C++ unit testing. Check it out. Since then it has evolved some different traits though.
+Testix is special because it allows you to specify what your mock objects do,
+and it then enforces your specifications automatically. It also reduces (albeit
+not entirely) mock setup. Other frameworks usually have a flow like this:
 
-## License
-This software is free software, and is distributed under the GNU General Public License version 3.0.
-See the COPYING file for details.
+* setup mock
+* let code do something with mock
+* assert mock used in correct way
 
+Testix flow is a bit different
+* setup "top level" mock objects (`sock` in the following example)
+* specify exactly what should happen to them using a scenario
 
-## Installation
-With `pip`:
-
-    $ pip install testix
-
-## Python 3
-
-Testix has been tried with Python 3, but it may work with Python 2 as well.
-
-## How to use it
-
-TBD - for the time being, look at the examples.
-
-Testix is intended to be used with `unittest`, the standrad Python unit testing framework.
-If you clone this repository you can run the examples like so
-
-    $ python3 -m unittest examples/tests/test_*.py
-
-Or, if you have [`rake`](http://rake.rubyforge.org/) you can run
-
-    $ rake examples
-
-Enjoy!
+And that's it.  
 """
 
 requires = [ 'pytest>~4.3.0', ]
@@ -44,7 +26,7 @@ tests_require = [ 'hypothesis>~4.7.19' ]
 setup(
     name="testix",
     packages = ["testix",],
-    version='4.0.0',
+    version='4.0.1',
     description = "Mocking framework Python with *exact* Scenarios",
     author = "Yoav Kleinberger",
     author_email = "haarcuba@gmail.com",
