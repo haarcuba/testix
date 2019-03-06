@@ -12,6 +12,7 @@ class Scenario( object ):
                 raise testixexception.TestixException( "New scenario started before previous one ended" )
         self._verbose = verbose
         self._expected = []
+        self._unorderedExpectations = []
         self._endingVerifications = True
         Scenario._current = self
 
@@ -46,10 +47,9 @@ class Scenario( object ):
 
     def _resultForOrderedCall( self, fakeObjectPath, args, kwargs ):
         self._debug( f'_resultForOrderedCall: {fakeObjectPath}, {args}, {kwargs}' )
-        if len( self._orderedExpectationsView() ) == 0:
+        if len( self._expected ) == 0:
                 raise testixexception.ExpectationException( "unexpected call %s. Expected nothing" % self._formatActualCall( fakeObjectPath, args, kwargs ) )
-        expected = self._findOrderedCall( fakeObjectPath, args, kwargs )
-        self._expected.remove( expected )
+        expected = self._expected.pop( 0 )
         self._verifyCallExpected( expected, fakeObjectPath, args, kwargs )
         result = expected.result()
         self._executeHooks()
@@ -61,50 +61,13 @@ class Scenario( object ):
                 currentHook = self._expected.pop( 0 )
                 currentHook.execute()
 
-    def _unorderedExpectationsView( self ):
-        result = []
-        for expectation in self._expected:
-            if isinstance( expectation, hook.Hook ):
-                continue
-            if not expectation.unordered_():
-                continue
-            result.append( expectation )
-
-        return result
-
-    def _orderedExpectationsView( self ):
-        result = []
-        for expectation in self._expected:
-            if isinstance( expectation, hook.Hook ):
-                continue
-            if expectation.unordered_():
-                continue
-            result.append( expectation )
-
-        return result
-
-    def _pendingExpectations( self ):
-        result = []
-        for expectation in self._expected:
-            if isinstance( expectation, hook.Hook ):
-                continue
-            if expectation.everlasting_():
-                continue
-            result.append( expectation )
-
-        return result
-
     def _findUnorderedCall( self, fakeObjectPath, args, kwargs ):
-        for call in self._unorderedExpectationsView():
+        for call in self._unorderedExpectations:
             if call.fits( fakeObjectPath, args, kwargs ):
                     if not call.everlasting_():
-                            self._expected.remove( call )
+                            self._unorderedExpectations.remove( call )
                     return call
         return None
-
-    def _findOrderedCall( self, fakeObjectPath, args, kwargs ):
-        call, *_ = self._orderedExpectationsView()
-        return call
 
     def _verifyCallExpected( self, expected, fakeObjectPath, args, kwargs ):
         self._debug( f'_verifyCallExpected: {expected}. actual={fakeObjectPath} args={args}, kwargs={kwargs}' )
@@ -124,13 +87,20 @@ class Scenario( object ):
         return Scenario._current
 
     def _performEndVerifications( self ):
-        if len( self._pendingExpectations() ) > 0:
-                raise testixexception.ScenarioException( "Scenario ended, but not all expectations were met. Pending expectations: %s" % self._expected )
+        if len( self._expected ) > 0:
+            raise testixexception.ScenarioException( "Scenario ended, but not all expectations were met. Pending expectations (ordered): %s" % self._expected )
+        mortalUnordered = [ expectation for expectation in self._unorderedExpectations if not expectation.everlasting_() ]
+        if len( mortalUnordered ) > 0:
+            raise testixexception.ScenarioException( "Scenario ended, but not all expectations were met. Pending expectations (unordered): %s" % self._expected )
 
     def _end( self ):
         Scenario._current = None
         if self._endingVerifications:
             self._performEndVerifications()
+
+    def unordered( self, call ):
+        self._expected.remove( call )
+        self._unorderedExpectations.append( call )
 
 def clearAllScenarios():
     Scenario._current = None

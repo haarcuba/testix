@@ -1,4 +1,5 @@
 from testix import argumentexpectations
+from testix import scenario
 
 class Call:
     def __init__( self, fakeObjectPath, * arguments, ** kwargExpectations ):
@@ -23,13 +24,13 @@ class Call:
         return self
 
     def unordered( self ):
+        scenario.current().unordered( self )
         self._unordered = True
-        assert not ( self._everlasting and ( not self._unordered ) )
         return self
 
     def everlasting( self ):
         self._everlasting = True
-        assert not ( self._everlasting and ( not self._unordered ) )
+        assert self._unordered, "call cannot be everlasting but not unordered"
         return self
 
     def _expectation( self, arg ):

@@ -78,11 +78,11 @@ class TestScenario:
     def test_bugfix_ScenarioEndsPrematurely_With_UnorderedCalls( self ):
         with pytest.raises( testixexception.ScenarioException ):
             with scenario.Scenario() as s:
-                s.some_object( 10 ).returns( 15 )
-                s.another_object( 20, 50 ).returns( 30 ).unordered()
+                s.some_object( 10 )
+                s.another_object( 20, 50 ).unordered()
                 some_object = fakeobject.FakeObject( 'some_object' )
                 another_object = fakeobject.FakeObject( 'another_object' )
-                assert some_object( 10 ) == 15
+                some_object( 10 )
 
     def test_CallParametersDontMatch( self ):
         with scenario.Scenario() as s:
