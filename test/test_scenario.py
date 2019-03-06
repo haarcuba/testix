@@ -186,7 +186,6 @@ class TestScenario:
             STS_ASSERT_EQUALS( someObject( 10 ), 'ten' )
             STS_ASSERT_THROWS_SPECIFIC_EXCEPTION( testixexception.TestixException, someObject, 11 )
 
-    # @pytest.mark.skip(reason='will fix later')
     def test_Hooks( self ):
         func1Calls = []
         def func1( * a, **k ):
