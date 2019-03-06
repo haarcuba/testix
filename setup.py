@@ -41,7 +41,7 @@ Enjoy!
 setup(
     name="testix",
     packages = ["testix", "examples", "examples.tests"],
-    version='3.0.0',
+    version='3.0.1',
     description = "Mocking framework Python with *exact* Scenarios",
     author = "Yoav Kleinberger",
     author_email = "haarcuba@gmail.com",
