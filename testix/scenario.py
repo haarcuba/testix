@@ -2,6 +2,7 @@ from testix import testixexception
 from testix import hook
 from testix import scenario_mocks
 from testix import failhooks
+from testix import call_formatter
 import pprint
 import sys
 
@@ -49,7 +50,7 @@ class Scenario( object ):
     def _resultForOrderedCall( self, fakeObjectPath, args, kwargs ):
         self._debug( f'_resultForOrderedCall: {fakeObjectPath}, {args}, {kwargs}' )
         if len( self._expected ) == 0:
-            failhooks.fail( testixexception.ExpectationException, "unexpected call {}. Expected nothing".format( self._formatActualCall( fakeObjectPath, args, kwargs ) ) )
+            failhooks.fail( testixexception.ExpectationException, "unexpected call {}. Expected nothing".format( call_formatter.format( fakeObjectPath, args, kwargs ) ) )
         expected = self._expected.pop( 0 )
         self._verifyCallExpected( expected, fakeObjectPath, args, kwargs )
         result = expected.result()
@@ -73,15 +74,7 @@ class Scenario( object ):
     def _verifyCallExpected( self, expected, fakeObjectPath, args, kwargs ):
         self._debug( f'_verifyCallExpected: {expected}. actual={fakeObjectPath} args={args}, kwargs={kwargs}' )
         if not expected.fits( fakeObjectPath, args, kwargs ):
-            failhooks.fail( testixexception.ExpectationException, "unexpected call {}. Expected {}".format( self._formatActualCall( fakeObjectPath, args, kwargs ), expected ) )
-
-    def _formatActualCall( self, fakeObjectPath, args, kwargs ):
-        argsString = ', '.join( [ pprint.pformat( arg ) for arg in args ] )
-        if len( kwargs ) > 0:
-                kwargsString = ', '.join( '%s = %s' % ( key, pprint.pformat( val ) ) for (key, val) in kwargs.items() )
-                return '%s( %s, %s )' % ( fakeObjectPath, argsString, kwargsString )
-        else:
-                return '%s( %s )' % ( fakeObjectPath, argsString )
+            failhooks.fail( testixexception.ExpectationException, "unexpected call {}. Expected {}".format( call_formatter.format( fakeObjectPath, args, kwargs ), expected ) )
 
     @staticmethod
     def current():

@@ -1,5 +1,6 @@
 from testix import argumentexpectations
 from testix import scenario
+from testix import call_formatter
 
 class Call:
     def __init__( self, fakeObjectPath, * arguments, ** kwargExpectations ):
@@ -44,13 +45,9 @@ class Call:
             raise self._exceptionFactory()
         return self._result
 
+
     def __repr__( self ):
-        argumentExpectationString = ', '.join( [ str( argExp ) for argExp in self._argumentExpectations ] )
-        if len( self._kwargExpectations ) > 0:
-            kwargsString = ', '.join( '%s = %s' % tupl for tupl in self._kwargExpectations.items() )
-            return '%s( %s, %s )' % ( self._fakeObjectPath, argumentExpectationString, kwargsString )
-        else:
-            return '%s( %s )' % ( self._fakeObjectPath, argumentExpectationString )
+        return call_formatter.format( self._fakeObjectPath, self._argumentExpectations, self._kwargExpectations )
 
     def fits( self, fakeObjectPath, args, kwargs ):
         if fakeObjectPath != self._fakeObjectPath:
