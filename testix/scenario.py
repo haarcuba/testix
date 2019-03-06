@@ -50,7 +50,8 @@ class Scenario( object ):
     def _resultForOrderedCall( self, fakeObjectPath, args, kwargs ):
         self._debug( f'_resultForOrderedCall: {fakeObjectPath}, {args}, {kwargs}' )
         if len( self._expected ) == 0:
-            failhooks.fail( testixexception.ExpectationException, "unexpected call {}. Expected nothing".format( call_formatter.format( fakeObjectPath, args, kwargs ) ) )
+            failhooks.fail( testixexception.ExpectationException, f"unexpected call: {call_formatter.format( fakeObjectPath, args, kwargs )}\n"
+                                                                   "Expected nothing" )
         expected = self._expected.pop( 0 )
         self._verifyCallExpected( expected, fakeObjectPath, args, kwargs )
         result = expected.result()
@@ -74,7 +75,9 @@ class Scenario( object ):
     def _verifyCallExpected( self, expected, fakeObjectPath, args, kwargs ):
         self._debug( f'_verifyCallExpected: {expected}. actual={fakeObjectPath} args={args}, kwargs={kwargs}' )
         if not expected.fits( fakeObjectPath, args, kwargs ):
-            failhooks.fail( testixexception.ExpectationException, "unexpected call {}. Expected {}".format( call_formatter.format( fakeObjectPath, args, kwargs ), expected ) )
+            failhooks.fail( testixexception.ExpectationException, 
+                                  f"expected: {call_formatter.format( fakeObjectPath, args, kwargs )}\n"
+                                  f"actual  : {expected}\n" )
 
     @staticmethod
     def current():
