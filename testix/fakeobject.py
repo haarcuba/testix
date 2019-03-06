@@ -1,5 +1,6 @@
 from testix import scenario
 from testix import testixexception
+from testix import failhooks
 
 class FakeObject:
     _registry = {}
@@ -19,7 +20,7 @@ class FakeObject:
 
     def _returnResultFromScenario( self, * args, ** kwargs ):
         if scenario.current() is None:
-            raise testixexception.TestixException( "can not find a scenario object" )
+            failhooks.error( "can not find a scenario object" )
         return scenario.current().resultFor( self._path, * args, ** kwargs )
 
     def __str__( self ):

@@ -14,7 +14,7 @@ class TestScenario:
 
     def test_OnlyOneScenarioMayExistAtAnyOneTime( self ):
         with scenario.Scenario() as s:
-            with pytest.raises( testixexception.TestixException ):
+            with pytest.raises( testixexception.TestixError ):
                 scenario.Scenario()
 
     def test_TwoScenariosOneAfterTheOther( self ):

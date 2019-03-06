@@ -1,6 +1,7 @@
 from testix import testixexception
 from testix import hook
 from testix import scenario_mocks
+from testix import failhooks
 import pprint
 import sys
 
@@ -9,7 +10,7 @@ class Scenario( object ):
 
     def __init__( self, verbose = False ):
         if Scenario._current is not None:
-            raise testixexception.TestixException( "New scenario started before previous one ended" )
+            failhooks.error( "New scenario started before previous one ended" )
         self._verbose = verbose
         self._expected = []
         self._unorderedExpectations = []
@@ -48,7 +49,7 @@ class Scenario( object ):
     def _resultForOrderedCall( self, fakeObjectPath, args, kwargs ):
         self._debug( f'_resultForOrderedCall: {fakeObjectPath}, {args}, {kwargs}' )
         if len( self._expected ) == 0:
-            raise testixexception.ExpectationException( "unexpected call %s. Expected nothing" % self._formatActualCall( fakeObjectPath, args, kwargs ) )
+            failhooks.fail( testixexception.ExpectationException, "unexpected call {}. Expected nothing".format( self._formatActualCall( fakeObjectPath, args, kwargs ) ) )
         expected = self._expected.pop( 0 )
         self._verifyCallExpected( expected, fakeObjectPath, args, kwargs )
         result = expected.result()
@@ -72,7 +73,7 @@ class Scenario( object ):
     def _verifyCallExpected( self, expected, fakeObjectPath, args, kwargs ):
         self._debug( f'_verifyCallExpected: {expected}. actual={fakeObjectPath} args={args}, kwargs={kwargs}' )
         if not expected.fits( fakeObjectPath, args, kwargs ):
-                raise testixexception.ExpectationException( "unexpected call %s. Expected %s" % ( self._formatActualCall( fakeObjectPath, args, kwargs ), expected ) )
+            failhooks.fail( testixexception.ExpectationException, "unexpected call {}. Expected {}".format( self._formatActualCall( fakeObjectPath, args, kwargs ), expected ) )
 
     def _formatActualCall( self, fakeObjectPath, args, kwargs ):
         argsString = ', '.join( [ pprint.pformat( arg ) for arg in args ] )
@@ -88,10 +89,10 @@ class Scenario( object ):
 
     def _performEndVerifications( self ):
         if len( self._expected ) > 0:
-            raise testixexception.ScenarioException( "Scenario ended, but not all expectations were met. Pending expectations (ordered): %s" % self._expected )
+            failhooks.fail( testixexception.ScenarioException, f"Scenario ended, but not all expectations were met. Pending expectations (ordered): {self._expected}" )
         mortalUnordered = [ expectation for expectation in self._unorderedExpectations if not expectation.everlasting_() ]
         if len( mortalUnordered ) > 0:
-            raise testixexception.ScenarioException( "Scenario ended, but not all expectations were met. Pending expectations (unordered): %s" % self._expected )
+            failhooks.fail( testixexception.ScenarioException, f"Scenario ended, but not all expectations were met. Pending expectations (unordered): {mortalUnordered}" )
 
     def _end( self ):
         Scenario._current = None

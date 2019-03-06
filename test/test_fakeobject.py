@@ -8,7 +8,7 @@ class TestArgumentExpectations:
     @hypothesis.given(text=strategies.text())
     def test_CallingFakeObject_WhileNoScenario_MustThrow(self, text):
         fakeObject = fakeobject.FakeObject('hi_there')	
-        with pytest.raises( testixexception.TestixException ):
+        with pytest.raises( testixexception.TestixError ):
             fakeObject(text)
 
     def test_FakeObjectImplicitCreation_OnlyOnce( self ):
