@@ -15,6 +15,7 @@ not entirely) mock setup. Other frameworks usually have a flow like this:
 * assert mock used in correct way
 
 Testix flow is a bit different
+
 * setup "top level" mock objects (`sock` in the following example)
 * specify exactly what should happen to them using a scenario
 
@@ -26,7 +27,7 @@ tests_require = [ 'hypothesis>~4.7.19' ]
 setup(
     name="testix",
     packages = ["testix",],
-    version='4.0.1',
+    version='4.0.2',
     description = "Mocking framework Python with *exact* Scenarios",
     author = "Yoav Kleinberger",
     author_email = "haarcuba@gmail.com",
