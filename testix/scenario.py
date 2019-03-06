@@ -9,7 +9,7 @@ class Scenario( object ):
 
     def __init__( self, verbose = False ):
         if Scenario._current is not None:
-                raise testixexception.TestixException( "New scenario started before previous one ended" )
+            raise testixexception.TestixException( "New scenario started before previous one ended" )
         self._verbose = verbose
         self._expected = []
         self._unorderedExpectations = []
@@ -48,7 +48,7 @@ class Scenario( object ):
     def _resultForOrderedCall( self, fakeObjectPath, args, kwargs ):
         self._debug( f'_resultForOrderedCall: {fakeObjectPath}, {args}, {kwargs}' )
         if len( self._expected ) == 0:
-                raise testixexception.ExpectationException( "unexpected call %s. Expected nothing" % self._formatActualCall( fakeObjectPath, args, kwargs ) )
+            raise testixexception.ExpectationException( "unexpected call %s. Expected nothing" % self._formatActualCall( fakeObjectPath, args, kwargs ) )
         expected = self._expected.pop( 0 )
         self._verifyCallExpected( expected, fakeObjectPath, args, kwargs )
         result = expected.result()
