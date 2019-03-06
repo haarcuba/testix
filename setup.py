@@ -43,7 +43,7 @@ requires = [ 'pytest>~4.3.0', ]
 tests_require = [ 'hypothesis>~4.7.19' ]
 setup(
     name="testix",
-    packages = ["testix", "examples", "examples.tests"],
+    packages = ["testix",],
     version='3.0.1',
     description = "Mocking framework Python with *exact* Scenarios",
     author = "Yoav Kleinberger",

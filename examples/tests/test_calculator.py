@@ -1,27 +1,30 @@
-import unittest
+import pytest
 from testix.frequentlyused import *
-
-fakeModule( 'multiplier' )
+from testix import patch_module
 from examples import calculator
 
-class Test_Calculator( unittest.TestCase ):
+class Test_Calculator:
     def construct( self, value ):
         self.tested = calculator.Calculator( value )
+
+    @pytest.fixture
+    def module_patch(self, patch_module):
+        patch_module(calculator, 'multiplier')
 
     def test_Addition( self ):
         self.construct( 5 )
         self.tested.add( 7 )
-        self.assertEqual( self.tested.result(), 12 )
+        assert self.tested.result() == 12
         self.tested.add( 1.5 )
-        self.assertEqual( self.tested.result(), 13.5 )
+        assert self.tested.result() == 13.5
 
-    def test_MultiplicationUsesMultiplier( self ):
+    def test_MultiplicationUsesMultiplier( self, module_patch ):
         self.construct( 5 )
         with Scenario() as scenario:
             scenario <<\
                 Call( 'multiplier.multiply', first = 5, second = 7 ).returns( 35 ) <<\
                 Call( 'multiplier.multiply', first = 35, second = 10 ).returns( 350 )
             self.tested.multiply( 7 )
-            self.assertEqual( self.tested.result(), 35 )
+            assert self.tested.result() == 35
             self.tested.multiply( 10 )
-            self.assertEqual( self.tested.result(), 350 )
+            assert self.tested.result() == 350

@@ -1,4 +1,4 @@
-import multiplier
+from . import multiplier
 
 class Calculator( object ):
 	def __init__( self, initialValue ):
