@@ -91,7 +91,8 @@ class TestChatbot:
             # the code *must* call responder.Responder(). This call will return
             # a mock (the FakeObject) labled 'responder_'
             # 
-            # I'm using 'responder_' so as not to refer to the mock replacing the responder module, which I set up in the globals_patch fixture
+            # I'm using 'responder_' so as not to refer to the mock replacing the responder module,
+            # which I set up in the globals_patch fixture
             s.responder.Responder() >> FakeObject( 'responder_' )
 
             # now call the code, pass in a mock object instead of a socket
