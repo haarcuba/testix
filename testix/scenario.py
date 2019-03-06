@@ -19,8 +19,8 @@ class Scenario( object ):
     def __enter__( self ):
         return scenario_mocks.ScenarioMocks(self)
 
-    def __exit__( self, type, value, traceback ):
-        if type is not None:
+    def __exit__( self, exceptionType, exception, traceback ):
+        if exceptionType is not None:
             self._endingVerifications = False
         self._end()
 
@@ -88,15 +88,15 @@ class Scenario( object ):
 
     def _performEndVerifications( self ):
         if len( self._expected ) > 0:
-                raise testixexception.ExpectationException( "Scenario ended, but not all expectations were met. Pending expectations: %s" % self._expected )
+                raise testixexception.ScenarioException( "Scenario ended, but not all expectations were met. Pending expectations: %s" % self._expected )
         unorderedMortalExpectations = [ expectation for expectation in self._unorderedExpectations if not expectation.everlasting_() ]
         if len( unorderedMortalExpectations ) > 0:
-                raise testixexception.ExpectationException( "Scenario ended, but not all expectations were met. There are still unordered pending expectations: %s" % unorderedMortalExpectations )
+                raise testixexception.ScenarioException( "Scenario ended, but not all expectations were met. There are still unordered pending expectations: %s" % unorderedMortalExpectations )
 
     def _end( self ):
+        Scenario._current = None
         if self._endingVerifications:
             self._performEndVerifications()
-        Scenario._current = None
 
 def clearAllScenarios():
     Scenario._current = None

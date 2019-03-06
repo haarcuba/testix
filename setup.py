@@ -38,6 +38,9 @@ Or, if you have [`rake`](http://rake.rubyforge.org/) you can run
 
 Enjoy!
 """
+
+requires = [ 'pytest>~4.3.0', ]
+tests_require = [ 'hypothesis>~4.7.19' ]
 setup(
     name="testix",
     packages = ["testix", "examples", "examples.tests"],
@@ -47,7 +50,11 @@ setup(
     author_email = "haarcuba@gmail.com",
     url = "https://github.com/haarcuba/testix",
     keywords = ["mock", "mocking", "unittest", "python", "unit testing"],
+    install_requires=requires,
     long_description = LONG_DESCRIPTION,
+    extras_require={
+        'testing': tests_require,
+    },
     classifiers = [
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
