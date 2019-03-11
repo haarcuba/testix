@@ -310,6 +310,36 @@ You may specify a return value for a mock in two ways:
         s.sock.send('some text').returns( return_value )
     ```
 
+## Advantages over `unittest.mock`
+
+Compare this `unittest.mock` based version of `test_request_response_loop` from above:
+```python
+    @patch('chatbot.responder.Responder')
+    def test_request_response_loop(self, Responder):
+        sock = Mock()
+        responder = Mock()
+        Responder.side_effect = [ responder ]
+        self.construct(sock, Responder)
+        class EndTestException(Exception): pass
+
+        REQUESTS = [f'request {i}' for i in range(10)]
+        RESPONSES = [f'response {i}' for i in range(10)]
+        responder.process.side_effect = RESPONSES
+        sock.recv.side_effect = REQUESTS + [EndTestException]
+        
+        with pytest.raises(EndTestException):
+            self.tested.go()
+
+        sock.recv.assert_has_calls( [ call(4096) ] * 10 )
+        responder.process.assert_has_calls( [ call(request) for request in requests ] )
+        sock.send.assert_has_calls( [ call( response ) for response in RESPONSES ] )
+```
+
+In my opinion, at least, the `testix` based version was better.
+
+* With Testix, Defining how the mocks are called and asserting that they actually were called that way is one and the same. Using `unittest.mock` these are two separate stages, one may easily forget to make some assertions.
+* Testix scenario specification is much more readable
+
 # Advanced Features
 
 There are a few, but for now this is a TODO section.

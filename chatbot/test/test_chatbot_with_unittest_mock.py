@@ -19,19 +19,18 @@ class TestChatbot:
     def test_request_response_loop(self, Responder):
         sock = Mock()
         responder = Mock()
-        responder.process = Mock()
         Responder.side_effect = [ responder ]
         self.construct(sock, Responder)
         class EndTestException(Exception): pass
 
-        requests = [f'request {i}' for i in range(10)]
-        responses = [f'response {i}' for i in range(10)]
-        responder.process.side_effect = responses
-        sock.recv = Mock(side_effect=( requests + [EndTestException] ))
+        REQUESTS = [f'request {i}' for i in range(10)]
+        RESPONSES = [f'response {i}' for i in range(10)]
+        responder.process.side_effect = RESPONSES
+        sock.recv.side_effect = REQUESTS + [EndTestException]
         
         with pytest.raises(EndTestException):
             self.tested.go()
 
         sock.recv.assert_has_calls( [ call(4096) ] * 10 )
-        responder.process.assert_has_calls( [ call(request) for request in requests ] )
-        sock.send.assert_has_calls( [ call( response ) for response in responses ] )
+        responder.process.assert_has_calls( [ call(request) for request in REQUESTS ] )
+        sock.send.assert_has_calls( [ call( response ) for response in RESPONSES ] )
