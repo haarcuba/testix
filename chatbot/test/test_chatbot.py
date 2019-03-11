@@ -11,8 +11,8 @@ class TestChatbot:
 
     def construct(self):
         with Scenario() as s:
-            s.responder.Responder() >> FakeObject( 'responder_' )
-            self.tested = chatbot.Chatbot( FakeObject( 'sock' ) )
+            s.responder.Responder() >> Fake( 'responder_' )
+            self.tested = chatbot.Chatbot( Fake( 'sock' ) )
 
     def test_construction(self):
         self.construct()
