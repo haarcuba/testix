@@ -19,7 +19,7 @@ And that's it.  Here's a small example:
 
 ```python
     # create your object under test, pass in some mock objects
-    self.tested = chatbot.Chatbot( FakeObject( 'sock' ) )
+    self.tested = chatbot.Chatbot( Fake( 'sock' ) )
 
     # create a Scenario context
     # inside, you specify exactly what the unit should do with the objects its handed
@@ -77,7 +77,7 @@ Now let's see the unit tests. Our first demand is that a `Chatbot` object genera
 ```python
 import pytest
 import socket
-from testix.frequentlyused import *  # import testix DSL objects e.g. Scenario, FakeObject
+from testix.frequentlyused import *  # import testix DSL objects e.g. Scenario, Fake
 from testix import patch_module      # a fixture used for patching names at the module level
 from chatbot import chatbot          # the module under test
 
@@ -90,15 +90,15 @@ class TestChatbot:
         with Scenario() as s:
             # this is our demand: before this Scenario context is finished,
             # the code *must* call responder.Responder(). This call will return
-            # a mock (the FakeObject) labled 'responder_'
+            # a mock (the Fake) labled 'responder_'
             # 
             # I'm using 'responder_' so as not to refer to the mock replacing the responder module,
             # which I set up in the globals_patch fixture
-            s.responder.Responder() >> FakeObject( 'responder_' )
+            s.responder.Responder() >> Fake( 'responder_' )
 
             # now call the code, pass in a mock object instead of a socket
             # we'll use this mock later
-            self.tested = chatbot.Chatbot( FakeObject( 'sock' ) )
+            self.tested = chatbot.Chatbot( Fake( 'sock' ) )
 ```
 
 Running `pytest` with this test will result in the following failure (since we did not yet write the code)
@@ -136,8 +136,8 @@ class TestChatbot:
 
     def construct(self):
         with Scenario() as s:
-            s.responder.Responder() >> FakeObject( 'responder_' )
-            self.tested = chatbot.Chatbot( FakeObject( 'sock' ) )
+            s.responder.Responder() >> Fake( 'responder_' )
+            self.tested = chatbot.Chatbot( Fake( 'sock' ) )
 
     def test_construction(self):
         self.construct()
