@@ -12,20 +12,24 @@ not entirely) mock setup. Other frameworks usually have a flow like this:
 * assert mock used in correct way
 
 Testix flow is a bit different
-* setup "top level" mock objects (`sock` in the following example)
-* specify exactly what should happen to them using a scenario
+* setup mock objects (`sock` in the following example)
+* specify exactly what should happen to them using a Scenario context
 
 And that's it.  Here's a small example:
 
 ```python
     # create your object under test, pass in some mock objects
-    self.tested = chatbot.Chatbot( Fake( 'sock' ) )
+    # in production, Chatbot will receive and actual socket object
+    # here we want to test what it does with the socket it receives
+    # and we do not want it to actually communicate with anyone
+    # to both those ends, we pass a mock, or fake, object.
+    self.tested = chatbot.Chatbot(Fake('sock')) # Fake('sock') is a mock object named "sock"
 
     # create a Scenario context
     # inside, you specify exactly what the unit should do with the objects its handed
     with Scenario() as s:
 
-
+        # we can refer here to s.sock, because there is a mock named `sock`
         s.sock.recv(4096) >> 'request text'  # unit must call sock.recv(4096).
                                              # this call will return 'request text'
         s.sock.send('response text')
@@ -40,7 +44,9 @@ And that's it.  Here's a small example:
 
 Note that you do not have to setup `sock.recv` or `sock.send` - once `sock` is
 set up, it will generate other mock objects automatically as you go along with
-it. That's what was meant by "top level" mocks earlier.
+it. Only "top level" mock objects need to be setup explicitly.
+
+Continue reading for further examples.
 
 
 ## Installation
@@ -50,15 +56,18 @@ With `pip`:
 
 ## Python 3 and Legacy Python (Python 2)
 
-Testix works with Python 3. It will not work in legacy python.
+Testix works with Python 3. It will not work with legacy python.
 
-# Extended Example
+# Extended Example: Test Driven Development of a simple Chatbot object using Testix
 
 In this example we will test a `Chatbot` object.
 The `Chatbot` receives a socket through its `__init__` function.
-It also delegates the actual data from the socket to a responder object,
-which it will build by instantiating a `Responder` object from the `Responder` class
-inside the `responder` module, which the `chatbot` module imports.
+It also delegates the data it reads the socket to a responder object.
+
+This responder object will be built by instantiating the `Responder` class,
+which is defined in the `responder` module.
+
+We will require that `chatbot` imports `responder`.
 
 The skeleton `chatbot` module looks like this:
 ```python
@@ -69,6 +78,8 @@ class Chatbot:
     def __init__( self, peer ): # peer is the socket connected to the other side
         pass
 ```
+
+We won't write any more code before we write our tests.
 
 ## Construction Test
 
@@ -82,24 +93,32 @@ from testix import patch_module      # a fixture used for patching names at the 
 from chatbot import chatbot          # the module under test
 
 class TestChatbot:
-    @pytest.fixture(autouse=True) # autouse will make this fixture run for every test function
+    @pytest.fixture(autouse=True) # `autouse` will make this fixture run for every test function
     def globals_patch(self, patch_module):
-        patch_module( chatbot, 'responder' )    # replace chatbot.responder with a mock which we can trace using a Scenario
+        # replace chatbot.responder with a mock which we can trace using a Scenario
+        # this is how we mock modules impored by the unit-under-test
+        patch_module( chatbot, 'responder' )
 
     def test_construction(self):
         with Scenario() as s:
             # this is our demand: before this Scenario context is finished,
             # the code *must* call responder.Responder(). This call will return
-            # a mock (the Fake) labled 'responder_'
+            # a mock (the Fake) labled 'aResponder'
             # 
-            # I'm using 'responder_' so as not to refer to the mock replacing the responder module,
+            # I'm using 'aResponder' so as not to refer to the mock replacing the responder module,
             # which I set up in the globals_patch fixture
-            s.responder.Responder() >> Fake( 'responder_' )
+            s.responder.Responder() >> Fake( 'aResponder' )
 
             # now call the code, pass in a mock object instead of a socket
             # we'll use this mock later
             self.tested = chatbot.Chatbot( Fake( 'sock' ) )
 ```
+
+Now that we have a test, let's make sure it fails in the correct way. 
+In Test Driven Development **YOU MUST MAKE SURE THE TEST FAILS, IN THE MANNER YOU MEANT IT TO, BEFORE IMPLEMENTING THE CODE**.
+
+If you try it and the test *doesn't* fail, or it fails in some way that you did
+not mean, then it's not really testing what you thought, eh?
 
 Running `pytest` with this test will result in the following failure (since we did not yet write the code)
 
@@ -136,7 +155,7 @@ class TestChatbot:
 
     def construct(self):
         with Scenario() as s:
-            s.responder.Responder() >> Fake( 'responder_' )
+            s.responder.Responder() >> Fake( 'aResponder' )
             self.tested = chatbot.Chatbot( Fake( 'sock' ) )
 
     def test_construction(self):
@@ -159,7 +178,9 @@ class Chatbot:
         pass
 ```
 
-Now, here's the test:
+We can't write any more code, because there is no test yet.
+
+Let's write the test:
 
 ```python
 class TestChatbot:
@@ -171,16 +192,16 @@ class TestChatbot:
             # let's do a 10-time loop
             # this for loop makes 30 (10 times 3) *demands* of our chatbot
             for i in range(10):
-                # call .recv(4096) on the socket
+                # we demand that the code call .recv(4096) on the socket
                 # we set it up to return the string f'request {i}'
                 s.sock.recv(4096)                     >> f'request {i}'
 
-                # call .process(f'request {i}') on the responder object
+                # we demand that the code will call .process(f'request {i}') on the responder object
                 # which will return the response in real life - here
                 # we make it return a fake f'response {i}' string
-                s.responder_.process(f'request {i}')  >> f'response {i}'
+                s.aResponder.process(f'request {i}')  >> f'response {i}'
 
-                # call .send on the socket with the response we got
+                # we demand that the code will call .send on the socket with the response we got
                 s.sock.send(f'response {i}')
 
             # now actually do the work
@@ -212,7 +233,7 @@ Running this code produces another failure:
 
 What happened? Well, while our code does what we want, our test does not actually express what we meant. The test specifies exactly 10 rounds of the loop, so once those are over, and the infinite while loop runs for the 11th time, the `.recv(4096)` is called, and this is not specified in our `Scenario`, so Testix fails the test.
 
-Remember, Testix verifies your scenario *exactly*, no more, no less. We've seen the "no less" side of things, no we see the "no more" side.
+Remember, Testix verifies your scenario *exactly*, no more, no less. We've seen the "no less" side of things, now we see the "no more" side.
 
 So, how do you test an infinite loop without getting stuck? For this, I use a trick, which also introduces another Testix feature, the `.throwing` expectation. You see, we can not only make mock function calls return what we want, we can make them raise exceptions. Here's the correct test:
 
@@ -226,7 +247,7 @@ class TestChatbot:
         with Scenario() as s:
             for i in range(10):
                 s.sock.recv(4096)                       >> f'request {i}'
-                s.responder_.process(f'request {i}')    >> f'response {i}'
+                s.aResponder.process(f'request {i}')    >> f'response {i}'
                 s.sock.send(f'response {i}')
 
             # specify that the next recv call throws an EndTestException object
@@ -237,11 +258,16 @@ class TestChatbot:
                 self.tested.go()
 ```
 
+By expressing what we want twice, in the test and the code, we increase the
+probability of our code actually doing what we think it does.
+
 ## Testing Resilience to Exceptions
 
 Let's add one more test - we demand that our infinite loop not crash in case the `recv` call raises and error. Here's the test:
 
 ```python
+import socket # need this to specify `socket.error` later
+
 class TestChatbot:
     ...
     def test_request_response_loop_survives_a_recv_exception(self):
@@ -251,7 +277,7 @@ class TestChatbot:
             # first 10 times go smoothly
             for i in range(10):
                 s.sock.recv(4096)                       >> f'request {i}'
-                s.responder_.process(f'request {i}')    >> f'response {i}'
+                s.aResponder.process(f'request {i}')    >> f'response {i}'
                 s.sock.send(f'response {i}')
 
             # uh-oh, the socket raises an error!
@@ -260,7 +286,7 @@ class TestChatbot:
             # we are resilient! we continue the loop
             for i in range(10):
                 s.sock.recv(4096)                       >> f'request {i}'
-                s.responder_.process(f'request {i}')    >> f'response {i}'
+                s.aResponder.process(f'request {i}')    >> f'response {i}'
                 s.sock.send(f'response {i}')
 
             # end the infinite loop by throwing an exception that
@@ -270,7 +296,8 @@ class TestChatbot:
                 self.tested.go()
 ```
 
-Running this test now will result in this failure:
+Now that we have a test, let's make sure it fails in the correct way.
+Running the test now will result in this failure:
 
     self = sock.recv(4096)
 
@@ -280,9 +307,9 @@ Running this test now will result in this failure:
     E           OSError
 
 Well, turns out the `socket.error` and `OSError` are one and the same. I didn't
-know that before. At any rate, this is thrown from `recv` and kills the test.
+know that before. At any rate, this is thrown from `recv` and kills the test - exactly how we want it.
 
-Let's continue and write the code that handles this:
+It's now time to write the code that handles this:
 
 ```python
 class Chatbot:
@@ -338,7 +365,7 @@ Compare this `unittest.mock` based version of `test_request_response_loop` from 
 In my opinion, at least, the `testix` based version was better.
 
 * With Testix, Defining how the mocks are called and asserting that they actually were called that way is one and the same. Using `unittest.mock` these are two separate stages, one may easily forget to make some assertions.
-* Testix scenario specification is much more readable
+* Testix scenario specification is much more readable, it resembles the code itself.
 
 # Advanced Features
 
