@@ -15,7 +15,19 @@ Testix flow is a bit different
 * setup mock objects (`sock` in the following example)
 * specify exactly what should happen to them using a Scenario context
 
-And that's it.  Here's a small example:
+
+# TOC
+
+* [Small Example](#small-example)
+* [Installation](#installation)
+* [Python 3 and Legacy Python](#legacy)
+* [Extended Example: Test Driven Development of a simple Chatbot object using Testix](#extended-example)
+* [Readability Options](#readability-options)
+* [Advantages over `unittest.mock`](#advantages-over-unittest-mock)
+* [Advanced Features](#advanced-features)
+
+## Small Example <a name="small-example"></a>
+Here's a small example:
 
 ```python
     # create your object under test, pass in some mock objects
@@ -49,16 +61,16 @@ it. Only "top level" mock objects need to be setup explicitly.
 Continue reading for further examples.
 
 
-## Installation
+## Installation <a name="installation"></a>
 With `pip`:
 
     $ pip install testix
 
-## Python 3 and Legacy Python (Python 2)
+## Python 3 and Legacy Python (Python 2) <a name="legacy"></a>
 
 Testix works with Python 3. It will not work with legacy python.
 
-# Extended Example: Test Driven Development of a simple Chatbot object using Testix
+# Extended Example: Test Driven Development of a simple Chatbot object using Testix <a name="extended-example"></a>
 
 In this example we will test a `Chatbot` object.
 The `Chatbot` receives a socket through its `__init__` function.
@@ -324,7 +336,7 @@ class Chatbot:
                 pass
 ```
 
-## Readability Options
+# Readability Options <a name="readability-options"></a>
 
 You may specify a return value for a mock in two ways:
 
@@ -337,7 +349,7 @@ You may specify a return value for a mock in two ways:
         s.sock.send('some text').returns( return_value )
     ```
 
-## Advantages over `unittest.mock`
+# Advantages over `unittest.mock` <a name="advantages-over-unittest-mock"></a>
 
 Compare this `unittest.mock` based version of `test_request_response_loop` from above:
 ```python
@@ -367,7 +379,7 @@ In my opinion, at least, the `testix` based version was better.
 * With Testix, Defining how the mocks are called and asserting that they actually were called that way is one and the same. Using `unittest.mock` these are two separate stages, one may easily forget to make some assertions.
 * Testix scenario specification is much more readable, it resembles the code itself.
 
-# Advanced Features
+# Advanced Features <a name="advanced-features"></a>
 
 There are a few, but for now this is a TODO section.
 
