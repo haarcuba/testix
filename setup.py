@@ -27,7 +27,7 @@ tests_require = [ 'hypothesis>~4.7.19' ]
 setup(
     name="testix",
     packages = ["testix",],
-    version='4.1.0',
+    version='4.2.0',
     description = "Mocking framework Python with *exact* Scenarios",
     author = "Yoav Kleinberger",
     author_email = "haarcuba@gmail.com",
@@ -43,7 +43,7 @@ setup(
         "Programming Language :: Python :: 3",
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
-        "License :: OSI Approved :: GNU General Public License (GPL)",
+        "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Topic :: Software Development :: Testing",
         ]
