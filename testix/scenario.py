@@ -76,8 +76,8 @@ class Scenario( object ):
         self._debug( f'_verifyCallExpected: {expected}. actual={fakeObjectPath} args={args}, kwargs={kwargs}' )
         if not expected.fits( fakeObjectPath, args, kwargs ):
             failhooks.fail( testixexception.ExpectationException, 
-                                  f"expected: {call_formatter.format( fakeObjectPath, args, kwargs )}\n"
-                                  f"actual  : {expected}\n" )
+                                  f"expected: {expected}\n"
+                                  f"actual  : {call_formatter.format( fakeObjectPath, args, kwargs )}\n" )
 
     @staticmethod
     def current():
