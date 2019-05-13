@@ -7,8 +7,8 @@ import chatbot.responder
 
 class TestChatbot:
     def construct(self, sock, Responder):
-            self.tested = chatbot.chatbot.Chatbot( sock )
-            Responder.assert_called_once_with()
+        self.tested = chatbot.chatbot.Chatbot( sock )
+        Responder.assert_called_once_with()
 
     @patch('chatbot.responder.Responder')
     def test_construction(self, Responder):
