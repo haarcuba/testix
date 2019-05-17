@@ -26,7 +26,7 @@ class TestChatbot:
                 s.responder_.process(f'request {i}')    >> f'response {i}'
                 s.sock.send(f'response {i}')
 
-            s.sock.recv(4096).throwing(EndTestException)
+            s.sock.recv(4096) >> Throwing(EndTestException)
             with pytest.raises(EndTestException):
                 self.tested.go()
 
@@ -39,13 +39,13 @@ class TestChatbot:
                 s.responder_.process(f'request {i}')    >> f'response {i}'
                 s.sock.send(f'response {i}')
 
-            s.sock.recv(4096).throwing(socket.error)
+            s.sock.recv(4096) >> Throwing(socket.error)
 
             for i in range(10):
                 s.sock.recv(4096)                     >> f'request {i}'
                 s.responder_.process(f'request {i}')    >> f'response {i}'
                 s.sock.send(f'response {i}')
 
-            s.sock.recv(4096).throwing(EndTestException)
+            s.sock.recv(4096) >> Throwing(EndTestException)
             with pytest.raises(EndTestException):
                 self.tested.go()

@@ -6,6 +6,7 @@ from testix import testixexception
 from testix import expectations
 from testix import hook
 from testix import fakeobject
+from testix import DSL
 
 class TestScenario:
     def test_EmptyScenario( self ):
@@ -105,6 +106,15 @@ class TestScenario:
 
         with scenario.Scenario() as s:
             s.some_object( 10 ).throwing( MyException )
+            some_object = fakeobject.FakeObject( 'some_object' )
+            with pytest.raises( MyException ):
+                some_object( 10 )
+
+    def test_ThrowingCallExpectation_AlternateSyntax( self ):
+        class MyException( Exception ): pass
+
+        with scenario.Scenario() as s:
+            s.some_object( 10 ) >> DSL.Throwing( MyException )
             some_object = fakeobject.FakeObject( 'some_object' )
             with pytest.raises( MyException ):
                 some_object( 10 )

@@ -1,6 +1,7 @@
 from testix import argumentexpectations
 from testix import scenario
 from testix import call_formatter
+from testix import DSL
 
 class Call:
     def __init__( self, fakeObjectPath, * arguments, ** kwargExpectations ):
@@ -17,7 +18,10 @@ class Call:
         return self
 
     def __rshift__( self, result ):
-        self.returns( result )
+        if type(result) is DSL.Throwing:
+            self.throwing(result.exceptionFactory)
+        else:
+            self.returns( result )
 
     def throwing( self, exceptionFactory ):
         self._throwing = True
