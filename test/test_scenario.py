@@ -6,6 +6,7 @@ from testix import testixexception
 from testix import expectations
 from testix import hook
 from testix import fakeobject
+from testix import fake_context
 from testix import DSL
 
 class TestScenario:
@@ -211,3 +212,12 @@ class TestScenario:
             some_object( 11 )
             assert len( func1Calls ) == 3
             func1Calls[ 2 ] == ( 11, 21 ), { 'name': 'Haim' }
+    
+    def test_fake_context(self):
+        tempfile_mock = fakeobject.FakeObject('tempfile')
+        with scenario.Scenario() as s:
+            s.tempfile.TemporaryFile() >> fake_context.FakeContext('temp_file')
+            s.temp_file.read()
+
+            with tempfile_mock.TemporaryFile() as f:
+                f.read()

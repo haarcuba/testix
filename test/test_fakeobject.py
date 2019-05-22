@@ -4,7 +4,7 @@ import pytest
 from testix import fakeobject
 from testix import testixexception
 
-class TestArgumentExpectations:
+class TestFakeObject:
     @hypothesis.given(text=strategies.text())
     def test_CallingFakeObject_WhileNoScenario_MustThrow(self, text):
         fakeObject = fakeobject.FakeObject('hi_there')	
