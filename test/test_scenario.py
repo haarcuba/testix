@@ -221,3 +221,9 @@ class TestScenario:
 
             with tempfile_mock.TemporaryFile() as f:
                 f.read()
+
+    def test_dynamic_fake_names(self):
+        with scenario.Scenario() as s:
+            s.__dynamic__('some_object')(33) >> 44
+            fakeObject = fakeobject.FakeObject( 'some_object' )
+            assert fakeObject(33) == 44
