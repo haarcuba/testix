@@ -49,7 +49,6 @@ class Call:
             raise self._exceptionFactory()
         return self._result
 
-
     def __repr__( self ):
         return call_formatter.format( self._fakeObjectPath, self._argumentExpectations, self._kwargExpectations )
 

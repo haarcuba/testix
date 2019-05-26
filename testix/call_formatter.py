@@ -1,10 +1,10 @@
 def format( name, args, kwargs ):
     if len( args ) > 0:
-        argsString = ', '.join( [ str( arg ) for arg in args ] )
+        argsString = ', '.join( [ repr( arg ) for arg in args ] )
     else:
         argsString = None
     if len( kwargs ) > 0:
-        kwargsString = ', '.join( f'{key} = {value}' for (key, value) in kwargs.items() )
+        kwargsString = ', '.join( f'{key} = {repr(value)}' for (key, value) in kwargs.items() )
     else:
         kwargsString = None
 
