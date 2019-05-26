@@ -1,4 +1,5 @@
-from testix import expectationmaker
+from . import expectationmaker
+from . import fake_privacy_violator
 
 class ScenarioMocks:
     def __init__( self, scenario ):
@@ -6,6 +7,10 @@ class ScenarioMocks:
 
     def __dynamic__(self, name):
         return getattr(self, name)
+
+    def __from_fake__(self, fake):
+        path = fake_privacy_violator.path(fake)
+        return getattr(self, path)
 
     def __getattr__( self, name ):
         return expectationmaker.ExpectationMaker( self._scenario, self, name )

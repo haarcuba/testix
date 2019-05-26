@@ -227,3 +227,9 @@ class TestScenario:
             s.__dynamic__('some_object')(33) >> 44
             fakeObject = fakeobject.FakeObject( 'some_object' )
             assert fakeObject(33) == 44
+
+    def test_expectation_from_fake_objects(self):
+        with scenario.Scenario() as s:
+            fakeObject = fakeobject.FakeObject( 'some_object' )
+            s.__from_fake__(fakeObject)(33) >> 44
+            assert fakeObject(33) == 44
