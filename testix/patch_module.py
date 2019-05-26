@@ -1,5 +1,5 @@
 import pytest
-from testix import fakeobject
+from testix import fake
 
 _SENTINEL = 'testix-sentinel-a72004be-7a66-42f5-bdcf-7d71eb7283e3'
 
@@ -13,7 +13,7 @@ class Patcher:
         else:
             original = _SENTINEL
         if mock is None:
-            mock = fakeobject.FakeObject( attribute )
+            mock = fake.Fake(attribute)
         setattr( module, attribute, mock )
         self._stack.append( ( module, attribute, original ) )
         return mock

@@ -5,7 +5,7 @@ from testix import scenario
 from testix import testixexception
 from testix import expectations
 from testix import hook
-from testix import fakeobject
+from testix import fake
 from testix import fake_context
 from testix import DSL
 
@@ -29,7 +29,7 @@ class TestScenario:
     def test_CallExpectationReturnsFakeValue(self, A, B):
         with scenario.Scenario() as s:
             s << expectations.Call( 'some_object', A ).returns( B )
-            fakeObject = fakeobject.FakeObject( 'some_object' )
+            fakeObject = fake.Fake('some_object')
             assert fakeObject( A ) == B
 
     @hypothesis.given(A=strategies.integers(),B=strategies.integers(),C=strategies.integers(),D=strategies.integers(),E=strategies.integers())
@@ -37,8 +37,8 @@ class TestScenario:
         with scenario.Scenario() as s:
             s.some_object( A ) >> B
             s.another_object( C, D ) >> E
-            some_object = fakeobject.FakeObject( 'some_object' )
-            another_object = fakeobject.FakeObject( 'another_object' )
+            some_object = fake.Fake('some_object')
+            another_object = fake.Fake('another_object')
             assert some_object( A ) == B
             assert another_object( C, D ) == E
 
@@ -48,8 +48,8 @@ class TestScenario:
             with scenario.Scenario() as s:
                 s.some_object( 10 ).returns( 15 )
                 s.another_object( 20, 50 ).returns( 30 )
-                some_object = fakeobject.FakeObject( 'some_object' )
-                another_object = fakeobject.FakeObject( 'another_object' )
+                some_object = fake.Fake('some_object')
+                another_object = fake.Fake('another_object')
                 with pytest.raises( testixexception.ExpectationException ):
                     another_object( 20, 50 )
 
@@ -61,8 +61,8 @@ class TestScenario:
             s.another_object( 20, 50 ).returns( 30 )
             s.some_object( 'x' ).returns( 'y' )
             s.another_object( 'X', 'Y' ) >> 'Z'
-            some_object = fakeobject.FakeObject( 'some_object' )
-            another_object = fakeobject.FakeObject( 'another_object' )
+            some_object = fake.Fake('some_object')
+            another_object = fake.Fake('another_object')
             assert some_object( 10 ) == 15
             assert another_object( 20, 50 ) == 30
             assert some_object( 'x' ) == 'y'
@@ -73,8 +73,8 @@ class TestScenario:
             with scenario.Scenario() as s:
                 s.some_object( 10 ).returns( 15 )
                 s.another_object( 20, 50 ).returns( 30 )
-                some_object = fakeobject.FakeObject( 'some_object' )
-                another_object = fakeobject.FakeObject( 'another_object' )
+                some_object = fake.Fake('some_object')
+                another_object = fake.Fake('another_object')
                 assert some_object( 10 ) == 15
 
     def test_bugfix_ScenarioEndsPrematurely_With_UnorderedCalls( self ):
@@ -82,14 +82,14 @@ class TestScenario:
             with scenario.Scenario() as s:
                 s.some_object( 10 )
                 s.another_object( 20, 50 ).unordered()
-                some_object = fakeobject.FakeObject( 'some_object' )
-                another_object = fakeobject.FakeObject( 'another_object' )
+                some_object = fake.Fake('some_object')
+                another_object = fake.Fake('another_object')
                 some_object( 10 )
 
     def test_CallParametersDontMatch( self ):
         with scenario.Scenario() as s:
             s.some_object( 10 ).returns( 15 )
-            some_object = fakeobject.FakeObject( 'some_object' )
+            some_object = fake.Fake('some_object')
             with pytest.raises( testixexception.ExpectationException ):
                 some_object( 1024 )
 
@@ -98,7 +98,7 @@ class TestScenario:
             s <<\
                 expectations.Call( 'some_object', 10 ).returns( 15 ) <<\
                 expectations.Call( 'some_object', 15 ).returns( 30 )
-            some_object = fakeobject.FakeObject( 'some_object' )
+            some_object = fake.Fake('some_object')
             assert some_object( 10 ) == 15
             assert some_object( 15 ) == 30
 
@@ -107,7 +107,7 @@ class TestScenario:
 
         with scenario.Scenario() as s:
             s.some_object( 10 ).throwing( MyException )
-            some_object = fakeobject.FakeObject( 'some_object' )
+            some_object = fake.Fake('some_object')
             with pytest.raises( MyException ):
                 some_object( 10 )
 
@@ -116,7 +116,7 @@ class TestScenario:
 
         with scenario.Scenario() as s:
             s.some_object( 10 ) >> DSL.Throwing( MyException )
-            some_object = fakeobject.FakeObject( 'some_object' )
+            some_object = fake.Fake('some_object')
             with pytest.raises( MyException ):
                 some_object( 10 )
 
@@ -127,7 +127,7 @@ class TestScenario:
             s.some_object( 11 ).unordered()
             s.some_object( 12 ).unordered()
 
-            some_object = fakeobject.FakeObject( 'some_object' )
+            some_object = fake.Fake('some_object')
             some_object( values[ 0 ] )
             some_object( values[ 1 ] )
             some_object( values[ 2 ] )
@@ -137,7 +137,7 @@ class TestScenario:
             s.some_object( 10 ).unordered()
             s.some_object( 11 ).unordered()
 
-            some_object = fakeobject.FakeObject( 'some_object' )
+            some_object = fake.Fake('some_object')
             some_object( 11 )
             some_object( 10 )
             with pytest.raises( testixexception.ExpectationException ):
@@ -147,7 +147,7 @@ class TestScenario:
         with scenario.Scenario() as s:
             s.some_object( 10 ).unordered().everlasting()
             s.some_object( 11 ).unordered().everlasting()
-            some_object = fakeobject.FakeObject( 'some_object' )
+            some_object = fake.Fake('some_object')
             some_object( 10 )
             some_object( 10 )
             some_object( 10 )
@@ -165,9 +165,9 @@ class TestScenario:
             s.ordered( 2 ).returns( 'two' )
             s.ordered( 3 ).returns( 'three' )
 
-            ordered = fakeobject.FakeObject( 'ordered' )
-            everlasting = fakeobject.FakeObject( 'everlasting' )
-            unordered = fakeobject.FakeObject( 'unordered' )
+            ordered = fake.Fake('ordered')
+            everlasting = fake.Fake('everlasting')
+            unordered = fake.Fake('unordered')
 
             assert everlasting( 10 ) == 'ten'
             assert ordered( 1 ) == 'one'
@@ -187,7 +187,7 @@ class TestScenario:
         with scenario.Scenario() as s:
             s.some_object( 10 ).returns( 'ten' ).unordered().everlasting()
 
-            some_object = fakeobject.FakeObject( 'some_object' )
+            some_object = fake.Fake('some_object')
             assert some_object( 10 ) == 'ten'
             with pytest.raises( testixexception.ExpectationException ):
                 some_object( 11 )
@@ -204,7 +204,7 @@ class TestScenario:
             s.some_object( 11 )
             s << hook.Hook( func1, 11, 21, name = 'Haim' )
 
-            some_object = fakeobject.FakeObject( 'some_object' )
+            some_object = fake.Fake('some_object')
             some_object( 10 )
             assert len( func1Calls ) == 2
             assert func1Calls[ 0 ] == ( ( 10, 20 ), { 'name': 'Moshe' } )
@@ -214,7 +214,7 @@ class TestScenario:
             func1Calls[ 2 ] == ( 11, 21 ), { 'name': 'Haim' }
     
     def test_fake_context(self):
-        tempfile_mock = fakeobject.FakeObject('tempfile')
+        tempfile_mock = fake.Fake('tempfile')
         with scenario.Scenario() as s:
             s.tempfile.TemporaryFile() >> fake_context.FakeContext('temp_file')
             s.temp_file.read()
@@ -225,11 +225,11 @@ class TestScenario:
     def test_dynamic_fake_names(self):
         with scenario.Scenario() as s:
             s.__dynamic__('some_object')(33) >> 44
-            fakeObject = fakeobject.FakeObject( 'some_object' )
+            fakeObject = fake.Fake('some_object')
             assert fakeObject(33) == 44
 
     def test_expectation_from_fake_objects(self):
         with scenario.Scenario() as s:
-            fakeObject = fakeobject.FakeObject( 'some_object' )
+            fakeObject = fake.Fake('some_object')
             s.__from_fake__(fakeObject)(33) >> 44
             assert fakeObject(33) == 44

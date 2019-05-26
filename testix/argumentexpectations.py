@@ -1,4 +1,4 @@
-from testix import fakeobject
+from testix import fake
 import pprint
 
 class ArgumentExpectation( object ):
@@ -17,10 +17,10 @@ class ArgumentEquals( ArgumentExpectation ):
 
 class ArgumentIsFakeObjectWithPath( ArgumentExpectation ):
 	def ok( self, value ):
-		if not isinstance( value, fakeobject.FakeObject ):
+		if not isinstance(value, fake.Fake):
 			return False
 		expectedPath = self.expectedValue
-		return value is fakeobject.FakeObject( expectedPath )
+		return value is fake.Fake(expectedPath)
 
 	def __repr__( self ):
 		return "|%s|" % self.expectedValue

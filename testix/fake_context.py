@@ -1,6 +1,6 @@
-from . import fakeobject
+from . import fake
 
-class FakeContext(fakeobject.FakeObject):
+class FakeContext(fake.Fake):
     def __enter__(self):
         return self
 

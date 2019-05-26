@@ -1,5 +1,5 @@
 import types
-from testix import fakeobject
+from testix import fake
 
 class Suite( object ):
 	def __init__( self ):
@@ -9,7 +9,7 @@ class Suite( object ):
 		tests = self._findTests()
 		for test in tests:
 			self._totalRun += 1
-			fakeobject.clearNonModuleFakeObjects()
+			fake.clearNonModuleFakeObjects()
 			self.setup()
 			test()
 			self.teardown()
