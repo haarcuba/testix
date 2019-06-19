@@ -55,11 +55,20 @@ class Call:
     def fits( self, fakeObjectPath, args, kwargs ):
         if fakeObjectPath != self._fakeObjectPath:
             return False
+        if self._ignoreCallDetails():
+            return True
         if not self._verifyArguments( args ):
             return False
         if not self._verifyKeywordArguments( kwargs ):
             return False
         return True
+
+    def _ignoreCallDetails(self):
+        argumentExpectations = list( self._argumentExpectations )
+        if len(argumentExpectations) == 0:
+            return False
+        first = argumentExpectations[0]
+        return type(first) is argumentexpectations.IgnoreCallDetails
 
     def _verifyArguments( self, args ):
         args = list( args )

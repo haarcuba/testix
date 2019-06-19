@@ -35,6 +35,16 @@ class IgnoreArgument( ArgumentExpectation ):
 	def __repr__( self ):
 		return '|IGNORED|'
 
+class IgnoreCallDetails( ArgumentExpectation ):
+	def __init__( self ):
+		ArgumentExpectation.__init__( self, 0 )
+
+	def ok( self, value ):
+		return True
+
+	def __repr__( self ):
+		return '|ALL_DETAILS_IGNORED|'
+
 class ArgumentIs( ArgumentExpectation ):
 	def ok( self, value ):
 		return value is self.expectedValue

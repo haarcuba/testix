@@ -41,6 +41,17 @@ class TestArgumentExpectations:
             assert fakeObject( 10 ) == 'first'
             assert fakeObject( "this doens't matter" ) == 'second'
 
+    def test_IgnoreCallDetails(self):
+        fakeObject = fake.Fake('some_object')
+        with scenario.Scenario() as s:
+            s.some_object( 10 ) >> 'first'
+            s.some_object( argumentexpectations.IgnoreCallDetails() ) >> 'second'
+            s.another_object(argumentexpectations.IgnoreCallDetails())
+            assert fakeObject( 10 ) == 'first'
+            assert fakeObject( "this doens't matter", "this doens'nt either", this='does not matter also', that='neither' ) == 'second'
+            with pytest.raises( testixexception.ExpectationException ):
+                fakeObject("this is an unexpected call: verify that IgnoreCallDetails() still leaves the Fake object's path verification intact")
+
     def test_KeywordArguments( self ):
         fakeObject = fake.Fake('some_object')
         with scenario.Scenario() as s:
