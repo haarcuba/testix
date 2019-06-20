@@ -9,7 +9,8 @@ class ArgumentExpectation( object ):
 		raise Exception( "must override this" )
 
 	def __repr__( self ):
-		return pprint.pformat( self.expectedValue )
+		WORKAROUND_PFORMAT_BREAKS_LONG_STRINGS = 100000
+		return pprint.pformat( self.expectedValue, width=WORKAROUND_PFORMAT_BREAKS_LONG_STRINGS )
 
 class ArgumentEquals( ArgumentExpectation ):
 	def ok( self, value ):
