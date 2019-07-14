@@ -3,12 +3,13 @@ from testix import failhooks
 
 class Fake:
     _registry = {}
+    SENTINEL = 'cd037dd6-4506-402e-8818-fe874d333e65'
 
-    def __new__( cls, path ):
+    def __new__( cls, path, extra=SENTINEL ):
         if path in Fake._registry:
-                return Fake._registry[ path]
+                return Fake._registry[path]
         instance = super(Fake, cls).__new__(cls)
-        Fake._registry[ path] = instance
+        Fake._registry[path] = instance
         return instance
 
     def __init__( self, path ):

@@ -222,6 +222,16 @@ class TestScenario:
             with tempfile_mock.TemporaryFile() as f:
                 f.read()
 
+    def test_fake_context_returns_string(self):
+        tempfile_mock = fake.Fake('tempfile')
+        read_mock = fake.Fake('read')
+        with scenario.Scenario() as s:
+            s.tempfile.TemporaryDirectory() >> fake_context.FakeContext('temp_folder', '/path/to/dir')
+            s.read('/path/to/dir')
+
+            with tempfile_mock.TemporaryDirectory() as folder:
+                read_mock(folder)
+
     def test_dynamic_fake_names(self):
         with scenario.Scenario() as s:
             s.__dynamic__('some_object')(33) >> 44
