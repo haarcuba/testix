@@ -9,9 +9,10 @@ import sys
 class Scenario( object ):
     _current = None
 
-    def __init__( self, verbose = False ):
+    def __init__( self, title='', *, verbose = False ):
         if Scenario._current is not None:
             failhooks.error( "New scenario started before previous one ended" )
+        self._title = title
         self._verbose = verbose
         self._expected = []
         self._unorderedExpectations = []
@@ -50,8 +51,10 @@ class Scenario( object ):
     def _resultForOrderedCall( self, fakeObjectPath, args, kwargs ):
         self._debug( f'_resultForOrderedCall: {fakeObjectPath}, {args}, {kwargs}' )
         if len( self._expected ) == 0:
-            failhooks.fail( testixexception.ExpectationException, f"unexpected call: {call_formatter.format( fakeObjectPath, args, kwargs )}\n"
-                                                                   "Expected nothing" )
+            message = self._effective_title()
+            message += f"unexpected call: {call_formatter.format( fakeObjectPath, args, kwargs )}\n"
+            message += "Expected nothing" 
+            failhooks.fail( testixexception.ExpectationException, message )
         expected = self._expected.pop( 0 )
         self._verifyCallExpected( expected, fakeObjectPath, args, kwargs )
         result = expected.result()
@@ -72,12 +75,19 @@ class Scenario( object ):
                     return call
         return None
 
+    def _effective_title(self):
+        if self._title != '':
+            return f'=== Scenario "{self._title}" ===\n'
+        else:
+            return f'=== Scenario (no title) ===\n'
+
     def _verifyCallExpected( self, expected, fakeObjectPath, args, kwargs ):
         self._debug( f'_verifyCallExpected: {expected}. actual={fakeObjectPath} args={args}, kwargs={kwargs}' )
         if not expected.fits( fakeObjectPath, args, kwargs ):
-            failhooks.fail( testixexception.ExpectationException, 
-                                  f"expected: {expected}\n"
-                                  f"actual  : {call_formatter.format( fakeObjectPath, args, kwargs )}\n" )
+            message = self._effective_title()
+            message += f"expected: {expected}\n"
+            message += f"actual  : {call_formatter.format( fakeObjectPath, args, kwargs )}\n"
+            failhooks.fail( testixexception.ExpectationException, message )
 
     @staticmethod
     def current():
