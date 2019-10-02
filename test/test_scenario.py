@@ -243,3 +243,16 @@ class TestScenario:
             fakeObject = fake.Fake('some_object')
             s.__from_fake__(fakeObject)(33) >> 44
             assert fakeObject(33) == 44
+
+    @pytest.mark.asyncio
+    async def test_async_expectations(self):
+        with scenario.Scenario('awaitable test') as s:
+            fakeObject = fake.Fake('some_object')
+            s.__awaitable__().some_object('wtf') >> 555
+            assert await fakeObject('wtf') == 555
+
+        with scenario.Scenario('awaitable throws') as s:
+            class MyException( Exception ): pass
+            s.__awaitable__().some_object( 10 ) >> DSL.Throwing( MyException )
+            with pytest.raises( MyException ):
+                await fakeObject( 10 )

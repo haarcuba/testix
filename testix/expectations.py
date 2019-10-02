@@ -3,6 +3,12 @@ from testix import scenario
 from testix import call_formatter
 from testix import DSL
 
+def _async(result):
+    async def _awaitable():
+        return result
+
+    return _awaitable()
+
 class Call:
     def __init__( self, fakeObjectPath, * arguments, ** kwargExpectations ):
         self._fakeObjectPath = fakeObjectPath
@@ -12,10 +18,17 @@ class Call:
         self._unordered = False
         self._everlasting = False
         self._throwing = False
+        self._awaitable = False
 
     def returns( self, result ):
-        self._result = result
+        if self._awaitable:
+            self._result = _async(result)
+        else:
+            self._result = result
         return self
+
+    def awaitable(self, awaitable):
+        self._awaitable = awaitable
 
     def __rshift__( self, result ):
         if type(result) is DSL.Throwing:
