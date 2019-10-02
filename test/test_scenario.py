@@ -251,6 +251,11 @@ class TestScenario:
             s.__await_on__().some_object('wtf') >> 555
             assert await fakeObject('wtf') == 555
 
+        with scenario.Scenario('awaitable chain test') as s:
+            fakeObject = fake.Fake('some_object')
+            s.__await_on__().some_object.some_attribute.another_method('wtf') >> 777
+            assert await fakeObject.some_attribute.another_method('wtf') == 777
+
         with scenario.Scenario('awaitable throws') as s:
             class MyException( Exception ): pass
             s.__await_on__().some_object( 10 ) >> DSL.Throwing( MyException )
