@@ -248,11 +248,11 @@ class TestScenario:
     async def test_async_expectations(self):
         with scenario.Scenario('awaitable test') as s:
             fakeObject = fake.Fake('some_object')
-            s.__awaitable__().some_object('wtf') >> 555
+            s.__await_on__().some_object('wtf') >> 555
             assert await fakeObject('wtf') == 555
 
         with scenario.Scenario('awaitable throws') as s:
             class MyException( Exception ): pass
-            s.__awaitable__().some_object( 10 ) >> DSL.Throwing( MyException )
+            s.__await_on__().some_object( 10 ) >> DSL.Throwing( MyException )
             with pytest.raises( MyException ):
                 await fakeObject( 10 )
