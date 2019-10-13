@@ -3,6 +3,7 @@ from testix import hook
 from testix import scenario_mocks
 from testix import failhooks
 from testix import call_formatter
+import traceback
 import pprint
 import sys
 
@@ -85,8 +86,16 @@ class Scenario( object ):
         self._debug( f'_verifyCallExpected: {expected}. actual={fakeObjectPath} args={args}, kwargs={kwargs}' )
         if not expected.fits( fakeObjectPath, args, kwargs ):
             message = self._effective_title()
-            message += f"expected: {expected}\n"
-            message += f"actual  : {call_formatter.format( fakeObjectPath, args, kwargs )}\n"
+            message += f" expected: {expected}\n"
+            message += f" actual  : {call_formatter.format( fakeObjectPath, args, kwargs )}\n"
+            message += '=== OFFENDING LINE ===\n'
+            message += " " + call_formatter.caller_context() + '\n'
+            message += f'=== FURTHER EXPECTATIONS (showing at most 10 out of {len(self._expected)}) ===\n'
+            for expectation in self._expected[:10]:
+                message += f' {expectation}\n'
+            message += '=== END ===\n'
+
+
             failhooks.fail( testixexception.ExpectationException, message )
 
     @staticmethod

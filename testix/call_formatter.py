@@ -1,3 +1,5 @@
+import traceback
+
 def format( name, args, kwargs ):
     if len( args ) > 0:
         argsString = ', '.join( [ repr( arg ) for arg in args ] )
@@ -19,3 +21,11 @@ def format( name, args, kwargs ):
 
     return f'{name}({argsString}, {kwargsString})'
 
+def caller_context():
+    stack = traceback.extract_stack()
+    for index, frame_summary in enumerate(stack):
+        if 'return self._returnResultFromScenario' in frame_summary.line:
+            break
+
+    frame_summary = stack[index-1]
+    return f'{frame_summary.line} ({frame_summary.filename}:{frame_summary.lineno})'
