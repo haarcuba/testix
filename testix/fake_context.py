@@ -1,8 +1,8 @@
 from . import fake
 
 class FakeContext(fake.Fake):
-    def __init__(self, path):
-        fake.Fake.__init__(self, path)
+    def __init__(self, path, **attributes):
+        fake.Fake.__init__(self, path, **attributes)
         self._thing = self
 
     def __entry_value__(self, value):

@@ -10,17 +10,24 @@ class Fake:
         Fake._registry[path] = instance
         return instance
 
-    def __init__( self, path, **attributes ):
-        self._path = path
-        self._clear_attributes()
-        self._set_attributes(attributes)
+    @staticmethod
+    def clear_all_attributes():
+        for instance in Fake._registry.values():
+            Fake.clear_attributes(instance)
 
-    def _clear_attributes(self):
-        variables = list(vars(self).keys())
+    @staticmethod
+    def clear_attributes(instance):
+        variables = list(vars(instance).keys())
         for key in variables:
             if key.startswith('_'):
                 continue
-            delattr(self, key)
+            delattr(instance, key)
+
+    scenario.Scenario.init_hook = clear_all_attributes
+
+    def __init__( self, path, **attributes ):
+        self._path = path
+        self._set_attributes(attributes)
 
     def _set_attributes(self, attributes):
         for key, value in attributes.items():

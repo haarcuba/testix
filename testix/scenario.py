@@ -9,8 +9,10 @@ import sys
 
 class Scenario( object ):
     _current = None
+    init_hook = lambda: None
 
     def __init__( self, title='', *, verbose = False ):
+        Scenario.init_hook()
         if Scenario._current is not None:
             failhooks.error( "New scenario started before previous one ended" )
         self._title = title

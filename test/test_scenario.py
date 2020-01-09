@@ -244,6 +244,24 @@ class TestScenario:
             s.__from_fake__(fakeObject)(33) >> 44
             assert fakeObject(33) == 44
 
+    def test_scenario_resets_properties_on_fakes(self):
+        with scenario.Scenario() as s:
+            fakeObject = fake.Fake('some_object', name='haim', age=40)
+            assert fakeObject.age == 40
+            assert fakeObject.name == 'haim'
+
+        with scenario.Scenario() as s:
+            fakeObject = fake.Fake('some_object', height=180)
+            assert fakeObject.height == 180
+            assert type(fakeObject.age) is fake.Fake
+            assert type(fakeObject.haim) is fake.Fake
+
+        with scenario.Scenario() as s:
+            fakeObject = fake.Fake('some_object')
+            assert type(fakeObject.height) is fake.Fake
+            assert type(fakeObject.age) is fake.Fake
+            assert type(fakeObject.haim) is fake.Fake
+
     @pytest.mark.asyncio
     async def test_async_expectations(self):
         with scenario.Scenario('awaitable test') as s:
