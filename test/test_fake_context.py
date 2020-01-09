@@ -8,5 +8,5 @@ def test_fake_context():
         assert mock is fake.Fake('context')
 
 def test_fake_context_as_something():
-    with fake_context.FakeContext('context', 'thing') as mock:
+    with fake_context.FakeContext('context').__entry_value__('thing') as mock:
         assert mock is 'thing'

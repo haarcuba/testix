@@ -226,7 +226,7 @@ class TestScenario:
         tempfile_mock = fake.Fake('tempfile')
         read_mock = fake.Fake('read')
         with scenario.Scenario() as s:
-            s.tempfile.TemporaryDirectory() >> fake_context.FakeContext('temp_folder', '/path/to/dir')
+            s.tempfile.TemporaryDirectory() >> fake_context.FakeContext('temp_folder').__entry_value__('/path/to/dir')
             s.read('/path/to/dir')
 
             with tempfile_mock.TemporaryDirectory() as folder:
