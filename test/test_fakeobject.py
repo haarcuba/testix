@@ -26,3 +26,8 @@ class TestFakeObject:
         fakeObject = fake.Fake('hi_there', name='haim', age=50)
         assert fakeObject.name == 'haim'
         assert fakeObject.age == 50
+
+        different_attributes = fake.Fake('hi_there', height=170)
+        assert type(different_attributes.age) is fake.Fake
+        assert type(different_attributes.name) is fake.Fake
+        assert fakeObject.height == 170

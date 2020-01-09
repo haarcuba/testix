@@ -5,13 +5,24 @@ class Fake:
     _registry = {}
     def __new__( cls, path, **attributes ):
         if path in Fake._registry:
-                return Fake._registry[path]
+            return Fake._registry[path]
         instance = super(Fake, cls).__new__(cls)
         Fake._registry[path] = instance
         return instance
 
     def __init__( self, path, **attributes ):
         self._path = path
+        self._clear_attributes()
+        self._set_attributes(attributes)
+
+    def _clear_attributes(self):
+        variables = list(vars(self).keys())
+        for key in variables:
+            if key.startswith('_'):
+                continue
+            delattr(self, key)
+
+    def _set_attributes(self, attributes):
         for key, value in attributes.items():
             setattr(self, key, value)
 
