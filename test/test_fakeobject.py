@@ -21,3 +21,8 @@ class TestFakeObject:
         fakeObject1 = fake.Fake('hi_there')
         fakeObject2 = fake.Fake('hi_there')
         assert fakeObject1 is fakeObject2
+
+    def test_FakeObject_with_properties( self ):
+        fakeObject = fake.Fake('hi_there', name='haim', age=50)
+        assert fakeObject.name == 'haim'
+        assert fakeObject.age == 50

@@ -3,15 +3,17 @@ from testix import failhooks
 
 class Fake:
     _registry = {}
-    def __new__( cls, path ):
+    def __new__( cls, path, **attributes ):
         if path in Fake._registry:
                 return Fake._registry[path]
         instance = super(Fake, cls).__new__(cls)
         Fake._registry[path] = instance
         return instance
 
-    def __init__( self, path ):
+    def __init__( self, path, **attributes ):
         self._path = path
+        for key, value in attributes.items():
+            setattr(self, key, value)
 
     def __call__( self, * args, ** kwargs ):
         return self._returnResultFromScenario( * args, ** kwargs )
