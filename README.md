@@ -390,5 +390,5 @@ Testix started as a re-implementation of ideas from the [Voodoo-Mock](http://sou
 unit-testing framework. Since then it has evolved some different traits though.
 
 ### License
-This software is free software, and is distributed under the GNU General Public License version 3.0.
-See the COPYING file for details.
+
+This software is available under the MIT License, see the `LICENSE` file.
