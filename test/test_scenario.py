@@ -246,13 +246,15 @@ class TestScenario:
 
     def test_scenario_resets_properties_on_fakes(self):
         with scenario.Scenario() as s:
-            fakeObject = fake.Fake('some_object', name='haim', age=40)
+            fakeObject = fake.Fake('some_object')
+            fake.Fake('some_object').name = 'haim'
+            fake.Fake('some_object').age = 40
             assert fakeObject.age == 40
             assert fakeObject.name == 'haim'
 
         with scenario.Scenario() as s:
-            fakeObject = fake.Fake('some_object', height=180)
-            assert fakeObject.height == 180
+            fake.Fake('some_object').height = 180
+            assert fake.Fake('some_object').height == 180
             assert type(fakeObject.age) is fake.Fake
             assert type(fakeObject.haim) is fake.Fake
 
