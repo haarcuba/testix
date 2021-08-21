@@ -20,6 +20,7 @@ class ScenarioMocks:
         self._scenario.addEvent( expectation )
         return self
 
+    @property
     def __await_on__(self):
         self._awaitable = True
         return self
