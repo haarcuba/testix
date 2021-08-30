@@ -6,6 +6,7 @@ jobs:
         runs-on: ubuntu-20.04
         steps:
             - uses: actions/checkout@v2
+            - run:  ls
             - run:  pip install twine
             - run:  python setup.py bdist_wheel
-            - run:  twine upload -u __token__ -p ${{ secrets.PUBLISH_TOKEN }}
+            - run:  twine upload -u __token__ -p ${{ secrets.PUBLISH_TOKEN }} dist/*whl
