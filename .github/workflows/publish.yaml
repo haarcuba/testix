@@ -1,0 +1,11 @@
+name: Publish
+on:
+    workflow_dispatch:
+jobs:        
+    publish:
+        runs-on: ubuntu-20.04
+        steps:
+            - uses: actions/checkout@v2
+            - run:  pip install -e.'[testing]'
+            - run:  python setup.py bdist_wheel
+            - run:  twine upload -u __token__ -p ${{ secrets.PUBLISH_TOKEN }}
