@@ -2,6 +2,8 @@
 
 Testix is a Mocking framework for Python, meant to be used with [pytest](https://docs.pytest.org/en/latest/).
 
+[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
+
 
 Testix is special because it allows you to specify what your mock objects do,
 and it then enforces your specifications automatically. It also reduces (albeit
