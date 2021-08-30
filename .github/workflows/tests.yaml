@@ -1,0 +1,49 @@
+name: Tests
+on:
+    push:
+        branches:
+            - issue_**
+jobs:
+  Unit-Tests:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: check out our code
+        uses: actions/checkout@v2
+      - name: install testix (editable mode + testing support)
+        run:  pip install -e."[testing]"
+      - name: unit tests
+        run:  rake units
+  Run-Examples:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: check out our code
+        uses: actions/checkout@v2
+      - name: install testix (editable mode + testing support)
+        run:  pip install -e.'[testing]'
+      - name: examples
+        run:  rake examples
+  Generate-Wheel:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: check out our code
+        uses: actions/checkout@v2
+      - name: generate wheel
+        run:  python setup.py bdist_wheel
+  All-OK:
+    runs-on: ubuntu-20.04
+    needs:
+        - Generate-Wheel
+        - Unit-Tests
+        - Run-Examples
+    if: always()
+    steps:
+      - name: check out our code
+        uses: actions/checkout@v2
+      - name: verify we did not forget any tests
+        run:  rake all_tests_included
+      - name: Generate-Wheel
+        run:  rake 'enforce_success[${{needs.Generate-Wheel.result}}]'
+      - name: Unit-Tests
+        run:  rake 'enforce_success[${{needs.Unit-Tests.result}}]'
+      - name: Run-Examples
+        run:  rake 'enforce_success[${{needs.Run-Examples.result}}]'

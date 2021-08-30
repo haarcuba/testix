@@ -2,3 +2,8 @@
 diff
 *.swp
 *.pyc
+.hypothesis/
+build/
+dist/
+testix.egg-info/
+Session.vim
