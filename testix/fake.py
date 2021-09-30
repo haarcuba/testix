@@ -1,13 +1,14 @@
 from testix import scenario
 from testix import failhooks
 
+
 class Fake:
     _registry = {}
-    def __new__( cls, path, **attributes ):
-        if path in Fake._registry:
-            return Fake._registry[path]
+    def __new__( cls, path_a62df12dd67848be82c505d63b928725, **attributes ):
+        if path_a62df12dd67848be82c505d63b928725 in Fake._registry:
+            return Fake._registry[path_a62df12dd67848be82c505d63b928725]
         instance = super(Fake, cls).__new__(cls)
-        Fake._registry[path] = instance
+        Fake._registry[path_a62df12dd67848be82c505d63b928725] = instance
         return instance
 
     @staticmethod
@@ -25,8 +26,8 @@ class Fake:
 
     scenario.Scenario.init_hook = clear_all_attributes
 
-    def __init__( self, path, **attributes ):
-        self._path = path
+    def __init__( self, path_a62df12dd67848be82c505d63b928725, **attributes ):
+        self._path = path_a62df12dd67848be82c505d63b928725
         self._set_attributes(attributes)
 
     def _set_attributes(self, attributes):
