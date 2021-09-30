@@ -23,7 +23,7 @@ And that's it.
 """
 
 requires = [ 'pytest>~4.3.0', ]
-tests_require = [ 'hypothesis>~4.7.19', 'pytest-asyncio' ]
+tests_require = [ 'hypothesis>~4.7.19', 'pytest-asyncio', 'pytest-cov' ]
 setup(
     name="testix",
     packages = ["testix",],
