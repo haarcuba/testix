@@ -10,7 +10,7 @@ task :examples do
 end
 
 task :units do
-    sh "python -m pytest -sv test/"
+    sh "python -m pytest --cov=testix/ --cov-report=term-missing --cov-report=html  -sv test/"
 end
 
 desc "make sure we did not forget to include any tests"

@@ -244,7 +244,15 @@ class TestScenario:
             s.__from_fake__(fakeObject)(33) >> 44
             assert fakeObject(33) == 44
 
-    def test_scenario_resets_properties_on_fakes(self):
+    def test_fix_issue_27__path_attribute_is_possible(self):
+        with scenario.Scenario() as s:
+            fakeObject = fake.Fake('some_object', path='/path/to/nowhere')
+            s.some_object.what() >> 'where'
+
+            assert fakeObject.what() == 'where'
+            assert fakeObject.path == '/path/to/nowhere'
+
+    def test_scenario_resets_attributes_on_fakes(self):
         with scenario.Scenario() as s:
             fakeObject = fake.Fake('some_object')
             fake.Fake('some_object').name = 'haim'
