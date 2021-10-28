@@ -2,6 +2,7 @@ from testix import argumentexpectations
 from testix import scenario
 from testix import call_formatter
 from testix import DSL
+from testix import context_wrapper
 import contextlib
 
 def _async(result):
@@ -9,13 +10,6 @@ def _async(result):
         return result
 
     return _awaitable()
-
-def _context_manager(result):
-    @contextlib.contextmanager
-    def _withable():
-        yield result
-
-    return _withable
 
 class Call:
     def __init__( self, fakeObjectPath, * arguments, ** kwargExpectations ):
@@ -31,7 +25,7 @@ class Call:
 
     def returns( self, result ):
         if self.__is_context:
-            result = _context_manager(result)()
+            result = context_wrapper.ContextWrapper(result)
         if self._awaitable:
             self._result = _async(result)
         else:
@@ -43,6 +37,10 @@ class Call:
 
     def context_manager(self, is_context):
         self.__is_context = is_context
+        self.__force_context_wrapper_existence()
+
+    def __force_context_wrapper_existence(self):
+        self.returns(None)
 
     def __rshift__( self, result ):
         if type(result) is DSL.Throwing:
