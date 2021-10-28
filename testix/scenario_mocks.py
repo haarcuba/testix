@@ -15,7 +15,9 @@ class ScenarioMocks:
         return getattr(self, path)
 
     def __getattr__( self, name ):
-        return expectationmaker.ExpectationMaker(self.__scenario, self, name, self.__awaitable, self.__is_context)
+        is_context = self.__is_context
+        self.__is_context = False
+        return expectationmaker.ExpectationMaker(self.__scenario, self, name, self.__awaitable, is_context)
 
     def __lshift__( self, expectation ):
         self.__scenario.addEvent(expectation)

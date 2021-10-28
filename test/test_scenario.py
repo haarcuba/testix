@@ -213,12 +213,15 @@ class TestScenario:
             func1Calls[ 2 ] == ( 11, 21 ), { 'name': 'Haim' }
     
     def test_fake_context(self):
-        tempfile_mock = fake.Fake('tempfile')
+        locker_mock = fake.Fake('locker')
         with scenario.Scenario() as s:
-            s.__with__.tempfile.TemporaryFile() >> fake.Fake('temp_file')
-            s.temp_file.read()
-            with tempfile_mock.TemporaryFile() as f:
-                f.read()
+            s.__with__.locker.Lock() >> fake.Fake('locked')
+            s.locked.read() >> 'value'
+            s.locked.updater.go('another_value')
+
+            with locker_mock.Lock() as locked:
+                assert locked.read() == 'value'
+                locked.updater.go('another_value')
 
     def test_fake_context_returns_arbitrary_value(self):
         tempfile_mock = fake.Fake('tempfile')
