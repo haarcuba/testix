@@ -1,11 +1,17 @@
 from . import expectationmaker
 from . import fake_privacy_violator
+import dataclasses
+
+@dataclasses.dataclass
+class _Modifiers:
+    awaitable: bool = False
+    is_context: bool = False
 
 class ScenarioMocks:
     def __init__( self, scenario ):
         self.__awaitable = False
         self.__scenario = scenario
-        self.__is_context = False
+        self.__modifiers = _Modifiers()
 
     def __dynamic__(self, name):
         return getattr(self, name)
@@ -15,7 +21,9 @@ class ScenarioMocks:
         return getattr(self, path)
 
     def __getattr__( self, name ):
-        return expectationmaker.ExpectationMaker(self.__scenario, self, name, self.__awaitable, self.__is_context)
+        awaitable, is_context = self.__modifiers.awaitable, self.__modifiers.is_context
+        self.__modifiers = _Modifiers()
+        return expectationmaker.ExpectationMaker(self.__scenario, self, name, awaitable, is_context)
 
     def __lshift__( self, expectation ):
         self.__scenario.addEvent(expectation)
@@ -23,10 +31,10 @@ class ScenarioMocks:
 
     @property
     def __with__(self):
-        self.__is_context = True
+        self.__modifiers.is_context = True
         return self
 
     @property
     def __await_on__(self):
-        self.__awaitable = True
+        self.__modifiers.awaitable = True
         return self

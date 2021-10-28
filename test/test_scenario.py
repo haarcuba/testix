@@ -213,12 +213,15 @@ class TestScenario:
             func1Calls[ 2 ] == ( 11, 21 ), { 'name': 'Haim' }
     
     def test_fake_context(self):
-        tempfile_mock = fake.Fake('tempfile')
+        locker_mock = fake.Fake('locker')
         with scenario.Scenario() as s:
-            s.__with__.tempfile.TemporaryFile() >> fake.Fake('temp_file')
-            s.temp_file.read()
-            with tempfile_mock.TemporaryFile() as f:
-                f.read()
+            s.__with__.locker.Lock() >> fake.Fake('locked')
+            s.locked.read() >> 'value'
+            s.locked.updater.go('another_value')
+
+            with locker_mock.Lock() as locked:
+                assert locked.read() == 'value'
+                locked.updater.go('another_value')
 
     def test_fake_context_returns_arbitrary_value(self):
         tempfile_mock = fake.Fake('tempfile')
@@ -274,8 +277,15 @@ class TestScenario:
     async def test_async_expectations(self):
         with scenario.Scenario('awaitable test') as s:
             fakeObject = fake.Fake('some_object')
-            s.__await_on__.some_object('wtf') >> 555
-            assert await fakeObject('wtf') == 555
+            s.__await_on__.some_object('wtf') >> fake.Fake('another')
+            s.another() >> 555
+            s.__await_on__.another() >> fake.Fake('yet_another')
+            s.__await_on__.yet_another() >> 777
+
+            another = await fakeObject('wtf')
+            assert another() == 555
+            yet_another = await another()
+            assert await yet_another() == 777
 
         with scenario.Scenario('awaitable chain test') as s:
             fakeObject = fake.Fake('some_object')
