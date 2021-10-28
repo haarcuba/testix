@@ -6,7 +6,6 @@ from testix import testixexception
 from testix import expectations
 from testix import hook
 from testix import fake
-from testix import fake_context
 from testix import DSL
 
 class TestScenario:
@@ -221,11 +220,11 @@ class TestScenario:
             with tempfile_mock.TemporaryFile() as f:
                 f.read()
 
-    def test_fake_context_returns_string(self):
+    def test_fake_context_returns_arbitrary_value(self):
         tempfile_mock = fake.Fake('tempfile')
         read_mock = fake.Fake('read')
         with scenario.Scenario() as s:
-            s.tempfile.TemporaryDirectory() >> fake_context.FakeContext('temp_folder').__entry_value__('/path/to/dir')
+            s.__with__.tempfile.TemporaryDirectory() >> '/path/to/dir'
             s.read('/path/to/dir')
 
             with tempfile_mock.TemporaryDirectory() as folder:
