@@ -223,6 +223,14 @@ class TestScenario:
                 assert locked.read() == 'value'
                 locked.updater.go('another_value')
 
+    def test_anonymous_fake_context(self):
+        locker_mock = fake.Fake('locker')
+        with scenario.Scenario() as s:
+            s.__with__.locker.Lock()
+
+            with locker_mock.Lock():
+                pass
+
     def test_fake_context_returns_arbitrary_value(self):
         tempfile_mock = fake.Fake('tempfile')
         read_mock = fake.Fake('read')
