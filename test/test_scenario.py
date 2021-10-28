@@ -216,9 +216,8 @@ class TestScenario:
     def test_fake_context(self):
         tempfile_mock = fake.Fake('tempfile')
         with scenario.Scenario() as s:
-            s.tempfile.TemporaryFile() >> fake_context.FakeContext('temp_file')
+            s.__with__.tempfile.TemporaryFile() >> fake.Fake('temp_file')
             s.temp_file.read()
-
             with tempfile_mock.TemporaryFile() as f:
                 f.read()
 

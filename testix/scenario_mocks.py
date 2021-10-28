@@ -3,8 +3,9 @@ from . import fake_privacy_violator
 
 class ScenarioMocks:
     def __init__( self, scenario ):
-        self._awaitable = False
-        self._scenario = scenario
+        self.__awaitable = False
+        self.__scenario = scenario
+        self.__is_context = False
 
     def __dynamic__(self, name):
         return getattr(self, name)
@@ -14,13 +15,18 @@ class ScenarioMocks:
         return getattr(self, path)
 
     def __getattr__( self, name ):
-        return expectationmaker.ExpectationMaker( self._scenario, self, name, self._awaitable )
+        return expectationmaker.ExpectationMaker(self.__scenario, self, name, self.__awaitable, self.__is_context)
 
     def __lshift__( self, expectation ):
-        self._scenario.addEvent( expectation )
+        self.__scenario.addEvent(expectation)
+        return self
+
+    @property
+    def __with__(self):
+        self.__is_context = True
         return self
 
     @property
     def __await_on__(self):
-        self._awaitable = True
+        self.__awaitable = True
         return self
