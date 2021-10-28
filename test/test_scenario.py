@@ -279,9 +279,13 @@ class TestScenario:
             fakeObject = fake.Fake('some_object')
             s.__await_on__.some_object('wtf') >> fake.Fake('another')
             s.another() >> 555
+            s.__await_on__.another() >> fake.Fake('yet_another')
+            s.__await_on__.yet_another() >> 777
 
             another = await fakeObject('wtf')
             assert another() == 555
+            yet_another = await another()
+            assert await yet_another() == 777
 
         with scenario.Scenario('awaitable chain test') as s:
             fakeObject = fake.Fake('some_object')
