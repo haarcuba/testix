@@ -37,6 +37,10 @@ class Call:
 
     def context_manager(self, is_context):
         self.__is_context = is_context
+        self.__force_context_wrapper_existence()
+
+    def __force_context_wrapper_existence(self):
+        self.returns(None)
 
     def __rshift__( self, result ):
         if type(result) is DSL.Throwing:
