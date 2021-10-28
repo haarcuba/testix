@@ -277,8 +277,11 @@ class TestScenario:
     async def test_async_expectations(self):
         with scenario.Scenario('awaitable test') as s:
             fakeObject = fake.Fake('some_object')
-            s.__await_on__.some_object('wtf') >> 555
-            assert await fakeObject('wtf') == 555
+            s.__await_on__.some_object('wtf') >> fake.Fake('another')
+            s.another() >> 555
+
+            another = await fakeObject('wtf')
+            assert another() == 555
 
         with scenario.Scenario('awaitable chain test') as s:
             fakeObject = fake.Fake('some_object')
