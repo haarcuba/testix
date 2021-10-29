@@ -231,6 +231,14 @@ class TestScenario:
             with locker_mock.Lock():
                 pass
 
+    def test_enforce_use_of_with_statement_with_context_manager_expectation(self):
+        locker_mock = fake.Fake('locker')
+        with pytest.raises(testixexception.ScenarioException, match='locker.Lock.*__enter__'):
+            with scenario.Scenario() as s:
+                s.__with__.locker.Lock()
+
+                locker_mock.Lock()
+
     def test_fake_context_returns_arbitrary_value(self):
         tempfile_mock = fake.Fake('tempfile')
         read_mock = fake.Fake('read')

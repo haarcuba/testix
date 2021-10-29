@@ -62,7 +62,7 @@ class Scenario( object ):
         self._verifyCallExpected( expected, fakeObjectPath, args, kwargs )
         result = expected.result()
         self._executeHooks()
-        self._debug( 'scenario: %s' % expected )
+        self._debug(f'scenario: {expected} >> {result}')
         return result
 
     def _executeHooks( self ):
