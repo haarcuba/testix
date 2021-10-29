@@ -37,3 +37,8 @@ class ScenarioMocks:
     def __await_on__(self):
         self.__modifiers.awaitable = True
         return self
+
+    @property
+    def __async_with__(self):
+        self.__modifiers.is_async_context = True
+        return self
