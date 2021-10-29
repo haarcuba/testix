@@ -5,6 +5,7 @@ from testix import DSL
 from testix import modifiers
 from testix import context_wrapper
 import testix.context_wrapper.synchronous
+import testix.context_wrapper.asynchronous
 import contextlib
 import copy
 
@@ -24,25 +25,32 @@ class Call:
         self.__everlasting = False
         self.__throwing = False
         self.__is_context = False
-        self.__context_wrapper = context_wrapper.synchronous.Synchronous(self)
+        self.__context_wrapper = None
         self.__modifiers = modifiers.Modifiers()
 
     @property
     def context_wrapper(self):
         return self.__context_wrapper
 
-    def returns( self, result ):
-        if self.__modifiers.is_context:
-            self.__context_wrapper.set_entry_value(result)
-            result = self.__context_wrapper
-        if self.__modifiers.awaitable:
-            self.__result = _async(result)
-        else:
-            self.__result = result
+    def returns(self, result):
+        self.__result = self.__modified(result)
         return self
+
+    def __modified(self, result):
+        if self.__modifiers.is_context or self.__modifiers.is_async_context:
+            self.__context_wrapper.set_entry_value(result)
+            return self.__context_wrapper
+        if self.__modifiers.awaitable:
+            return _async(result)
+
+        return result
 
     def modify(self, modifiers):
         self.__modifiers = copy.copy(modifiers)
+        if self.__modifiers.is_async_context:
+            self.__context_wrapper = context_wrapper.asynchronous.Asynchronous(self)
+        if self.__modifiers.is_context:
+            self.__context_wrapper = context_wrapper.synchronous.Synchronous(self)
         self.__force_context_wrapper_behaviour()
 
     def __force_context_wrapper_behaviour(self):

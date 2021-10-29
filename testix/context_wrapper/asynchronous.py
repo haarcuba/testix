@@ -6,7 +6,7 @@ class Asynchronous:
     def __init__(self, call):
         self.__result = None
         id = str(uuid.uuid4())[-12:]
-        self.__enter_mock = fake.Fake(f'{call}@{id}.__enter__')
+        self.__enter_mock = fake.Fake(f'{call}@{id}.__aenter__')
 
     async def __aenter__(self):
         self.__enter_mock()
