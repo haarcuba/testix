@@ -27,7 +27,7 @@ tests_require = [ 'hypothesis>~4.7.19', 'pytest-asyncio', 'pytest-cov' ]
 setup(
     name="testix",
     packages = ["testix",],
-    version='7.1.0',
+    version='7.1.1',
     description = "Mocking framework Python with *exact* Scenarios",
     author = "Yoav Kleinberger",
     author_email = "haarcuba@gmail.com",
