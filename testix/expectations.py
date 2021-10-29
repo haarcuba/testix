@@ -13,14 +13,14 @@ def _async(result):
 
 class Call:
     def __init__( self, fakeObjectPath, * arguments, ** kwargExpectations ):
-        self._fakeObjectPath = fakeObjectPath
-        self._argumentExpectations = [ self._expectation( arg ) for arg in arguments ]
-        self._result = None
-        self._kwargExpectations = { name: self._expectation( kwargExpectations[ name ] ) for name in kwargExpectations }
-        self._unordered = False
-        self._everlasting = False
-        self._throwing = False
-        self._awaitable = False
+        self.__fakeObjectPath = fakeObjectPath
+        self.__argumentExpectations = [ self.__expectation( arg ) for arg in arguments ]
+        self.__result = None
+        self.__kwargExpectations = { name: self.__expectation( kwargExpectations[ name ] ) for name in kwargExpectations }
+        self.__unordered = False
+        self.__everlasting = False
+        self.__throwing = False
+        self.__awaitable = False
         self.__is_context = False
         self.__context_wrapper = context_wrapper.ContextWrapper(self)
 
@@ -32,14 +32,14 @@ class Call:
         if self.__is_context:
             self.__context_wrapper.set_entry_value(result)
             result = self.__context_wrapper
-        if self._awaitable:
-            self._result = _async(result)
+        if self.__awaitable:
+            self.__result = _async(result)
         else:
-            self._result = result
+            self.__result = result
         return self
 
     def awaitable(self, awaitable):
-        self._awaitable = awaitable
+        self.__awaitable = awaitable
 
     def context_manager(self, is_context):
         self.__is_context = is_context
@@ -55,55 +55,55 @@ class Call:
             self.returns( result )
 
     def throwing( self, exceptionFactory ):
-        self._throwing = True
-        self._exceptionFactory = exceptionFactory
+        self.__throwing = True
+        self.__exceptionFactory = exceptionFactory
         return self
 
     def unordered( self ):
         scenario.current().unordered( self )
-        self._unordered = True
+        self.__unordered = True
         return self
 
     def everlasting( self ):
-        self._everlasting = True
-        assert self._unordered, "call cannot be everlasting but not unordered"
+        self.__everlasting = True
+        assert self.__unordered, "call cannot be everlasting but not unordered"
         return self
 
-    def _expectation( self, arg ):
+    def __expectation( self, arg ):
         if isinstance( arg, argumentexpectations.ArgumentExpectation ):
             return arg
         defaultExpectation = argumentexpectations.ArgumentEquals
         return defaultExpectation( arg )
 
     def result( self ):
-        if self._throwing:
-            raise self._exceptionFactory()
-        return self._result
+        if self.__throwing:
+            raise self.__exceptionFactory()
+        return self.__result
 
     def __repr__( self ):
-        return call_formatter.format( self._fakeObjectPath, self._argumentExpectations, self._kwargExpectations )
+        return call_formatter.format( self.__fakeObjectPath, self.__argumentExpectations, self.__kwargExpectations )
 
     def fits( self, fakeObjectPath, args, kwargs ):
-        if fakeObjectPath != self._fakeObjectPath:
+        if fakeObjectPath != self.__fakeObjectPath:
             return False
-        if self._ignoreCallDetails():
+        if self.__ignoreCallDetails():
             return True
-        if not self._verifyArguments( args ):
+        if not self.__verifyArguments( args ):
             return False
-        if not self._verifyKeywordArguments( kwargs ):
+        if not self.__verifyKeywordArguments( kwargs ):
             return False
         return True
 
-    def _ignoreCallDetails(self):
-        argumentExpectations = list( self._argumentExpectations )
+    def __ignoreCallDetails(self):
+        argumentExpectations = list( self.__argumentExpectations )
         if len(argumentExpectations) == 0:
             return False
         first = argumentExpectations[0]
         return type(first) is argumentexpectations.IgnoreCallDetails
 
-    def _verifyArguments( self, args ):
+    def __verifyArguments( self, args ):
         args = list( args )
-        argumentExpectations = list( self._argumentExpectations )
+        argumentExpectations = list( self.__argumentExpectations )
         if len( argumentExpectations ) != len( args ):
             return False
         while len( argumentExpectations ) > 0:
@@ -113,24 +113,24 @@ class Call:
                 return False
         return True
 
-    def _verifyKeywordArguments( self, kwargs ):
-        for name, argumentExpectation in self._kwargExpectations.items():
+    def __verifyKeywordArguments( self, kwargs ):
+        for name, argumentExpectation in self.__kwargExpectations.items():
             if name not in kwargs:
                 return False
             actualArgument = kwargs[ name ]
             if not argumentExpectation.ok( actualArgument ):
                 return False
-        if self._unexpectedKeyworkArgument( kwargs ):
+        if self.__unexpectedKeyworkArgument( kwargs ):
             return False
         return True
 
-    def _unexpectedKeyworkArgument( self, kwargs ):
+    def __unexpectedKeyworkArgument( self, kwargs ):
         for name in kwargs:
-            if name not in self._kwargExpectations:
+            if name not in self.__kwargExpectations:
                 return True
 
     def unordered_( self ):
-        return self._unordered
+        return self.__unordered
 
     def everlasting_( self ):
-        return self._everlasting
+        return self.__everlasting
