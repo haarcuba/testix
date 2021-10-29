@@ -2,7 +2,7 @@ from testix import fake
 from testix import fake_privacy_violator
 import uuid
 
-class ContextWrapper:
+class Synchronous:
     def __init__(self, call):
         self.__result = None
         id = str(uuid.uuid4())[-12:]
@@ -21,3 +21,6 @@ class ContextWrapper:
 
     def set_entry_value(self, value):
         self.__result = value
+
+    def __repr__(self):
+        return f'Synchronous({self.__result})'
