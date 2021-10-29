@@ -6,10 +6,10 @@ class Asynchronous:
     def __init__(self, call):
         self.__result = None
         id = str(uuid.uuid4())[-12:]
-        self.__enter_mock = fake.Fake(f'{call}@{id}.__aenter__')
+        self.__aenter_mock = fake.Fake(f'{call}@{id}.__aenter__')
 
     async def __aenter__(self):
-        self.__enter_mock()
+        self.__aenter_mock()
         return self.__result
 
     async def __aexit__(self, exception_type, exception_value, traceback):
@@ -17,7 +17,7 @@ class Asynchronous:
 
     @property
     def entry_expectation_path(self):
-        return fake_privacy_violator.path(self.__enter_mock)
+        return fake_privacy_violator.path(self.__aenter_mock)
 
     def set_entry_value(self, value):
         self.__result = value

@@ -24,7 +24,6 @@ class Call:
         self.__unordered = False
         self.__everlasting = False
         self.__throwing = False
-        self.__is_context = False
         self.__context_wrapper = None
         self.__modifiers = modifiers.Modifiers()
 
