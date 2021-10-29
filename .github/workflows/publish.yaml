@@ -7,6 +7,9 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - run:  ls
-            - run:  pip install twine
-            - run:  python setup.py bdist_wheel
+            - name: install poetry
+              run:  curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
+            - run:  poetry run pip install twine
+            - run:  rm -fr dist/
+            - run:  poetry build -f wheel
             - run:  twine upload -u __token__ -p ${{ secrets.PUBLISH_TOKEN }} dist/*whl
