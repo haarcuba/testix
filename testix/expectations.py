@@ -2,9 +2,11 @@ from testix import argumentexpectations
 from testix import scenario
 from testix import call_formatter
 from testix import DSL
+from testix import modifiers
 from testix import context_wrapper
 import testix.context_wrapper.synchronous
 import contextlib
+import copy
 
 def _async(result):
     async def _awaitable():
@@ -21,29 +23,26 @@ class Call:
         self.__unordered = False
         self.__everlasting = False
         self.__throwing = False
-        self.__awaitable = False
         self.__is_context = False
         self.__context_wrapper = context_wrapper.synchronous.Synchronous(self)
+        self.__modifiers = modifiers.Modifiers()
 
     @property
     def context_wrapper(self):
         return self.__context_wrapper
 
     def returns( self, result ):
-        if self.__is_context:
+        if self.__modifiers.is_context:
             self.__context_wrapper.set_entry_value(result)
             result = self.__context_wrapper
-        if self.__awaitable:
+        if self.__modifiers.awaitable:
             self.__result = _async(result)
         else:
             self.__result = result
         return self
 
-    def awaitable(self, awaitable):
-        self.__awaitable = awaitable
-
-    def context_manager(self, is_context):
-        self.__is_context = is_context
+    def modify(self, modifiers):
+        self.__modifiers = copy.copy(modifiers)
         self.__force_context_wrapper_behaviour()
 
     def __force_context_wrapper_behaviour(self):
