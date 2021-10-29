@@ -15,11 +15,11 @@ class Scenario( object ):
         Scenario.init_hook()
         if Scenario._current is not None:
             failhooks.error( "New scenario started before previous one ended" )
-        self._title = title
-        self._verbose = verbose
-        self._expected = []
-        self._unorderedExpectations = []
-        self._endingVerifications = True
+        self.__title = title
+        self.__verbose = verbose
+        self.__expected = []
+        self.__unorderedExpectations = []
+        self.__endingVerifications = True
         Scenario._current = self
 
     def __enter__( self ):
@@ -27,73 +27,73 @@ class Scenario( object ):
 
     def __exit__( self, exceptionType, exception, traceback ):
         if exceptionType is not None:
-            self._endingVerifications = False
-        self._end()
+            self.__endingVerifications = False
+        self.__end()
 
-    def _debug( self, message ):
-        if not self._verbose:
+    def __debug( self, message ):
+        if not self.__verbose:
                 return
         sys.stderr.write( f'SCENARIO: {message}\n' )
 
     def addEvent( self, event ):
         if isinstance( event, hook.Hook ):
-                self._expected.append( event )
+                self.__expected.append( event )
                 return
         call = event
-        self._expected.append( call )
+        self.__expected.append( call )
 
     def resultFor( self, fakeObjectPath, * args, ** kwargs ):
-        self._debug( f'resultFor: {fakeObjectPath}, {args}, {kwargs}' )
-        unorderedCall = self._findUnorderedCall( fakeObjectPath, args, kwargs )
+        self.__debug( f'resultFor: {fakeObjectPath}, {args}, {kwargs}' )
+        unorderedCall = self.__findUnorderedCall( fakeObjectPath, args, kwargs )
         if unorderedCall is not None:
-            self._debug( f'found unordered call: {unorderedCall}' )
+            self.__debug( f'found unordered call: {unorderedCall}' )
             return unorderedCall.result()
 
-        return self._resultForOrderedCall( fakeObjectPath, args, kwargs )
+        return self.__resultForOrderedCall( fakeObjectPath, args, kwargs )
 
-    def _resultForOrderedCall( self, fakeObjectPath, args, kwargs ):
-        self._debug( f'_resultForOrderedCall: {fakeObjectPath}, {args}, {kwargs}' )
-        if len( self._expected ) == 0:
-            message = self._effective_title()
+    def __resultForOrderedCall( self, fakeObjectPath, args, kwargs ):
+        self.__debug( f'_resultForOrderedCall: {fakeObjectPath}, {args}, {kwargs}' )
+        if len( self.__expected ) == 0:
+            message = self.__effective_title()
             message += f"unexpected call: {call_formatter.format( fakeObjectPath, args, kwargs )}\n"
             message += "Expected nothing" 
             failhooks.fail( testixexception.ExpectationException, message )
-        expected = self._expected.pop( 0 )
-        self._verifyCallExpected( expected, fakeObjectPath, args, kwargs )
+        expected = self.__expected.pop( 0 )
+        self.__verifyCallExpected( expected, fakeObjectPath, args, kwargs )
         result = expected.result()
-        self._executeHooks()
-        self._debug(f'scenario: {expected} >> {result}')
+        self.__executeHooks()
+        self.__debug(f'scenario: {expected} >> {result}')
         return result
 
-    def _executeHooks( self ):
-        while len( self._expected ) > 0 and isinstance( self._expected[ 0 ], hook.Hook ):
-                currentHook = self._expected.pop( 0 )
+    def __executeHooks( self ):
+        while len( self.__expected ) > 0 and isinstance( self.__expected[ 0 ], hook.Hook ):
+                currentHook = self.__expected.pop( 0 )
                 currentHook.execute()
 
-    def _findUnorderedCall( self, fakeObjectPath, args, kwargs ):
-        for call in self._unorderedExpectations:
+    def __findUnorderedCall( self, fakeObjectPath, args, kwargs ):
+        for call in self.__unorderedExpectations:
             if call.fits( fakeObjectPath, args, kwargs ):
                     if not call.everlasting_():
-                            self._unorderedExpectations.remove( call )
+                            self.__unorderedExpectations.remove( call )
                     return call
         return None
 
-    def _effective_title(self):
-        if self._title != '':
-            return f'=== Scenario "{self._title}" ===\n'
+    def __effective_title(self):
+        if self.__title != '':
+            return f'=== Scenario "{self.__title}" ===\n'
         else:
             return f'=== Scenario (no title) ===\n'
 
-    def _verifyCallExpected( self, expected, fakeObjectPath, args, kwargs ):
-        self._debug( f'_verifyCallExpected: {expected}. actual={fakeObjectPath} args={args}, kwargs={kwargs}' )
+    def __verifyCallExpected( self, expected, fakeObjectPath, args, kwargs ):
+        self.__debug( f'_verifyCallExpected: {expected}. actual={fakeObjectPath} args={args}, kwargs={kwargs}' )
         if not expected.fits( fakeObjectPath, args, kwargs ):
-            message = self._effective_title()
+            message = self.__effective_title()
             message += f" expected: {expected}\n"
             message += f" actual  : {call_formatter.format( fakeObjectPath, args, kwargs )}\n"
             message += '=== OFFENDING LINE ===\n'
             message += " " + call_formatter.caller_context() + '\n'
-            message += f'=== FURTHER EXPECTATIONS (showing at most 10 out of {len(self._expected)}) ===\n'
-            for expectation in self._expected[:10]:
+            message += f'=== FURTHER EXPECTATIONS (showing at most 10 out of {len(self.__expected)}) ===\n'
+            for expectation in self.__expected[:10]:
                 message += f' {expectation}\n'
             message += '=== END ===\n'
 
@@ -104,21 +104,21 @@ class Scenario( object ):
     def current():
         return Scenario._current
 
-    def _performEndVerifications( self ):
-        if len( self._expected ) > 0:
-            failhooks.fail( testixexception.ScenarioException, f"Scenario ended, but not all expectations were met. Pending expectations (ordered): {self._expected}" )
-        mortalUnordered = [ expectation for expectation in self._unorderedExpectations if not expectation.everlasting_() ]
+    def __performEndVerifications( self ):
+        if len( self.__expected ) > 0:
+            failhooks.fail( testixexception.ScenarioException, f"Scenario ended, but not all expectations were met. Pending expectations (ordered): {self.__expected}" )
+        mortalUnordered = [ expectation for expectation in self.__unorderedExpectations if not expectation.everlasting_() ]
         if len( mortalUnordered ) > 0:
             failhooks.fail( testixexception.ScenarioException, f"Scenario ended, but not all expectations were met. Pending expectations (unordered): {mortalUnordered}" )
 
-    def _end( self ):
+    def __end( self ):
         Scenario._current = None
-        if self._endingVerifications:
-            self._performEndVerifications()
+        if self.__endingVerifications:
+            self.__performEndVerifications()
 
     def unordered( self, call ):
-        self._expected.remove( call )
-        self._unorderedExpectations.append( call )
+        self.__expected.remove( call )
+        self.__unorderedExpectations.append( call )
 
 def clearAllScenarios():
     Scenario._current = None

@@ -3,17 +3,17 @@ from testix import failhooks
 
 
 class Fake:
-    _registry = {}
+    __registry = {}
     def __new__( cls, path_a62df12dd67848be82c505d63b928725, **attributes ):
-        if path_a62df12dd67848be82c505d63b928725 in Fake._registry:
-            return Fake._registry[path_a62df12dd67848be82c505d63b928725]
+        if path_a62df12dd67848be82c505d63b928725 in Fake.__registry:
+            return Fake.__registry[path_a62df12dd67848be82c505d63b928725]
         instance = super(Fake, cls).__new__(cls)
-        Fake._registry[path_a62df12dd67848be82c505d63b928725] = instance
+        Fake.__registry[path_a62df12dd67848be82c505d63b928725] = instance
         return instance
 
     @staticmethod
     def clear_all_attributes():
-        for instance in Fake._registry.values():
+        for instance in Fake.__registry.values():
             Fake.clear_attributes(instance)
 
     @staticmethod
@@ -27,27 +27,31 @@ class Fake:
     scenario.Scenario.init_hook = clear_all_attributes
 
     def __init__( self, path_a62df12dd67848be82c505d63b928725, **attributes ):
-        self._path = path_a62df12dd67848be82c505d63b928725
-        self._set_attributes(attributes)
+        self.__path = path_a62df12dd67848be82c505d63b928725
+        self.__set_attributes(attributes)
 
-    def _set_attributes(self, attributes):
+    @property
+    def path_a62df12dd67848be82c505d63b928725(self):
+        return self.__path
+
+    def __set_attributes(self, attributes):
         for key, value in attributes.items():
             setattr(self, key, value)
 
     def __call__( self, * args, ** kwargs ):
-        return self._returnResultFromScenario( * args, ** kwargs )
+        return self.__returnResultFromScenario( * args, ** kwargs )
 
-    def _returnResultFromScenario( self, * args, ** kwargs ):
+    def __returnResultFromScenario( self, * args, ** kwargs ):
         if scenario.current() is None:
             failhooks.error( "can not find a scenario object" )
-        return scenario.current().resultFor( self._path, * args, ** kwargs )
+        return scenario.current().resultFor( self.__path, * args, ** kwargs )
 
     def __str__( self ):
-        return 'FakeObject( "%s", %s )' % ( self._path, id( self ) )
+        return 'FakeObject( "%s", %s )' % ( self.__path, id( self ) )
 
     def __repr__( self ):
         return str( self )
 
     def __getattr__( self, name ):
-        childsName = '%s.%s' % ( self._path, name )
+        childsName = '%s.%s' % ( self.__path, name )
         return Fake(childsName)

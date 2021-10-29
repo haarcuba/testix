@@ -1,8 +1,8 @@
-class Hook( object ):
-	def __init__( self, callable, * args, ** kwargs ):
-		self._callable = callable
-		self._args = args
-		self._kwargs = kwargs
+class Hook:
+    def __init__(self, callable, * args, ** kwargs):
+        self.__callable = callable
+        self.__args = args
+        self.__kwargs = kwargs
 
-	def execute( self ):
-		self._callable( * self._args, ** self._kwargs )
+    def execute( self ):
+        self.__callable(*self.__args, **self.__kwargs)

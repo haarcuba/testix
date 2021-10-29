@@ -9,26 +9,32 @@ jobs:
     steps:
       - name: check out our code
         uses: actions/checkout@v2
-      - name: install testix (editable mode + testing support)
-        run:  pip install -e."[testing]"
+      - name: install poetry
+        run:  curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
+      - name: install testix
+        run:  poetry install
       - name: unit tests
-        run:  rake units
+        run:  poetry run rake units
   Run-Examples:
     runs-on: ubuntu-20.04
     steps:
       - name: check out our code
         uses: actions/checkout@v2
-      - name: install testix (editable mode + testing support)
-        run:  pip install -e.'[testing]'
+      - name: install poetry
+        run:  curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
+      - name: install testix
+        run:  poetry install
       - name: examples
-        run:  rake examples
+        run:  poetry run rake examples
   Generate-Wheel:
     runs-on: ubuntu-20.04
     steps:
       - name: check out our code
         uses: actions/checkout@v2
-      - name: generate wheel
-        run:  python setup.py bdist_wheel
+      - name: install poetry
+        run:  curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
+      - name: build wheel
+        run:  poetry build -f wheel
   All-OK:
     runs-on: ubuntu-20.04
     needs:

@@ -2,18 +2,18 @@ from testix import argumentexpectations
 
 _saved = {}
 
-class SaveArgument( argumentexpectations.ArgumentExpectation ):
-	def __init__( self, saveTo ):
-		self._saveTo = saveTo
-		argumentexpectations.ArgumentExpectation.__init__( self, None )
+class SaveArgument(argumentexpectations.ArgumentExpectation):
+    def __init__( self, saveTo ):
+        self.__saveTo = saveTo
+        argumentexpectations.ArgumentExpectation.__init__(self, None)
 
-	def ok( self, value ):
-		_saved[ self._saveTo ] = value
-		return True
+    def ok(self, value):
+        _saved[self.__saveTo] = value
+        return True
 
-	def __repr__( self ):
-		return '|SAVE|'
+    def __repr__( self ):
+        return '|SAVE|'
 
 def saved():
-	global _saved
-	return _saved
+    global _saved
+    return _saved
