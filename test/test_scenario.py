@@ -347,3 +347,12 @@ class TestScenario:
                 s.__async_with__.locker.Lock()
 
                 locker_mock.Lock()
+
+    @pytest.mark.asyncio
+    async def test_enforce_awating_on_async_expectations(self):
+        my_file = fake.Fake('my_file')
+        with pytest.raises(testixexception.TestixException):
+            with scenario.Scenario() as s:
+                s.__await_on__.my_file.write('some text')
+
+                my_file.write('some text')
