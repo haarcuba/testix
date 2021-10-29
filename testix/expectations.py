@@ -22,7 +22,7 @@ class Call:
         self._throwing = False
         self._awaitable = False
         self.__is_context = False
-        self.__context_wrapper = context_wrapper.ContextWrapper(self, None)
+        self.__context_wrapper = context_wrapper.ContextWrapper(self)
 
     @property
     def context_wrapper(self):

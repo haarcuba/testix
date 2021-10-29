@@ -3,8 +3,8 @@ from testix import fake_privacy_violator
 import uuid
 
 class ContextWrapper:
-    def __init__(self, call, result):
-        self.__result = result
+    def __init__(self, call):
+        self.__result = None
         id = str(uuid.uuid4())[-12:]
         self.__enter_mock = fake.Fake(f'{call}@{id}.__enter__')
 
