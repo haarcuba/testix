@@ -16,5 +16,8 @@ class ExpectationMaker:
         call = expectations.Call( self._path, * args, ** kwargs )
         call.awaitable(self._awaitable)
         call.context_manager(self.__is_context)
-        self._scenario.addEvent( call )
+        self._scenario.addEvent(call)
+        if self.__is_context:
+            entry_call = expectations.Call(call.context_wrapper.entry_expectation_path)
+            self._scenario.addEvent(entry_call)
         return call

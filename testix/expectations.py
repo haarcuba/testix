@@ -22,10 +22,16 @@ class Call:
         self._throwing = False
         self._awaitable = False
         self.__is_context = False
+        self.__context_wrapper = context_wrapper.ContextWrapper(self, None)
+
+    @property
+    def context_wrapper(self):
+        return self.__context_wrapper
 
     def returns( self, result ):
         if self.__is_context:
-            result = context_wrapper.ContextWrapper(result)
+            self.__context_wrapper.set_entry_value(result)
+            result = self.__context_wrapper
         if self._awaitable:
             self._result = _async(result)
         else:
@@ -37,9 +43,9 @@ class Call:
 
     def context_manager(self, is_context):
         self.__is_context = is_context
-        self.__force_context_wrapper_existence()
+        self.__force_context_wrapper_behaviour()
 
-    def __force_context_wrapper_existence(self):
+    def __force_context_wrapper_behaviour(self):
         self.returns(None)
 
     def __rshift__( self, result ):
