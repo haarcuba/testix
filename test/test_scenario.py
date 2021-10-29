@@ -313,3 +313,15 @@ class TestScenario:
             s.__await_on__.some_object( 10 ) >> DSL.Throwing( MyException )
             with pytest.raises( MyException ):
                 await fakeObject( 10 )
+
+    @pytest.mark.asyncio
+    async def test_async_context_managers(self):
+        with scenario.Scenario('async context managers') as s:
+            s.__await_on__.__with__.open('/path/to/file') >> fake.Fake('my_file')
+            s.__await_on__.my_file.read(500) >> 'some text'
+
+            open_mock = fake.Fake('open')
+            async with open_mock('/path/to/file') as my_file:
+                text = my_file.read(500)
+
+            assert text == 'some text'
