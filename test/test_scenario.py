@@ -233,7 +233,7 @@ class TestScenario:
 
     def test_enforce_use_of_with_statement_with_context_manager_expectation(self):
         locker_mock = fake.Fake('locker')
-        with pytest.raises(testixexception.ScenarioException, match='__enter__'):
+        with pytest.raises(testixexception.ScenarioException, match='locker.Lock.*__enter__'):
             with scenario.Scenario() as s:
                 s.__with__.locker.Lock()
 
