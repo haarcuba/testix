@@ -7,3 +7,6 @@ build/
 dist/
 testix.egg-info/
 Session.vim
+tags
+htmlcov/
+.coverage
