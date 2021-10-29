@@ -3,6 +3,7 @@ from testix import scenario
 from testix import call_formatter
 from testix import DSL
 from testix import context_wrapper
+import testix.context_wrapper.synchronous
 import contextlib
 
 def _async(result):
@@ -22,7 +23,7 @@ class Call:
         self.__throwing = False
         self.__awaitable = False
         self.__is_context = False
-        self.__context_wrapper = context_wrapper.ContextWrapper(self)
+        self.__context_wrapper = context_wrapper.synchronous.Synchronous(self)
 
     @property
     def context_wrapper(self):
