@@ -16,7 +16,7 @@ class ExpectationMaker:
         call = expectations.Call(self.__path, *args, **kwargs)
         call.modify(self.__modifiers)
         self.__scenario.addEvent(call)
-        if self.__modifiers.is_context or self.__modifiers.is_async_context:
+        if self.__modifiers.is_context:
             entry_call = expectations.Call(call.context_wrapper.entry_expectation_path)
             self.__scenario.addEvent(entry_call)
         return call

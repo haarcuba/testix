@@ -30,7 +30,7 @@ class ScenarioMocks:
 
     @property
     def __with__(self):
-        self.__modifiers.is_context = True
+        self.__modifiers.is_sync_context = True
         return self
 
     @property

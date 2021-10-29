@@ -37,7 +37,7 @@ class Call:
         return self
 
     def __modified(self, result):
-        if self.__modifiers.is_context or self.__modifiers.is_async_context:
+        if self.__modifiers.is_context:
             self.__context_wrapper.set_entry_value(result)
             return self.__context_wrapper
         if self.__modifiers.awaitable:
@@ -49,7 +49,7 @@ class Call:
         self.__modifiers = copy.copy(modifiers)
         if self.__modifiers.is_async_context:
             self.__context_wrapper = context_wrapper.asynchronous.Asynchronous(self)
-        if self.__modifiers.is_context:
+        if self.__modifiers.is_sync_context:
             self.__context_wrapper = context_wrapper.synchronous.Synchronous(self)
         self.__force_context_wrapper_behaviour()
 
