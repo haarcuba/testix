@@ -12,4 +12,4 @@ jobs:
             - run:  poetry run pip install twine
             - run:  rm -fr dist/
             - run:  poetry build -f wheel
-            - run:  twine upload -u __token__ -p ${{ secrets.PUBLISH_TOKEN }} dist/*whl
+            - run:  poetry run twine upload -u __token__ -p ${{ secrets.PUBLISH_TOKEN }} dist/*whl
