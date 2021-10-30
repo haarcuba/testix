@@ -2,28 +2,22 @@ from testix import argumentexpectations
 from testix import scenario
 from testix import call_formatter
 from testix import DSL
-from testix import context_wrapper
-import testix.context_wrapper.synchronous
-import contextlib
 
-class SyncContextCall:
-    def __init__( self, fakeObjectPath, * arguments, ** kwargExpectations ):
+class Call:
+    def __init__( self, fakeObjectPath, modifier, * arguments, ** kwargExpectations ):
         self.__fakeObjectPath = fakeObjectPath
         self.__argumentExpectations = [ self.__expectation( arg ) for arg in arguments ]
-        self.__result = None
         self.__kwargExpectations = { name: self.__expectation( kwargExpectations[ name ] ) for name in kwargExpectations }
         self.__unordered = False
         self.__everlasting = False
-        self.__throwing = False
-        self.__context_wrapper = testix.context_wrapper.synchronous.Synchronous(self)
-        self.__result = self.__context_wrapper
+        self.__modifier = modifier(self)
 
     @property
     def extra_path(self):
-        return self.__context_wrapper.entry_expectation_path
+        return self.__modifier.extra_path
 
     def returns(self, result):
-        self.__context_wrapper.set_entry_value(result)
+        self.__modifier.set_result(result)
         return self
 
     def __rshift__( self, result ):
@@ -33,8 +27,7 @@ class SyncContextCall:
             self.returns( result )
 
     def throwing( self, exceptionFactory ):
-        self.__throwing = True
-        self.__exceptionFactory = exceptionFactory
+        self.__modifier.throwing(exceptionFactory)
         return self
 
     def unordered( self ):
@@ -54,7 +47,7 @@ class SyncContextCall:
         return defaultExpectation( arg )
 
     def result( self ):
-        return self.__result
+        return self.__modifier.result()
 
     def __repr__( self ):
         return call_formatter.format( self.__fakeObjectPath, self.__argumentExpectations, self.__kwargExpectations )
