@@ -1,4 +1,5 @@
 from testix import argumentexpectations
+from testix import testixexception
 from testix import scenario
 from testix import call_formatter
 from testix import DSL
@@ -37,7 +38,8 @@ class Call:
 
     def everlasting( self ):
         self.__everlasting = True
-        assert self.__unordered, "call cannot be everlasting but not unordered"
+        if not self.__unordered:
+            raise testixexception.TestixError("call cannot be everlasting and not unordered")
         return self
 
     def __expectation( self, arg ):
