@@ -1,7 +1,7 @@
 import dataclasses
 
 @dataclasses.dataclass
-class Modifiers:
+class CallCharacter:
     awaitable: bool = False
     is_sync_context: bool = False
     is_async_context: bool = False

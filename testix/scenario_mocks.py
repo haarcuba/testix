@@ -1,13 +1,13 @@
 from . import expectationmaker
 from . import fake_privacy_violator
-from . import modifiers
+from . import call_character
 import copy
 
 class ScenarioMocks:
     def __init__( self, scenario ):
         self.__awaitable = False
         self.__scenario = scenario
-        self.__modifiers = modifiers.Modifiers()
+        self.__character = call_character.CallCharacter()
 
     def __dynamic__(self, name):
         return getattr(self, name)
@@ -17,12 +17,12 @@ class ScenarioMocks:
         return getattr(self, path)
 
     def __getattr__( self, name ):
-        modifiers_ = copy.copy(self.__modifiers)
+        modifiers_ = copy.copy(self.__character)
         self.__reset_modifiers()
         return expectationmaker.ExpectationMaker(self.__scenario, self, name, modifiers_)
 
     def __reset_modifiers(self):
-        self.__modifiers = modifiers.Modifiers()
+        self.__character = call_character.CallCharacter()
 
     def __lshift__( self, expectation ):
         self.__scenario.addEvent(expectation)
@@ -30,15 +30,15 @@ class ScenarioMocks:
 
     @property
     def __with__(self):
-        self.__modifiers.is_sync_context = True
+        self.__character.is_sync_context = True
         return self
 
     @property
     def __await_on__(self):
-        self.__modifiers.awaitable = True
+        self.__character.awaitable = True
         return self
 
     @property
     def __async_with__(self):
-        self.__modifiers.is_async_context = True
+        self.__character.is_async_context = True
         return self

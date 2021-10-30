@@ -1,4 +1,4 @@
-from . import modifiers
+from . import call_character
 from testix import testixexception
 import testix.expectations.call
 from testix import expectations
@@ -9,15 +9,15 @@ import testix.context_wrapper.synchronous
 import testix.context_wrapper.asynchronous
 
 class ExpectationMaker:
-    def __init__(self, scenario, scenarioMocks, path, modifiers_: modifiers.Modifiers):
+    def __init__(self, scenario, scenarioMocks, path, character: call_character.CallCharacter):
         self.__scenario = scenario
         self.__scenarioMocks = scenarioMocks
         self.__path = path
-        self.__modifiers = modifiers_
+        self.__character = character
 
     def __getattr__( self, name ):
         childPath = f'{self.__path}.{name}'
-        return ExpectationMaker(self.__scenario, self.__scenarioMocks, childPath, self.__modifiers)
+        return ExpectationMaker(self.__scenario, self.__scenarioMocks, childPath, self.__character)
 
     def __call__(self, *args, **kwargs):
         call = self.__generate_expectation(*args, **kwargs)
@@ -28,13 +28,13 @@ class ExpectationMaker:
         return call
 
     def __generate_expectation(self, *args, **kwargs):
-        if self.__modifiers.normal:
+        if self.__character.normal:
             modifier = trivial.Trivial
-        if self.__modifiers.awaitable:
+        if self.__character.awaitable:
             modifier = awaitable.Awaitable
-        if self.__modifiers.is_sync_context:
+        if self.__character.is_sync_context:
             modifier = context_wrapper.synchronous.Synchronous
-        if self.__modifiers.is_async_context:
+        if self.__character.is_async_context:
             modifier = context_wrapper.asynchronous.Asynchronous
 
         return expectations.call.Call(self.__path, modifier, *args, **kwargs)
