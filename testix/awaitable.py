@@ -15,6 +15,10 @@ class Awaitable:
             raise self.__exception_factory()
         return self.__result
 
+    def result(self):
+        coroutine = self()
+        return coroutine
+
     def set_result(self, result):
         self.__result = result
 
@@ -22,5 +26,5 @@ class Awaitable:
         self.__exception_factory = exception_factory
 
     @property
-    def await_expectation_path(self):
+    def extra_path(self):
         return fake_privacy_violator.path(self.__await_mock)

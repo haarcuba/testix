@@ -16,11 +16,17 @@ class Synchronous:
         pass
 
     @property
-    def entry_expectation_path(self):
+    def extra_path(self):
         return fake_privacy_violator.path(self.__enter_mock)
 
-    def set_entry_value(self, value):
+    def set_result(self, value):
         self.__result = value
+
+    def throwing(self, exception_factory):
+        pass
+
+    def result(self):
+        return self
 
     def __repr__(self):
         return f'Synchronous({self.__result})'

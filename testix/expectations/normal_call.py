@@ -4,24 +4,20 @@ from testix import call_formatter
 from testix import DSL
 
 class NormalCall:
-    def __init__( self, fakeObjectPath, * arguments, ** kwargExpectations ):
+    def __init__( self, fakeObjectPath, modifier, * arguments, ** kwargExpectations ):
         self.__fakeObjectPath = fakeObjectPath
         self.__argumentExpectations = [ self.__expectation( arg ) for arg in arguments ]
-        self.__result = None
         self.__kwargExpectations = { name: self.__expectation( kwargExpectations[ name ] ) for name in kwargExpectations }
         self.__unordered = False
         self.__everlasting = False
-        self.__throwing = False
-        self.__context_wrapper = None
-        self.__awaitable = None
-        self.__exceptionFactory = None
+        self.__modifier = modifier(self)
 
     @property
     def extra_path(self):
-        return None
+        return self.__modifier.extra_path
 
     def returns(self, result):
-        self.__result = result
+        self.__modifier.set_result(result)
         return self
 
     def __rshift__( self, result ):
@@ -31,8 +27,7 @@ class NormalCall:
             self.returns( result )
 
     def throwing( self, exceptionFactory ):
-        self.__throwing = True
-        self.__exceptionFactory = exceptionFactory
+        self.__modifier.throwing(exceptionFactory)
         return self
 
     def unordered( self ):
@@ -52,9 +47,7 @@ class NormalCall:
         return defaultExpectation( arg )
 
     def result( self ):
-        if self.__throwing:
-            raise self.__exceptionFactory()
-        return self.__result
+        return self.__modifier.result()
 
     def __repr__( self ):
         return call_formatter.format( self.__fakeObjectPath, self.__argumentExpectations, self.__kwargExpectations )

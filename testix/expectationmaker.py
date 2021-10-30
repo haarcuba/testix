@@ -1,9 +1,11 @@
 from . import modifiers
 from testix import testixexception
 from testix.expectations import normal_call
-from testix.expectations import awaitable_call
-from testix.expectations import async_context_call
-from testix.expectations import sync_context_call
+from testix import trivial
+from testix import awaitable
+from testix import context_wrapper
+import testix.context_wrapper.synchronous
+import testix.context_wrapper.asynchronous
 
 class ExpectationMaker:
     def __init__(self, scenario, scenarioMocks, path, modifiers_: modifiers.Modifiers):
@@ -20,18 +22,18 @@ class ExpectationMaker:
         call = self.__generate_expectation(*args, **kwargs)
         self.__scenario.addEvent(call)
         if call.extra_path is not None:
-            extra = normal_call.NormalCall(call.extra_path)
+            extra = normal_call.NormalCall(call.extra_path, trivial.Trivial)
             self.__scenario.addEvent(extra)
         return call
 
     def __generate_expectation(self, *args, **kwargs):
         if self.__modifiers.normal:
-            return normal_call.NormalCall(self.__path, *args, **kwargs)
+            modifier = trivial.Trivial
         if self.__modifiers.awaitable:
-            return awaitable_call.AwaitableCall(self.__path, *args, **kwargs)
+            modifier = awaitable.Awaitable
         if self.__modifiers.is_sync_context:
-            return sync_context_call.SyncContextCall(self.__path, *args, **kwargs)
+            modifier = context_wrapper.synchronous.Synchronous
         if self.__modifiers.is_async_context:
-            return async_context_call.AsyncContextCall(self.__path, *args, **kwargs)
+            modifier = context_wrapper.asynchronous.Asynchronous
 
-        raise testixexception.TestixError(f'could not determine expectation type for {args}, {kwargs}')
+        return normal_call.NormalCall(self.__path, modifier, *args, **kwargs)
