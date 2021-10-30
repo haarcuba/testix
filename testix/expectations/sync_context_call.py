@@ -2,13 +2,9 @@ from testix import argumentexpectations
 from testix import scenario
 from testix import call_formatter
 from testix import DSL
-from testix import modifiers
-from testix import awaitable
 from testix import context_wrapper
 import testix.context_wrapper.synchronous
-import testix.context_wrapper.asynchronous
 import contextlib
-import copy
 
 class SyncContextCall:
     def __init__( self, fakeObjectPath, * arguments, ** kwargExpectations ):
@@ -58,9 +54,6 @@ class SyncContextCall:
         return defaultExpectation( arg )
 
     def result( self ):
-        if self.__throwing:
-            if not self.__modifiers.awaitable:
-                raise self.__exceptionFactory()
         return self.__result
 
     def __repr__( self ):

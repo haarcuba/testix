@@ -2,19 +2,12 @@ from testix import argumentexpectations
 from testix import scenario
 from testix import call_formatter
 from testix import DSL
-from testix import modifiers
 from testix import awaitable
-from testix import context_wrapper
-import testix.context_wrapper.synchronous
-import testix.context_wrapper.asynchronous
-import contextlib
-import copy
 
 class AwaitableCall:
     def __init__( self, fakeObjectPath, * arguments, ** kwargExpectations ):
         self.__fakeObjectPath = fakeObjectPath
         self.__argumentExpectations = [ self.__expectation( arg ) for arg in arguments ]
-        self.__result = None
         self.__kwargExpectations = { name: self.__expectation( kwargExpectations[ name ] ) for name in kwargExpectations }
         self.__unordered = False
         self.__everlasting = False

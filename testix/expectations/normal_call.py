@@ -2,13 +2,6 @@ from testix import argumentexpectations
 from testix import scenario
 from testix import call_formatter
 from testix import DSL
-from testix import modifiers
-from testix import awaitable
-from testix import context_wrapper
-import testix.context_wrapper.synchronous
-import testix.context_wrapper.asynchronous
-import contextlib
-import copy
 
 class NormalCall:
     def __init__( self, fakeObjectPath, * arguments, ** kwargExpectations ):

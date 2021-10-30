@@ -4,10 +4,7 @@ from testix import call_formatter
 from testix import DSL
 from testix import awaitable
 from testix import context_wrapper
-import testix.context_wrapper.synchronous
 import testix.context_wrapper.asynchronous
-import contextlib
-import copy
 
 class AsyncContextCall:
     def __init__( self, fakeObjectPath, * arguments, ** kwargExpectations ):
@@ -39,8 +36,6 @@ class AsyncContextCall:
     def throwing( self, exceptionFactory ):
         self.__throwing = True
         self.__exceptionFactory = exceptionFactory
-        if self.__modifiers.awaitable:
-            self.__awaitable.throwing(self.__exceptionFactory)
         return self
 
     def unordered( self ):
@@ -60,9 +55,6 @@ class AsyncContextCall:
         return defaultExpectation( arg )
 
     def result( self ):
-        if self.__throwing:
-            if not self.__modifiers.awaitable:
-                raise self.__exceptionFactory()
         return self.__result
 
     def __repr__( self ):
