@@ -98,8 +98,5 @@ class Call:
             if name not in self.__kwargExpectations:
                 return True
 
-    def unordered_( self ):
-        return self.__unordered
-
     def everlasting_( self ):
         return self.__everlasting
