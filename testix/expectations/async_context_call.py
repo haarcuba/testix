@@ -2,7 +2,6 @@ from testix import argumentexpectations
 from testix import scenario
 from testix import call_formatter
 from testix import DSL
-from testix import modifiers
 from testix import awaitable
 from testix import context_wrapper
 import testix.context_wrapper.synchronous
@@ -10,7 +9,7 @@ import testix.context_wrapper.asynchronous
 import contextlib
 import copy
 
-class NormalCall:
+class AsyncContextCall:
     def __init__( self, fakeObjectPath, * arguments, ** kwargExpectations ):
         self.__fakeObjectPath = fakeObjectPath
         self.__argumentExpectations = [ self.__expectation( arg ) for arg in arguments ]
@@ -19,12 +18,16 @@ class NormalCall:
         self.__unordered = False
         self.__everlasting = False
         self.__throwing = False
-        self.__context_wrapper = None
+        self.__context_wrapper = context_wrapper.asynchronous.Asynchronous(self)
+        self.__result = self.__context_wrapper
         self.__awaitable = None
-        self.__exceptionFactory = None
+
+    @property
+    def context_wrapper(self):
+        return self.__context_wrapper
 
     def returns(self, result):
-        self.__result = result
+        self.__context_wrapper.set_entry_value(result)
         return self
 
     def __rshift__( self, result ):
@@ -36,6 +39,8 @@ class NormalCall:
     def throwing( self, exceptionFactory ):
         self.__throwing = True
         self.__exceptionFactory = exceptionFactory
+        if self.__modifiers.awaitable:
+            self.__awaitable.throwing(self.__exceptionFactory)
         return self
 
     def unordered( self ):
@@ -56,7 +61,8 @@ class NormalCall:
 
     def result( self ):
         if self.__throwing:
-            raise self.__exceptionFactory()
+            if not self.__modifiers.awaitable:
+                raise self.__exceptionFactory()
         return self.__result
 
     def __repr__( self ):

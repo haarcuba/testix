@@ -10,7 +10,7 @@ import testix.context_wrapper.asynchronous
 import contextlib
 import copy
 
-class NormalCall:
+class AwaitableCall:
     def __init__( self, fakeObjectPath, * arguments, ** kwargExpectations ):
         self.__fakeObjectPath = fakeObjectPath
         self.__argumentExpectations = [ self.__expectation( arg ) for arg in arguments ]
@@ -19,13 +19,16 @@ class NormalCall:
         self.__unordered = False
         self.__everlasting = False
         self.__throwing = False
-        self.__context_wrapper = None
-        self.__awaitable = None
-        self.__exceptionFactory = None
+        self.__awaitable = awaitable.Awaitable(self)
+        self.__result = self.__awaitable()
 
     def returns(self, result):
-        self.__result = result
+        self.__awaitable.set_result(result)
         return self
+
+    @property
+    def await_expectation(self):
+        return self.__awaitable
 
     def __rshift__( self, result ):
         if type(result) is DSL.Throwing:
@@ -36,6 +39,7 @@ class NormalCall:
     def throwing( self, exceptionFactory ):
         self.__throwing = True
         self.__exceptionFactory = exceptionFactory
+        self.__awaitable.throwing(self.__exceptionFactory)
         return self
 
     def unordered( self ):
@@ -55,8 +59,6 @@ class NormalCall:
         return defaultExpectation( arg )
 
     def result( self ):
-        if self.__throwing:
-            raise self.__exceptionFactory()
         return self.__result
 
     def __repr__( self ):
