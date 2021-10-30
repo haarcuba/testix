@@ -3,10 +3,10 @@ import hypothesis
 import hypothesis.strategies as strategies
 from testix import scenario
 from testix import testixexception
-from testix import normal_call
 from testix import hook
 from testix import fake
 from testix import DSL
+from testix.expectations import normal_call
 
 class TestScenario:
     def test_EmptyScenario( self ):

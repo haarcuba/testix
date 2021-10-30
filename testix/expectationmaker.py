@@ -1,5 +1,5 @@
-from testix import normal_call
 from . import modifiers
+from testix.expectations import normal_call
 
 class ExpectationMaker:
     def __init__(self, scenario, scenarioMocks, path, modifiers_: modifiers.Modifiers):
