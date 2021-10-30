@@ -27,6 +27,7 @@ class Call:
         self.__everlasting = False
         self.__throwing = False
         self.__context_wrapper = None
+        self.__awaitable = None
         self.__modifiers = modifiers.Modifiers()
 
     @property
@@ -42,10 +43,14 @@ class Call:
             self.__context_wrapper.set_entry_value(result)
             return self.__context_wrapper
         if self.__modifiers.awaitable:
-            awaitable_ = awaitable.Awaitable(result)
-            return awaitable_()
+            self.__awaitable.set_result(result)
+            return self.__awaitable()
 
         return result
+
+    @property
+    def await_expectation(self):
+        return self.__awaitable
 
     def modify(self, modifiers):
         self.__modifiers = copy.copy(modifiers)
@@ -53,6 +58,8 @@ class Call:
             self.__context_wrapper = context_wrapper.asynchronous.Asynchronous(self)
         if self.__modifiers.is_sync_context:
             self.__context_wrapper = context_wrapper.synchronous.Synchronous(self)
+        if self.__modifiers.awaitable:
+            self.__awaitable = awaitable.Awaitable(self)
         self.__force_context_wrapper_behaviour()
 
     def __force_context_wrapper_behaviour(self):
@@ -67,6 +74,8 @@ class Call:
     def throwing( self, exceptionFactory ):
         self.__throwing = True
         self.__exceptionFactory = exceptionFactory
+        if self.__modifiers.awaitable:
+            self.__awaitable.throwing(self.__exceptionFactory())
         return self
 
     def unordered( self ):
@@ -87,7 +96,8 @@ class Call:
 
     def result( self ):
         if self.__throwing:
-            raise self.__exceptionFactory()
+            if not self.__modifiers.awaitable:
+                raise self.__exceptionFactory()
         return self.__result
 
     def __repr__( self ):

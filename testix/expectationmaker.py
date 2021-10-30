@@ -19,4 +19,7 @@ class ExpectationMaker:
         if self.__modifiers.is_context:
             entry_call = expectations.Call(call.context_wrapper.entry_expectation_path)
             self.__scenario.addEvent(entry_call)
+        if self.__modifiers.awaitable:
+            await_expectation = expectations.Call(call.await_expectation.await_expectation_path)
+            self.__scenario.addEvent(await_expectation)
         return call
