@@ -3,10 +3,10 @@ from testix import testixexception
 import testix.expectations.call
 from testix import expectations
 from testix import trivial
-from testix import awaitable
 from testix import context_wrapper
-import testix.context_wrapper.synchronous
-import testix.context_wrapper.asynchronous
+import testix.call_modifiers.synchronous
+import testix.call_modifiers.asynchronous
+import testix.call_modifiers.awaitable
 
 class ExpectationMaker:
     def __init__(self, scenario, scenarioMocks, path, character: call_character.CallCharacter):
@@ -31,10 +31,10 @@ class ExpectationMaker:
         if self.__character.normal:
             modifier = trivial.Trivial
         if self.__character.awaitable:
-            modifier = awaitable.Awaitable
+            modifier = testix.call_modifiers.awaitable.Awaitable
         if self.__character.is_sync_context:
-            modifier = context_wrapper.synchronous.Synchronous
+            modifier = testix.call_modifiers.synchronous.Synchronous
         if self.__character.is_async_context:
-            modifier = context_wrapper.asynchronous.Asynchronous
+            modifier = testix.call_modifiers.asynchronous.Asynchronous
 
         return expectations.call.Call(self.__path, modifier, *args, **kwargs)
