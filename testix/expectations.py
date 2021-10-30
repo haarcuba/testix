@@ -68,7 +68,7 @@ class Call:
         self.__throwing = True
         self.__exceptionFactory = exceptionFactory
         if self.__modifiers.awaitable:
-            self.__awaitable.throwing(self.__exceptionFactory())
+            self.__awaitable.throwing(self.__exceptionFactory)
         return self
 
     def unordered( self ):
