@@ -3,7 +3,7 @@ import hypothesis
 import hypothesis.strategies as strategies
 from testix import scenario
 from testix import testixexception
-from testix import expectations
+from testix import normal_call
 from testix import hook
 from testix import fake
 from testix import DSL
@@ -27,7 +27,7 @@ class TestScenario:
     @hypothesis.given(A=strategies.integers(),B=strategies.integers())
     def test_CallExpectationReturnsFakeValue(self, A, B):
         with scenario.Scenario() as s:
-            s << expectations.Call( 'some_object', A ).returns( B )
+            s << normal_call.Call( 'some_object', A ).returns( B )
             fakeObject = fake.Fake('some_object')
             assert fakeObject( A ) == B
 
@@ -95,8 +95,8 @@ class TestScenario:
     def test_ShiftLeftOperator( self ):
         with scenario.Scenario() as s:
             s <<\
-                expectations.Call( 'some_object', 10 ).returns( 15 ) <<\
-                expectations.Call( 'some_object', 15 ).returns( 30 )
+                normal_call.Call( 'some_object', 10 ).returns( 15 ) <<\
+                normal_call.Call( 'some_object', 15 ).returns( 30 )
             some_object = fake.Fake('some_object')
             assert some_object( 10 ) == 15
             assert some_object( 15 ) == 30
