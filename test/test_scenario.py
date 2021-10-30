@@ -27,7 +27,7 @@ class TestScenario:
     @hypothesis.given(A=strategies.integers(),B=strategies.integers())
     def test_CallExpectationReturnsFakeValue(self, A, B):
         with scenario.Scenario() as s:
-            s << normal_call.Call( 'some_object', A ).returns( B )
+            s << normal_call.NormalCall( 'some_object', A ).returns( B )
             fakeObject = fake.Fake('some_object')
             assert fakeObject( A ) == B
 
@@ -95,8 +95,8 @@ class TestScenario:
     def test_ShiftLeftOperator( self ):
         with scenario.Scenario() as s:
             s <<\
-                normal_call.Call( 'some_object', 10 ).returns( 15 ) <<\
-                normal_call.Call( 'some_object', 15 ).returns( 30 )
+                normal_call.NormalCall( 'some_object', 10 ).returns( 15 ) <<\
+                normal_call.NormalCall( 'some_object', 15 ).returns( 30 )
             some_object = fake.Fake('some_object')
             assert some_object( 10 ) == 15
             assert some_object( 15 ) == 30

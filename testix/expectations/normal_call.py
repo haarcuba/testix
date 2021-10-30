@@ -10,7 +10,7 @@ import testix.context_wrapper.asynchronous
 import contextlib
 import copy
 
-class Call:
+class NormalCall:
     def __init__( self, fakeObjectPath, * arguments, ** kwargExpectations ):
         self.__fakeObjectPath = fakeObjectPath
         self.__argumentExpectations = [ self.__expectation( arg ) for arg in arguments ]

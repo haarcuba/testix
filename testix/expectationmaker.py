@@ -13,13 +13,13 @@ class ExpectationMaker:
         return ExpectationMaker(self.__scenario, self.__scenarioMocks, childPath, self.__modifiers)
 
     def __call__( self, * args, ** kwargs ):
-        call = normal_call.Call(self.__path, *args, **kwargs)
+        call = normal_call.NormalCall(self.__path, *args, **kwargs)
         call.modify(self.__modifiers)
         self.__scenario.addEvent(call)
         if self.__modifiers.is_context:
-            entry_call = normal_call.Call(call.context_wrapper.entry_expectation_path)
+            entry_call = normal_call.NormalCall(call.context_wrapper.entry_expectation_path)
             self.__scenario.addEvent(entry_call)
         if self.__modifiers.awaitable:
-            await_expectation = normal_call.Call(call.await_expectation.await_expectation_path)
+            await_expectation = normal_call.NormalCall(call.await_expectation.await_expectation_path)
             self.__scenario.addEvent(await_expectation)
         return call
