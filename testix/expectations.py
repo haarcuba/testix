@@ -3,11 +3,13 @@ from testix import scenario
 from testix import call_formatter
 from testix import DSL
 from testix import modifiers
+from testix import awaitable
 from testix import context_wrapper
 import testix.context_wrapper.synchronous
 import testix.context_wrapper.asynchronous
 import contextlib
 import copy
+
 
 def _async(result):
     async def _awaitable():
@@ -40,7 +42,8 @@ class Call:
             self.__context_wrapper.set_entry_value(result)
             return self.__context_wrapper
         if self.__modifiers.awaitable:
-            return _async(result)
+            awaitable_ = awaitable.Awaitable(result)
+            return awaitable_()
 
         return result
 
