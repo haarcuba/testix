@@ -2,7 +2,6 @@ from . import call_character
 from testix import testixexception
 import testix.expectations.call
 from testix import expectations
-from testix import context_wrapper
 import testix.call_modifiers.synchronous
 import testix.call_modifiers.asynchronous
 import testix.call_modifiers.awaitable
