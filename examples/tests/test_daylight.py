@@ -13,7 +13,7 @@ class Test_Daylight:
         patch_module( daylight, 'datetime' )
 
     def test_Main( self, module_patch ):
-        with scenario.Scenario() as s:
+        with Scenario() as s:
             fakeDay = FakeDay()
             fakeDay.hour = 12
             s.datetime.date.today().returns( fakeDay )
@@ -23,7 +23,7 @@ class Test_Daylight:
             assert nextDay is not fakeDay
 
     def test_EarlyInTheMorningUsesSameDate( self, module_patch ):
-        with scenario.Scenario() as s:
+        with Scenario() as s:
             fakeDay = FakeDay()
             fakeDay.hour = 2
             s.datetime.date.today() >> fakeDay

@@ -1,62 +1,25 @@
 from testix import argumentexpectations
+from testix import testixexception
 from testix import scenario
 from testix import call_formatter
 from testix import DSL
-from testix import modifiers
-from testix import awaitable
-from testix import context_wrapper
-import testix.context_wrapper.synchronous
-import testix.context_wrapper.asynchronous
-import contextlib
-import copy
 
 class Call:
-    def __init__( self, fakeObjectPath, * arguments, ** kwargExpectations ):
+    def __init__( self, fakeObjectPath, modifier, * arguments, ** kwargExpectations ):
         self.__fakeObjectPath = fakeObjectPath
         self.__argumentExpectations = [ self.__expectation( arg ) for arg in arguments ]
-        self.__result = None
         self.__kwargExpectations = { name: self.__expectation( kwargExpectations[ name ] ) for name in kwargExpectations }
         self.__unordered = False
         self.__everlasting = False
-        self.__throwing = False
-        self.__context_wrapper = None
-        self.__awaitable = None
-        self.__modifiers = modifiers.Modifiers()
+        self.__modifier = modifier(self)
 
     @property
-    def context_wrapper(self):
-        return self.__context_wrapper
+    def extra_path(self):
+        return self.__modifier.extra_path
 
     def returns(self, result):
-        self.__result = self.__modified(result)
+        self.__modifier.set_result(result)
         return self
-
-    def __modified(self, result):
-        if self.__modifiers.is_context:
-            self.__context_wrapper.set_entry_value(result)
-            return self.__context_wrapper
-        if self.__modifiers.awaitable:
-            self.__awaitable.set_result(result)
-            return self.__awaitable()
-
-        return result
-
-    @property
-    def await_expectation(self):
-        return self.__awaitable
-
-    def modify(self, modifiers):
-        self.__modifiers = copy.copy(modifiers)
-        if self.__modifiers.is_async_context:
-            self.__context_wrapper = context_wrapper.asynchronous.Asynchronous(self)
-        if self.__modifiers.is_sync_context:
-            self.__context_wrapper = context_wrapper.synchronous.Synchronous(self)
-        if self.__modifiers.awaitable:
-            self.__awaitable = awaitable.Awaitable(self)
-        self.__force_context_wrapper_behaviour()
-
-    def __force_context_wrapper_behaviour(self):
-        self.returns(None)
 
     def __rshift__( self, result ):
         if type(result) is DSL.Throwing:
@@ -65,10 +28,7 @@ class Call:
             self.returns( result )
 
     def throwing( self, exceptionFactory ):
-        self.__throwing = True
-        self.__exceptionFactory = exceptionFactory
-        if self.__modifiers.awaitable:
-            self.__awaitable.throwing(self.__exceptionFactory)
+        self.__modifier.throwing(exceptionFactory)
         return self
 
     def unordered( self ):
@@ -78,7 +38,8 @@ class Call:
 
     def everlasting( self ):
         self.__everlasting = True
-        assert self.__unordered, "call cannot be everlasting but not unordered"
+        if not self.__unordered:
+            raise testixexception.TestixError("call cannot be everlasting and not unordered")
         return self
 
     def __expectation( self, arg ):
@@ -88,10 +49,7 @@ class Call:
         return defaultExpectation( arg )
 
     def result( self ):
-        if self.__throwing:
-            if not self.__modifiers.awaitable:
-                raise self.__exceptionFactory()
-        return self.__result
+        return self.__modifier.result()
 
     def __repr__( self ):
         return call_formatter.format( self.__fakeObjectPath, self.__argumentExpectations, self.__kwargExpectations )
@@ -141,9 +99,6 @@ class Call:
         for name in kwargs:
             if name not in self.__kwargExpectations:
                 return True
-
-    def unordered_( self ):
-        return self.__unordered
 
     def everlasting_( self ):
         return self.__everlasting

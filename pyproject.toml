@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "testix"
-version = "8.0.0"
+version = "8.0.1"
 description = "Mocking framework Python with *exact* Scenarios"
 authors = ["Yoav Kleinberger <haarcuba@gmail.com>"]
 license = "MIT"
