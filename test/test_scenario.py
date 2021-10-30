@@ -349,7 +349,7 @@ class TestScenario:
                 locker_mock.Lock()
 
     @pytest.mark.asyncio
-    async def test_enforce_awating_on_async_expectations(self):
+    async def test_enforce_awaiting_on_async_expectations(self):
         my_file = fake.Fake('my_file')
         with pytest.raises(testixexception.TestixException):
             with scenario.Scenario() as s:
