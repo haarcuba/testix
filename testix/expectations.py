@@ -10,13 +10,6 @@ import testix.context_wrapper.asynchronous
 import contextlib
 import copy
 
-
-def _async(result):
-    async def _awaitable():
-        return result
-
-    return _awaitable()
-
 class Call:
     def __init__( self, fakeObjectPath, * arguments, ** kwargExpectations ):
         self.__fakeObjectPath = fakeObjectPath
