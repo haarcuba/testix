@@ -2,11 +2,11 @@ from . import call_character
 from testix import testixexception
 import testix.expectations.call
 from testix import expectations
-from testix import trivial
 from testix import context_wrapper
 import testix.call_modifiers.synchronous
 import testix.call_modifiers.asynchronous
 import testix.call_modifiers.awaitable
+import testix.call_modifiers.trivial
 
 class ExpectationMaker:
     def __init__(self, scenario, scenarioMocks, path, character: call_character.CallCharacter):
@@ -23,13 +23,13 @@ class ExpectationMaker:
         call = self.__generate_expectation(*args, **kwargs)
         self.__scenario.addEvent(call)
         if call.extra_path is not None:
-            extra = expectations.call.Call(call.extra_path, trivial.Trivial)
+            extra = expectations.call.Call(call.extra_path, testix.call_modifiers.trivial.Trivial)
             self.__scenario.addEvent(extra)
         return call
 
     def __generate_expectation(self, *args, **kwargs):
         if self.__character.normal:
-            modifier = trivial.Trivial
+            modifier = testix.call_modifiers.trivial.Trivial
         if self.__character.awaitable:
             modifier = testix.call_modifiers.awaitable.Awaitable
         if self.__character.is_sync_context:
