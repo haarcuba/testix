@@ -23,8 +23,8 @@ class AsyncContextCall:
         self.__awaitable = None
 
     @property
-    def context_wrapper(self):
-        return self.__context_wrapper
+    def extra_path(self):
+        return self.__context_wrapper.entry_expectation_path
 
     def returns(self, result):
         self.__context_wrapper.set_entry_value(result)

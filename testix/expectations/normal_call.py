@@ -23,6 +23,10 @@ class NormalCall:
         self.__awaitable = None
         self.__exceptionFactory = None
 
+    @property
+    def extra_path(self):
+        return None
+
     def returns(self, result):
         self.__result = result
         return self

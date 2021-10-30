@@ -27,8 +27,8 @@ class AwaitableCall:
         return self
 
     @property
-    def await_expectation(self):
-        return self.__awaitable
+    def extra_path(self):
+        return self.__awaitable.await_expectation_path
 
     def __rshift__( self, result ):
         if type(result) is DSL.Throwing:
