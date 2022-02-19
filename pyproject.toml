@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "testix"
-version = "8.0.1"
+version = "8.0.2"
 description = "Mocking framework Python with *exact* Scenarios"
 authors = ["Yoav Kleinberger <haarcuba@gmail.com>"]
 license = "MIT"
@@ -16,7 +16,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.8"
-pytest = "^6.2.5"
+pytest = "^7.0.1"
 
 [tool.poetry.dev-dependencies]
 hypothesis = "^6.24.0"
