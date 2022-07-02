@@ -12,7 +12,7 @@ The Test-First Mocking Framework
 Welcome to Testix's documentation!
 ==================================
 
-**Testix** is a Mocking framework for Python, meant to be used with pytest_
+**Testix** is the Test-First (TDD) Friendly Mocking framework for Python, meant to be used with pytest_
 
 .. _pytest: https://docs.pytest.org/en/latest/
 
