@@ -43,3 +43,10 @@ task :enforce_success, [:status] do |t, args|
   status = args[:status]
   fail("FAILURE: received '#{status}' only 'success' is acceptable!") if status != 'success'
 end
+
+namespace :documentation do
+  desc "build html documentaion"
+  task :html do
+    sh "sphinx-build -b html  docs/ docs/_build"
+  end
+end
