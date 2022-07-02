@@ -35,7 +35,10 @@ Testix flow is a bit different
 Quick Example
 -------------
 
+Here is a quick example of how Testix works.
+
 .. code:: python
+
     # to test the Chatbot class, we pass it a mock socket called "sock"
     tested = chatbot.Chatbot(Fake('sock'))
 
@@ -63,6 +66,19 @@ The ``Scenario`` object does essentially two things:
 * enforce our expectations (this is done by the ``with`` statement)
 
 Want to know more? Read the Tutorial.
+
+Advantages
+----------
+
+Testix has been written to promote the following
+
+* readability - the expectations are very similar to the actual code that they
+  test (compare ``s.sock.recv(4096)`` with the standard ``sock.recv.assert_called_once_with(4096)``
+* Test Driven Development friendliness: if you use ``sock.recv.assert_called_once_with(4096)``, you must
+  use it after the code has run. With Testix, you specify what you *expect*, and the asserting 
+  is done for you by magic.
+
+What are you waiting for? Read the Tutorial!
 
 .. toctree::
    :maxdepth: 2
