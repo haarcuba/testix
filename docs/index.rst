@@ -65,7 +65,7 @@ The ``Scenario`` object does essentially two things:
 * setup our expectations (these are the ``s.sock.*`` lines)
 * enforce our expectations (this is done by the ``with`` statement)
 
-Want to know more? Read the Tutorial.
+Want to know more? Read the :doc:tutorial.
 
 Advantages
 ----------
@@ -78,11 +78,14 @@ Testix has been written to promote the following
   use it after the code has run. With Testix, you specify what you *expect*, and the asserting 
   is done for you by magic.
 
-What are you waiting for? Read the Tutorial!
+What are you waiting for? Read the :doc:`Tutorial<tutorial>`
+
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+
+   tutorial
 
 
 
