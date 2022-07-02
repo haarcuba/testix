@@ -6,6 +6,12 @@
 Welcome to Testix's documentation!
 ==================================
 
+**Testix** is a Mocking framework for Python, meant to be used with [pytest](https://docs.pytest.org/en/latest/).
+
+.. note::
+
+   These docs are under development!
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
