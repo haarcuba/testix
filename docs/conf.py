@@ -29,8 +29,9 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_permalinks_icon = '<span>#</span>'
-html_theme = 'sphinxawesome_theme'
+import sphinx_bernard_theme
+html_theme = 'sphinx_bernard_theme'
+html_theme_path = [sphinx_bernard_theme.get_html_theme_path()]
 
 
 # Add any paths that contain custom static files (such as style sheets) here,

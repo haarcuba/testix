@@ -1,1 +1,1 @@
-sphinxawesome-theme
+sphinx_bernard_theme 
