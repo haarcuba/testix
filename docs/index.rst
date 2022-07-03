@@ -80,18 +80,11 @@ Testix has been written to promote the following
 
 What are you waiting for? Read the :doc:`Tutorial<tutorial>`
 
+Read More
+---------
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
    tutorial
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
