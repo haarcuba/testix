@@ -1,4 +1,5 @@
 .. include:: ../common.rst
+
 Tutorial
 ========
 
@@ -12,4 +13,6 @@ We will develop a simple chat server and client.
 .. toctree::
     design
     e2e_test
+    fail_properly
+
 
