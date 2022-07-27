@@ -1,6 +1,4 @@
-.. |testix| replace:: Testix
-.. |testix_bold| replace:: **Testix**
-
+.. include:: common.rst
 |testix|
 ========
 The Test-First Mocking Framework
@@ -10,7 +8,7 @@ The Test-First Mocking Framework
 
 .. _pytest: https://docs.pytest.org/en/latest/
 
-.. note::
+.. warning::
 
    These docs are under development!
 
@@ -75,7 +73,7 @@ Advantages
   use it after the code has run. With |testix|, you specify what you *expect*, and the asserting 
   is done for you by magic.
 
-What are you waiting for? Read the :doc:`Tutorial<tutorial>`
+What are you waiting for? Read the :doc:`Tutorial<tutorial/index>`
 
 Read More
 ---------
@@ -84,4 +82,4 @@ Read More
    :maxdepth: 2
    :caption: Contents:
 
-   tutorial
+   tutorial/index

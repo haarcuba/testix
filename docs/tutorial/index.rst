@@ -1,3 +1,4 @@
+.. include:: ../common.rst
 Tutorial
 ========
 
@@ -5,8 +6,10 @@ This tutorial will walk you through `Test Driven Development <https://en.wikiped
 
 .. _pytest: https://docs.pytest.org/en/latest/
 
-In part 1, we will do relatively small examples, and in part 2 we will actually develop a toy Application.
+We will develop a simple chat server and client.
 
 
 .. toctree::
-    messaging
+    design
+    e2e_test
+
