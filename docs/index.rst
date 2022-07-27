@@ -1,24 +1,19 @@
-======
-TESTIX
-======
---------------------------------
+.. include:: common.rst
+|testix|
+========
 The Test-First Mocking Framework
 --------------------------------
-.. Testix documentation master file, created by
-   sphinx-quickstart on Sat Jul  2 18:50:52 2022.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
 
-**Testix** is the Test-First (TDD) Friendly Mocking framework for Python, meant to be used with pytest_
+|testix_bold| is the Test-First (TDD) Friendly Mocking framework for Python, meant to be used with pytest_
 
 .. _pytest: https://docs.pytest.org/en/latest/
 
-.. note::
+.. warning::
 
    These docs are under development!
 
 
-Testix is special because it allows you to specify what your mock objects do,
+|testix| is special because it allows you to specify what your mock objects do,
 and it then enforces your specifications automatically. It also reduces (albeit
 not entirely) mock setup. 
 
@@ -27,7 +22,7 @@ Other frameworks usually have a flow like this:
 * let code do something with mock
 * assert mock used in correct way
 
-Testix flow is a bit different
+|testix| flow is a bit different
 * setup mock objects
 * specify *exactly* what should happen to them using a Scenario context
   
@@ -35,7 +30,7 @@ Testix flow is a bit different
 Quick Example
 -------------
 
-Here is a quick example of how Testix works.
+Here is a quick example of how |testix| works.
 
 .. code:: python
 
@@ -70,15 +65,15 @@ Want to know more? Read the :doc:tutorial.
 Advantages
 ----------
 
-Testix has been written to promote the following
+|testix| has been written to promote the following
 
 * readability - the expectations are very similar to the actual code that they
   test (compare ``s.sock.recv(4096)`` with the standard ``sock.recv.assert_called_once_with(4096)``
 * Test Driven Development friendliness: if you use ``sock.recv.assert_called_once_with(4096)``, you must
-  use it after the code has run. With Testix, you specify what you *expect*, and the asserting 
+  use it after the code has run. With |testix|, you specify what you *expect*, and the asserting 
   is done for you by magic.
 
-What are you waiting for? Read the :doc:`Tutorial<tutorial>`
+What are you waiting for? Read the :doc:`Tutorial<tutorial/index>`
 
 Read More
 ---------
@@ -87,4 +82,4 @@ Read More
    :maxdepth: 2
    :caption: Contents:
 
-   tutorial
+   tutorial/index
