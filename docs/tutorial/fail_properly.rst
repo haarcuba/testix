@@ -74,15 +74,21 @@ Essentially, imagine we wrote a test, wrote some skeleton code, ran the test - a
 The more common scenario however is that we wrote the test, wrote the skeleton code, ran the test - and it failed, but *not in the way we planned*. This means that the test does not, in fact, test what we want. 
 
 If we write our test *after* we've developed our code, how will we ever know that the test actually tests what we think it is testing? You'd be amazed at the number of tests which exist out there and in fact, do not test what they are supposed to.
-I have seen with my own eyes, more than once, tests that do not test *anything at all*.
+I have seen with my own eyes, more than once, tests that do not test *anything at all*. This happens because once code has been written, the tests are written to accommodate the code, which is *exactly* the opposite of what should happen.
 
-But if we write our tests first, and **fail them properly**,
+Perhaps the most compelling argument is the following: think about testing the performance
+of a human being, not a computer program, e.g. testing a student in high school or university.
+Should we have the student write his or her answers first, and *then* write the test 
+to accommodate these answers? Utterly absurd. 
+
+We should write the test first, and then use it to test the student.
+
+If we write our tests first, and **fail them properly**,
 
 * we make sure they actually test what they are supposed to
-* we let the test drive the design of the application
 * we take pains to actually think about how the code will be used
+* we let the test drive the design of the application
 
 So, it is essential before developing some behaviour, that our tests fail properly.
 
-Now, let's get on with implementing the application. 
-We'll start with the server.
+Now, let's get on with implementing the application. We'll start with the server.
