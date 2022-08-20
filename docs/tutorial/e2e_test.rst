@@ -39,6 +39,7 @@ code below is not the final test, and will not really work, but it's a sketch:
 
 .. literalinclude:: ../chatapp/tests/e2e/pseudo/test_send_and_receive_messages_1.py
    :linenos:
+   :caption: test_send_and_receive_messages.py
 
 What do we have here? The idea is that, e.g., the ``alice`` client sends a message to ``Bob``, 
 the message is relayed by our app, and when the ``on_message`` callback is called, it actually appends
@@ -55,6 +56,7 @@ First, let's fix the ``on_message`` thing:
 
 .. literalinclude:: ../chatapp/tests/e2e/pseudo/test_send_and_receive_messages_2.py
    :linenos:
+   :caption: test_send_and_receive_messages.py
    :emphasize-lines: 3-8,11-12,19-20
 
 Nice. 
@@ -63,6 +65,7 @@ Now let's sleep a little to allow messages some time to get to us.
 
 .. literalinclude:: ../chatapp/tests/e2e/pseudo/test_send_and_receive_messages_3.py
    :linenos:
+   :caption: test_send_and_receive_messages.py
    :emphasize-lines: 2,20-21
 
 Finally, we will need to launch the server, and, come to think about it,
@@ -72,6 +75,7 @@ we can start testing) - this is a good ocasion to use pytest's `fixtures feature
 
 .. literalinclude:: ../chatapp/tests/e2e/pseudo/test_send_and_receive_messages_4.py
    :linenos:
+   :caption: test_send_and_receive_messages.py
    :emphasize-lines: 13-18,20,23-24
 
 Tests Driving our Code
