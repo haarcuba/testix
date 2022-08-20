@@ -49,4 +49,11 @@ namespace :documentation do
   task :html do
     sh "sphinx-build -b html  docs/ docs/_build"
   end
+
+  desc "run the tests"
+  task :tests do
+    python_path = ENV['PYTHONPATH'] || ''
+    fail('you should source the docs/docs_environment.env script') if ! python_path.start_with?('docs/chatapp/source')
+    sh "python -m pytest docs/chatapp/tests/e2e/test_send_and_receive_messages.py"
+  end
 end
