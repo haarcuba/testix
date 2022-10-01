@@ -7,8 +7,14 @@ This tutorial will walk you through `Test Driven Development <https://en.wikiped
 
 .. _pytest: https://docs.pytest.org/en/latest/
 
-We will develop a simple chat server and client.
+We will develop a small project in this tutorial, test driven of course, which
+solves the following real-life problem: suppose you want to run some subprocess,
+and you want to read its output line-by-line in real time and take appropriate action.
 
+An example application might be that you want to monitor live logs and do something
+whenever a log line has :code:`ERROR` in it.
+
+Let's call this library :code:`LineMonitor`.
 
 .. toctree::
     design

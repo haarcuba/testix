@@ -1,21 +1,25 @@
 .. include:: ../common.rst
 
-Design of the Chat App
-======================
+Design of the LineMonitor
+=========================
 
-We'll have an HTTP based server, and 
-a small client library that sends and receives messages 
-from said server.
+Python has an excellent library called `subprocess <https://docs.python.org/3/library/subprocess.html>`_, which allows a quite generic inteface for launching subprocsses using its `Popen` class.
 
-So we have
+We will have a |LineMonitor| class which:
 
-* HTTP Based Chat Server relaying messages between clients
-* Client library that sends and receives messages to/from other clients via the Chat Server
+* will launch subprocesses using |subprocess| under the hood
+* will allow the caller to register callbacks that get called from every line of output from the subprocess
+* will also implement an iterator form, e.g. you can write something like
 
-Since this is a Test Driven Development tutorial as well as a |testix| tutorial,
-let's discuss the tests.
+    .. code:: python
 
-We will have both *unit tests* and *integration tests*.
+       for line in line_monitor:
+            print(f'this just in: {line}')
+
+
+Since this is a Test Driven Development tutorial as well as a |testix| tutorial, let's discuss the tests.
+
+First a short primer on types of tests.
 
 Unit Tests
 ----------
@@ -26,7 +30,7 @@ Generally speaking, unit tests
 
 * test logic
 * do not perform I/O (perhaps only to local files)
-* use mocks (not always, but many times)
+* use mocks (not always, but many times) - this is where |testix| comes in.
 
 Integration Tests
 -----------------
@@ -42,12 +46,13 @@ Generally speaking, integration tests
 End-to-End (E2E) Tests
 ----------------------
 
-In our case, since the app is quite simple,
-the integration test will actually test the entire app,
+In our case, since the project is quite small,
+the integration test will actually test the scope of the entire project.
 and so it is more appropriately called an End-to-End (E2E) Test.
 
-In real projects, E2E tests usually include also an actual deployment,
-which is as similar as possible to real life deployments.
+In real projects, E2E tests usually include 
+* an actual deployment, which is as similar as possible to real life deployments.
+* various UI testing techniques, e.g. launching a web-browser to use some webapp
 
 In our toy example, we don't have such complications.
 

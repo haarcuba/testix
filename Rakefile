@@ -50,6 +50,11 @@ namespace :documentation do
     sh "sphinx-build -b html  docs/ docs/_build"
   end
 
+  desc "view the docs you just built with firefox"
+  task :show do
+    sh "firefox docs/_build/index.html"
+  end
+
   desc "run the tests"
   task :tests do
     python_path = ENV['PYTHONPATH'] || ''
