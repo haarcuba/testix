@@ -5,7 +5,7 @@ Design of the LineMonitor
 
 Python has an excellent library called `subprocess <https://docs.python.org/3/library/subprocess.html>`_, which allows a quite generic inteface for launching subprocsses using its `Popen` class.
 
-We will have a |LineMonitor| class which:
+We want to have a ``LineMonitor`` class which:
 
 * will launch subprocesses using |subprocess| under the hood
 * will allow the caller to register callbacks that get called from every line of output from the subprocess

@@ -57,8 +57,8 @@ namespace :documentation do
 
   desc "run the tests"
   task :tests do
-    python_path = ENV['PYTHONPATH'] || ''
-    fail('you should source the docs/docs_environment.env script') if ! python_path.start_with?('docs/chatapp/source')
-    sh "python -m pytest docs/chatapp/tests/e2e/test_send_and_receive_messages.py"
+    documentation_environment_loaded = ENV['TESTIX_DOCUMENTATION_ENVIRONMENT'] == "True"
+    fail('you should source the docs/docs_environment.env script') if ! documentation_environment_loaded
+    sh "python -m pytest docs/line_monitor/tests/e2e"
   end
 end
