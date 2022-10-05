@@ -21,6 +21,8 @@ Since this is a Test Driven Development tutorial as well as a |testix| tutorial,
 
 First a short primer on types of tests.
 
+.. _unit_tests:
+
 Unit Tests
 ----------
 

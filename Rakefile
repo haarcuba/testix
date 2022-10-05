@@ -55,10 +55,18 @@ namespace :documentation do
     sh "firefox docs/_build/index.html"
   end
 
-  desc "run the tests"
-  task :tests do
-    documentation_environment_loaded = ENV['TESTIX_DOCUMENTATION_ENVIRONMENT'] == "True"
-    fail('you should source the docs/docs_environment.env script') if ! documentation_environment_loaded
-    sh "python -m pytest docs/line_monitor/tests/e2e"
+
+  namespace :tests do
+    desc "run the line_monitor tests"
+    task :line_monitor do
+      documentation_environment_loaded = ENV['TESTIX_DOCUMENTATION_ENVIRONMENT'] == "True"
+      fail('you should source the docs/docs_environment.env script') if ! documentation_environment_loaded
+      sh "python -m pytest docs/line_monitor/tests/e2e"
+    end
+
+    desc "run the other tests"
+    task :others do
+      sh "python -m pytest docs/tutorial"
+    end
   end
 end
