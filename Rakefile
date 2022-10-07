@@ -63,10 +63,5 @@ namespace :documentation do
       fail('you should source the docs/docs_environment.env script') if ! documentation_environment_loaded
       sh "python -m pytest docs/line_monitor/tests/e2e"
     end
-
-    desc "run the other tests"
-    task :others do
-      sh "python -m pytest docs/tutorial"
-    end
   end
 end

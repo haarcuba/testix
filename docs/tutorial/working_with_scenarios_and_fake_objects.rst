@@ -55,13 +55,14 @@ We'll start by introducing a test for ``send_some_data`` and then explaining it.
 
 Note that first we need to fail the test - so ``send_some_data`` here is only a skeleton implementation that really does nothing.
 
-.. literalinclude:: tests/data_sender_1.py
-   :caption: data_sender.py skeleton implementation
-
-.. literalinclude:: tests/test_sending_data.py
+.. literalinclude:: other_tests/data_sender_example/1/test_sending_data.py
    :linenos:
    :caption: test_sending_data.py
-   :emphasize-lines: 7,8,9,11
+   :emphasize-lines: 7,8,10
+
+.. literalinclude:: other_tests/data_sender_example/1/data_sender.py
+   :caption: data_sender.py skeleton implementation
+
 
 What's going on here? First, we create a `Fake` object ``sock`` - this is |testix| generic mock object - note that we 
 define a name for it explicitly - ``'sock'``. We then start a ``Scenario()`` context manager in the ``with Scenario() as s`` statement.
@@ -89,7 +90,8 @@ Let's try to run this test. Of course we expect failure - the ``send_some_data``
 
 .. code-block:: console
 
-    $ python -m pytest docs/tutorial
+    $ python -m pytest -v docs/tutorial/other_tests/data_sender_example/1
+
 
     ....... OUTPUT SKIPPED FOR BREVITY .......
     E       Failed:
@@ -100,9 +102,9 @@ Let's try to run this test. Of course we expect failure - the ``send_some_data``
 
 
 
- As you can see, |testix| tells us that "not all expectations were met", and details the missing expectation in a list: ``sock.send(b'the data')``.
+As you can see, |testix| tells us that "not all expectations were met", and details the missing expectation in a list: ``sock.send(b'the data')``.
 
- We have a **properly failing test**, yay!
+We have a **properly failing test**, yay!
 
 
 Meeting the Expectations
@@ -111,7 +113,7 @@ Meeting the Expectations
 Now that we know that the test's expecations aren't being met - let's change the code to meet them:
 
 
-.. literalinclude:: tests/data_sender_2.py
+.. literalinclude:: other_tests/data_sender_example/2/data_sender.py
    :caption: meet the demand for sending data
    :emphasize-lines: 2
 
@@ -120,9 +122,9 @@ Now our tests pass
 
 .. code-block:: console
 
-    python -m pytest -v docs/tutorial
+    python -m pytest -v docs/tutorial/other_tests/data_sender_example/2
 
-    docs/tutorial/tests/test_sending_data.py::test_sending_data PASSED                                                                                     [100%]
+    docs/tutorial/other_tests/data_sender_example/2/test_sending_data.py::test_sending_data PASSED
 
 
 Yay :)
@@ -130,7 +132,7 @@ Yay :)
 Let's say that now we want our sending function to send a specific header before the data which specifies the data's length.
 Since we're doing TDD here, we first set our expectations in the test
 
-.. literalinclude:: tests/test_send_prefix_1.py
+.. literalinclude:: other_tests/data_sender_example/prefix_0/test_sending_data.py
    :linenos:
    :caption: testing for a header
    :emphasize-lines: 8
@@ -154,14 +156,14 @@ Next move - let's see that our test fails properly. When we run it we get
     E       === END ===
 
 
-|testix| what happened here? Well, the scenario wants to see ``sock.send(b'SIZE:8 ')`` - however, since
+What happened here? Well, the scenario wants to see ``sock.send(b'SIZE:8 ')`` - however, since
 we have not changed our code yet, the actual call is the good old ``sock.send(b'the data')``, therefore
 the *expected* call is different from the *actual* call, and |testix| fails the test for us. It also
 specifies the particuar line that got us in trouble, and gives us a peek into the next expecations in the scenario.
 
-Let's meet our demands:
+Good news, we have a properly failing test. Now, let's meet the demands:
 
-.. literalinclude:: tests/data_sender_prefix_1.py
+.. literalinclude:: other_tests/data_sender_example/prefix_1/data_sender.py
    :linenos:
    :caption: sending a header 1
    :emphasize-lines: 3,4
@@ -185,10 +187,16 @@ OK let's go:
 
 Oops! Seems like we forgot a ``b' '``, let's correct our code:
 
-.. literalinclude:: tests/data_sender_prefix_2.py
+.. literalinclude:: other_tests/data_sender_example/prefix_2/data_sender.py
    :linenos:
    :caption: sending a header 2
    :emphasize-lines: 5
 
 Now the test passes.
+
+.. code-block:: console
+
+    $ python -m pytest -v docs/tutorial/other_tests/data_sender_example/prefix_2
+
+    docs/tutorial/other_tests/data_sender_example/prefix_2/test_sending_data.py::test_sending_data PASSED
 
