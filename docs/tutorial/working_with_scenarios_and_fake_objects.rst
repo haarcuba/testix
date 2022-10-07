@@ -24,7 +24,7 @@ When testing we
 * don't *really* want to send data over a *real* socket
 * do want to verify that the ``send_some_data`` function called ``sock.send(b'the data')``. 
 
-The solution is to pass ``send_some_data`` an object that implements a ``.send`` method, but which is not an actual socket. Instead this object will just record that ``.send`` was called, and we'll be able to query it to see that it was called with ``b'the data'``.
+The solution is to pass ``send_some_data`` an object that implements a ``.send`` method, but which is not an actual socket. Instead this object will just record that ``.send`` was called, and we'll be able to query it to see that it was called with ``b'the data'``. The idea here is that there's no point testing sockets - we know that those work. The point here is to test that *our code does the right thing with the socket*.
 
 The Standard Library Way - `unittest.mock`
 ------------------------------------------
@@ -48,11 +48,15 @@ Let's see how |testix| approaches the same idea. We will discuss the advantages 
 Testix Fake Objects and Scenarios
 ---------------------------------
 
+Setting the Expectations
+************************
+
 We'll start by introducing a test for ``send_some_data`` and then explaining it.
-For brevity, we put the test and the functions it is testing, ``send_some_data``, in the same file (when we
-return to our ``line_monitor`` we'll do it more realistically).
 
 Note that first we need to fail the test - so ``send_some_data`` here is only a skeleton implementation that really does nothing.
+
+.. literalinclude:: tests/data_sender_1.py
+   :caption: data_sender.py skeleton implementation
 
 .. literalinclude:: tests/test_sending_data.py
    :linenos:
@@ -69,8 +73,8 @@ we specify one demand:
 
    s.sock.send(b'the data')
 
-This means - we demand that the Fake object method ``sock.send`` be called with ``b'the data'`` as the argument. When the ``Scenario``
-context ends - the ``Scenario`` object will automatically enforce these demands, as we'll see shortly.
+This means - we expect that the Fake object method ``sock.send`` be called with ``b'the data'`` as the argument. When the ``Scenario``
+context ends - the ``Scenario`` object will automatically enforce these expectations, as we'll see shortly.
 
 Finally - we cannot hope to meet the demands of the test without actually calling the code:
 
@@ -94,6 +98,97 @@ Let's try to run this test. Of course we expect failure - the ``send_some_data``
     E       Scenario ended, but not all expectations were met. Pending expectations (ordered): [sock.send(b'the data')]
 
 
+
+
  As you can see, |testix| tells us that "not all expectations were met", and details the missing expectation in a list: ``sock.send(b'the data')``.
 
  We have a **properly failing test**, yay!
+
+
+Meeting the Expectations
+************************
+
+Now that we know that the test's expecations aren't being met - let's change the code to meet them:
+
+
+.. literalinclude:: tests/data_sender_2.py
+   :caption: meet the demand for sending data
+   :emphasize-lines: 2
+
+Now our tests pass
+
+
+.. code-block:: console
+
+    python -m pytest -v docs/tutorial
+
+    docs/tutorial/tests/test_sending_data.py::test_sending_data PASSED                                                                                     [100%]
+
+
+Yay :)
+
+Let's say that now we want our sending function to send a specific header before the data which specifies the data's length.
+Since we're doing TDD here, we first set our expectations in the test
+
+.. literalinclude:: tests/test_send_prefix_1.py
+   :linenos:
+   :caption: testing for a header
+   :emphasize-lines: 8
+
+Now our scenario demands that `send()` be called twice - once with the header, and then with the data.
+
+Next move - let's see that our test fails properly. When we run it we get
+
+.. code-block:: console
+
+    E       Failed:
+    E       testix: ExpectationException
+    E       testix details:
+    E       === Scenario (no title) ===
+    E        expected: sock.send(b'SIZE:8 ')
+    E        actual  : sock.send(b'the data')
+    E       === OFFENDING LINE ===
+    E        socket.send(data) (/home/yoav/work/testix/docs/tutorial/tests/data_sender.py:2)
+    E       === FURTHER EXPECTATIONS (showing at most 10 out of 1) ===
+    E        sock.send(b'the data')
+    E       === END ===
+
+
+|testix| what happened here? Well, the scenario wants to see ``sock.send(b'SIZE:8 ')`` - however, since
+we have not changed our code yet, the actual call is the good old ``sock.send(b'the data')``, therefore
+the *expected* call is different from the *actual* call, and |testix| fails the test for us. It also
+specifies the particuar line that got us in trouble, and gives us a peek into the next expecations in the scenario.
+
+Let's meet our demands:
+
+.. literalinclude:: tests/data_sender_prefix_1.py
+   :linenos:
+   :caption: sending a header 1
+   :emphasize-lines: 3,4
+
+
+OK let's go:
+
+.. code-block:: console
+
+    E       Failed:
+    E       testix: ExpectationException
+    E       testix details:
+    E       === Scenario (no title) ===
+    E        expected: sock.send(b'SIZE:8 ')
+    E        actual  : sock.send(b'SIZE:8')
+    E       === OFFENDING LINE ===
+    E        socket.send(header) (/home/yoav/work/testix/docs/tutorial/tests/data_sender_prefix.py:5)
+    E       === FURTHER EXPECTATIONS (showing at most 10 out of 1) ===
+    E        sock.send(b'the data')
+
+
+Oops! Seems like we forgot a ``b' '``, let's correct our code:
+
+.. literalinclude:: tests/data_sender_prefix_2.py
+   :linenos:
+   :caption: sending a header 2
+   :emphasize-lines: 5
+
+Now the test passes.
+
