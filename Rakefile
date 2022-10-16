@@ -47,6 +47,7 @@ end
 namespace :documentation do
   desc "build html documentaion"
   task :html do
+    rm_rf "docs/_build"
     sh "sphinx-build -b html  docs/ docs/_build"
   end
 
