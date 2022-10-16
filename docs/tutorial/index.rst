@@ -21,7 +21,8 @@ Let's call this library :code:`LineMonitor`.
     e2e_test
     fail_properly
     working_with_scenarios_and_fake_objects
-    recap_1
+    more_advance_tests
     exact_enforcement
+    recap_1
 
 
