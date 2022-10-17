@@ -47,13 +47,22 @@ end
 namespace :documentation do
   desc "build html documentaion"
   task :html do
+    rm_rf "docs/_build"
     sh "sphinx-build -b html  docs/ docs/_build"
   end
 
-  desc "run the tests"
-  task :tests do
-    python_path = ENV['PYTHONPATH'] || ''
-    fail('you should source the docs/docs_environment.env script') if ! python_path.start_with?('docs/chatapp/source')
-    sh "python -m pytest docs/chatapp/tests/e2e/test_send_and_receive_messages.py"
+  desc "view the docs you just built with firefox"
+  task :show do
+    sh "firefox docs/_build/index.html"
+  end
+
+
+  namespace :tests do
+    desc "run the line_monitor tests"
+    task :line_monitor do
+      documentation_environment_loaded = ENV['TESTIX_DOCUMENTATION_ENVIRONMENT'] == "True"
+      fail('you should source the docs/docs_environment.env script') if ! documentation_environment_loaded
+      sh "python -m pytest docs/line_monitor/tests/e2e"
+    end
   end
 end
