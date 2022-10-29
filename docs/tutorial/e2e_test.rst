@@ -1,3 +1,4 @@
+.. include:: ../colors.rst
 .. include:: ../common.rst
 
 .. _e2etest:
@@ -27,7 +28,7 @@ So we want our users to do something like this
    captured_lines = []
 
    monitor = line_monitor.LineMonitor(['ls', '-l'], on_output=captured_lines.append) # launch `ls -l` to list the files, lines get appended into our captured_lines list
-   monitor.wait() # wait until process has ended
+   monitor.monitor() # monitor process until it ends
    for line in captured_lines:
         print(f'saw this: {line}')
    

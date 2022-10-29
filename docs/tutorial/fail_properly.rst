@@ -1,4 +1,6 @@
+.. include:: ../colors.rst
 .. include:: ../common.rst
+
 
 Failing Properly
 ================
@@ -31,7 +33,9 @@ In concrete terms, we want it to fail because a subprocess has seemingly been la
 So, let's write some basic code that achieves just that.  We create a ``line_monitor.py`` file 
 within our ``import`` path with skeleton code:
 
-.. literalinclude:: ../line_monitor/source/line_monitor.py
+.. _skeleton_line_monitor:
+
+.. literalinclude:: ../line_monitor/source/0/line_monitor.py
    :linenos:
    :caption: line_monitor.py
 

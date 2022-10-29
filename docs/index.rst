@@ -1,4 +1,6 @@
+.. include:: colors.rst
 .. include:: common.rst
+
 |testix|
 ========
 The Test-First Mocking Framework

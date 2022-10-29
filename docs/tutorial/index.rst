@@ -1,3 +1,4 @@
+.. include:: ../colors.rst
 .. include:: ../common.rst
 
 Tutorial
@@ -21,5 +22,6 @@ Let's call this library :code:`LineMonitor`.
     e2e_test
     fail_properly
     basics/index.rst
+    line_monitor_unit_tests/index.rst
 
 
