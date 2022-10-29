@@ -66,4 +66,22 @@ OK this seems reasonable, let's get some |RED|! Running this both our tests fail
     E        expected: open('read_from_fd', encoding = 'latin-1')
     E        actual  : subprocess.Popen(['my', 'command', 'line'], stdout = 'write_to_fd', close_fds = True)
 
-We changed our expectations from ``.launch_subprocess()`` to call ``open()``, but we did not change the implementation yet, so |testix| is surprised to find that we actually call ``subprocess.Popen`` - and makes our test fail. Good, let's fix it and get to |GREEN|.
+We changed our expectations from ``.launch_subprocess()`` to call ``open()``, but we did not change the implementation yet, so |testix| is surprised to find that we actually call ``subprocess.Popen`` - and makes our test fail. 
+
+Good, let's fix it and get to |GREEN|. We introduce the following to our code:
+
+.. literalinclude:: ../../line_monitor/source/5/line_monitor.py
+   :linenos:
+   :emphasize-lines: 5-6,9,15,19-21
+
+This passes the test, but that's not really what we meant - right? Obviously we
+would like a ``while True`` to replace the `for _ in range(3)` here.
+
+However, if we write a ``while True``, then |testix| will fail us for the 4th call to ``.readline()``,
+since it only expects 3 calls.
+
+Testing infinite, ``while True`` loops is a problem, but we can get around it
+by injecting an exception that will terminate the loop. Just as we can determine what
+calls to ``Fake`` objects return, we can make them raise exceptions.
+
+|testix| even comes with an exception class just for this use case, `TestixLoopBreaker`.
