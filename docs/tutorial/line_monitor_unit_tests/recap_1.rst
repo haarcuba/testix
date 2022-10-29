@@ -21,6 +21,13 @@ test fail as well as the new monitor test. This makes sense, since the launching
 now includes a call to ``open`` that it didn't before - and the code doesn't support that yet,
 so the test fails.
 
+Another thing we ran into is that sometimes we get |GREEN| even when we wanted |RED|.
+This should make you uneasy - it usually means that the test is not really testing what
+you think it is. In our case, however, it was just because an edge case which we 
+added a test for was already covered by our existing code. When that happens,
+strict TDD isn't really possible - and you need to revert to making sure
+that if you break the code on purpose, it breaks the test in the proper manner.
+
 YAGNI
 -----
 

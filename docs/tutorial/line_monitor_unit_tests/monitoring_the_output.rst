@@ -153,3 +153,43 @@ Let's add code that fixes this.
    :emphasize-lines: 4-5
 
 Our test passes - back to |GREEN|.
+
+Edge Case Test: Asynchronous Callback Registration
+--------------------------------------------------
+
+What happens if we start monitoring without a callback, wait a while,
+and only then register a callback?
+
+This allows a use case where we call the ``.monitor()`` (which blocks) in one thread,
+and register a callback in another thread.
+
+Let's decide that in this case, the callback will receive output
+which is captured only after the callback has been registered.
+
+Our test will be similar to ``test_receive_output_lines_via_callback()``, however,
+we need to somehow make ``tested.register_callback()`` happen somewhere
+between one ``.readline()`` and the next. This is not so easy to do because
+of the same ``while True`` that gave us some trouble before.
+
+|testix| allows us to simulate asynchronous events like this using its ``Hook`` construct.
+Essentially ``Hook(function, *args, **kawrgs)`` can be injected into the middle of a ``Scenario``,
+and it will call ``function(*args, **kwargs)`` at the point in which it's injected.
+
+Here's how to write such a test:
+
+.. literalinclude:: ../../line_monitor/tests/unit/10/test_line_monitor.py
+   :linenos:
+   :lines: 54-68
+
+When we run it, we discover it's already |GREEN|! Oh no!
+
+Turns out our previous change already solved this problem. This happens sometimes in TDD,
+so to deal with it, we revert our previous change and make sure this test becomes |RED| - and carefully
+check that it failed properly. Happily, this is the case for this particular test.
+
+Let's Recap
+-----------
+
+We now have our first implementation of the ``LineMonitor``. It essentially works, 
+but it's still has its problems. We'll tackle these problems later in this tutorial,
+but first, let's do a short recap.
