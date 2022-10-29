@@ -132,7 +132,7 @@ collected from the subprocess when no callback has been registered is discarded.
 
 Notice there's no ``.register_callback()`` here. We demand that ``.readline()`` be called, but we don't demand anything else.
 
-Running this fails with
+Running this fails with a |RED|
 
 .. code-block:: console
 
@@ -147,3 +147,9 @@ Which reveals that we in fact, did not handle this edge case very well.
 
 Let's add code that fixes this.
 
+.. literalinclude:: ../../line_monitor/source/9/line_monitor.py
+   :linenos:
+   :lines: 18-23
+   :emphasize-lines: 4-5
+
+Our test passes - back to |GREEN|.
