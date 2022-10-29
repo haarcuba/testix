@@ -2,3 +2,4 @@
 .. |testix_bold| replace:: **Testix**
 .. |Client| replace:: ``Client``
 .. |subprocess| replace:: ``subprocess``
+.. |pseudoterminal| replace:: pseudo-terminal
