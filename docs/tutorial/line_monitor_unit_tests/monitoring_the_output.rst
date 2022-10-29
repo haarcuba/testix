@@ -1,0 +1,69 @@
+.. include:: ../../colors.rst
+.. include:: ../../common.rst
+
+Monitoring The Output
+=====================
+
+Next we want to test the following behaviour: we
+register a callback with our ``LineMonitor`` object using its ``.register_callback()`` method,
+and it calls our callback with each line of output 
+it reads from the |pseudoterminal|.
+
+Python streams have a useful ``.readline()`` method, so let's wrap the read file-descriptor of the |pseudoterminal| with a stream. It turns out
+that you can wrap a file descriptor with a simple call to the built-on ``open()`` function, so we'll use that.
+
+
+Note that we *add a new test*, leaving the previous one intact. This means that we *keep everything we already have working*, while we add a test for this new behaviour.
+
+Let's start by describing a scenario where we read several lines from the
+|pseudoterminal| and demand that they are transferred to our callback.
+
+.. literalinclude:: ../../line_monitor/tests/unit/3/test_line_monitor.py
+   :linenos:
+   :lines: 18-32
+   :emphasize-lines: 5,8-11,13-15
+
+What's going on here?
+
+* We add a demand that our code create a Python stream from the |pseudoterminal|'s read-descriptor before launching the subprocess.
+* We then call `.launch_subprocess()` to meet those demands.
+* We describe the "read-from-|pseudoterminal|-forwared-to-callback" data flow for 3 consecutive lines.
+* We register a ``Fake('my_callback')`` object as our callback - this way, when the code calls the callback,
+  it will be meeting our demands in this test. It's important that ``'my_callback'`` is used as this ``Fake``'s name,
+  since we refer to it in the ``Scenario``.
+* We then call the ``.monitor()`` method - this method should do all the reading and forwarding.
+
+We must also remember to mock the built-in `open`:
+
+.. literalinclude:: ../../line_monitor/tests/unit/3/test_line_monitor.py
+   :linenos:
+   :lines: 5-9
+   :emphasize-lines: 5
+
+We can already see a problem: the scenario is actually built out of two parts - 
+the part which tests ``.launch_subprocess()``, and the part which tests ``.monitor()``.
+
+Furthermore, since we have our previous test in ``test_lauch_subprocess_with_pseudoterminal``, which doesn't expect the call to ``open()``,
+the two tests are in contradiction.
+
+The way to handle this is to refactor our test a bit:
+
+.. literalinclude:: ../../line_monitor/tests/unit/4/test_line_monitor.py
+   :linenos:
+   :emphasize-lines: 9,11-14,19,25
+
+
+By convention, helper functions that help us modify scenarios end with `_scenario`.
+
+OK this seems reasonable, let's get some |RED|! Running this both our tests fail:
+
+.. code-block:: console
+
+    E       Failed:
+    E       testix: ExpectationException
+    E       testix details:
+    E       === Scenario (no title) ===
+    E        expected: open('read_from_fd', encoding = 'latin-1')
+    E        actual  : subprocess.Popen(['my', 'command', 'line'], stdout = 'write_to_fd', close_fds = True)
+
+We changed our expectations from ``.launch_subprocess()`` to call ``open()``, but we did not change the implementation yet, so |testix| is surprised to find that we actually call ``subprocess.Popen`` - and makes our test fail. Good, let's fix it and get to |GREEN|.

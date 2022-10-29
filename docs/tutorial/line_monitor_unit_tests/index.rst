@@ -21,3 +21,4 @@ Let's go.
    :maxdepth: 1
 
    launching_the_subprocess
+   monitoring_the_output
