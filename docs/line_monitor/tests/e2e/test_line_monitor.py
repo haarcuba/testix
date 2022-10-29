@@ -6,6 +6,6 @@ def test_line_monitor():
     tested.register_callback(captured_lines.append)
     PRINT_10_LINES_COMMAND = ['python', '-c', 'for i in range(10): print(f"line {i}")']
     tested.launch_subprocess(PRINT_10_LINES_COMMAND)
-    tested.wait()
+    tested.monitor()
     EXPECTED_LINES = [f'line {i}' for i in range(10)]
     assert captured_lines == EXPECTED_LINES

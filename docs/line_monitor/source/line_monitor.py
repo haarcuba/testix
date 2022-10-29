@@ -5,5 +5,5 @@ class LineMonitor:
     def launch_subprocess(self, *popen_args, **popen_kwargs):
         pass
 
-    def wait(self):
+    def monitor(self):
         pass

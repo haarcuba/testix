@@ -11,5 +11,5 @@ class LineMonitor:
         popen_kwargs['close_fds'] = True
         subprocess.Popen(*popen_args, **popen_kwargs)
 
-    def wait(self):
+    def monitor(self):
         pass
