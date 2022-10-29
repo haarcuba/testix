@@ -110,3 +110,5 @@ Let's fix our code:
    :linenos:
    :lines: 18-21
    :emphasize-lines: 2
+
+And we're back in |GREEN|.
