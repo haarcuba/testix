@@ -1,5 +1,3 @@
-.. include:: colors.rst
-
 .. |testix| replace:: Testix
 .. |testix_bold| replace:: **Testix**
 .. |Client| replace:: ``Client``

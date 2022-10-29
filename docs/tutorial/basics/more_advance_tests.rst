@@ -1,3 +1,4 @@
+.. include:: ../../colors.rst
 .. include:: ../../common.rst
 
 More Advanced Tests
