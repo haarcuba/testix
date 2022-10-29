@@ -105,3 +105,8 @@ Since our code calls ``.readline()`` 3 times exactly, the fourth call,
 which would have resulted in ``TestixLoopBreaker`` being raised, did not happen.
 
 Let's fix our code:
+
+.. literalinclude:: ../../line_monitor/source/7/line_monitor.py
+   :linenos:
+   :lines: 18-21
+   :emphasize-lines: 2
