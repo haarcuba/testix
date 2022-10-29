@@ -112,3 +112,38 @@ Let's fix our code:
    :emphasize-lines: 2
 
 And we're back in |GREEN|.
+
+Edge Case Test: When There is no Callback
+-----------------------------------------
+
+What happens if ``.monitor()`` is called, but no callback
+has been registered? We can of course implement all kinds of behaviour,
+for example, we can make it "illegal", and raise an Exception from ``.monitor()``
+in such a case.
+
+However, let's do something else. Let's just define things such that output
+collected from the subprocess when no callback has been registered is discarded.
+
+
+.. literalinclude:: ../../line_monitor/tests/unit/8/test_line_monitor.py
+   :linenos:
+   :lines: 40-52
+
+
+Notice there's no ``.register_callback()`` here. We demand that ``.readline()`` be called, but we don't demand anything else.
+
+Running this fails with
+
+.. code-block:: console
+
+        def monitor(self):
+            while True:
+                line = self._reader.readline()
+    >           self._callback(line)
+    E           TypeError: 'NoneType' object is not callable
+
+
+Which reveals that we in fact, did not handle this edge case very well.
+
+Let's add code that fixes this.
+
