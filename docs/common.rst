@@ -1,4 +1,4 @@
-.. include:: ./colors.rst
+.. include:: colors.rst
 
 .. |testix| replace:: Testix
 .. |testix_bold| replace:: **Testix**
