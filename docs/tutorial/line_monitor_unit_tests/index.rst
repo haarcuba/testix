@@ -6,13 +6,13 @@ Line Monitor Unit Tests
 We now turn to developing, TDD style, our :doc:`LineMonitor <../design>` library.
 
 Developing Test Driven style means we add behaviours one by one, for each behaviour we
-go through the RED-GREEN-REFACTOR loop:
+go through the |RED|-|GREEN|-|REFACTOR| loop:
 
-* RED: write a :doc:`properly failing test <../fail_properly>`
-* GREEN: write code that passes the test - the code doesn't have to be pretty
-* REFACTOR: tidy up the code to make it readable
+* |RED|: write a :doc:`properly failing test <../fail_properly>`
+* |GREEN|: write code that passes the test - the code doesn't have to be pretty
+* |REFACTOR|: tidy up the code to make it readable
 
-Sometimes the REFACTOR step is not needed, but we should always at least consider it.
+Sometimes the |REFACTOR| step is not needed, but we should always at least consider it.
 
 Let's go.
 
@@ -70,7 +70,12 @@ A few points on this:
 Failing the Test
 ~~~~~~~~~~~~~~~~
 
-Let's see some failures! running this test with the :ref:`skeleton implementation <skeleton_line_monitor>` we have for ``LineMonitor`` results in:
+Remember, when practicing TDD you should always fail your tests first, and make
+sure they :doc:`fail properly <../fail_properly>`.
+
+So let's see some failures! Let's see some |RED|! 
+
+Running this test with the :ref:`skeleton implementation <skeleton_line_monitor>` we have for ``LineMonitor`` results in:
 
 .. code-block:: console
 
@@ -82,3 +87,26 @@ Let's see some failures! running this test with the :ref:`skeleton implementatio
 Very good, our tests fails as it should: the test expects, e.g. ``openpty()``
 to be called, but our current implementation doesn't call anything - so the
 test fails in disappointment.
+
+Passing the Test
+~~~~~~~~~~~~~~~~
+
+Let's write some code that makes the test pass:
+
+.. literalinclude:: ../../line_monitor/source/2/line_monitor.py
+   :linenos:
+   :emphasize-lines: 9-12
+
+Running our test with this code produces 
+
+.. code-block:: console
+
+    test_line_monitor.py::test_lauch_subprocess_with_pseudoterminal PASSED 
+
+Finally, we see some |GREEN|!
+
+Usually we will now take the time to |REFACTOR| our code, but we have
+so little code at this time that we'll skip it for now.
+
+OK, we have our basic subprocess with a |pseudoterminal| - now's 
+the time to test for and implement actually monitoring the output.
