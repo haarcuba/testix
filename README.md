@@ -28,7 +28,7 @@ Testix flow is a bit different
 * [Advanced Features](#advanced-features)
 
 
-## Documentation <a name="documentation></a>
+## Documentation <a name="documentation"></a>
 
 Read the full docs at [readthedocs](https://testix.readthedocs.io/en/latest/)
 
