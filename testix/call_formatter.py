@@ -6,7 +6,7 @@ def format( name, args, kwargs ):
     else:
         argsString = None
     if len( kwargs ) > 0:
-        kwargsString = ', '.join( '{key} = {value}'.format(key=key, value=repr(value)) for (key, value) in kwargs.items() )
+        kwargsString = ', '.join( f'{key} = {repr(value)}' for (key, value) in kwargs.items() )
     else:
         kwargsString = None
 
