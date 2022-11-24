@@ -85,3 +85,5 @@ jobs:
         run:  rake 'enforce_success[${{needs.Unit-Tests.result}}]'
       - name: Run-Examples
         run:  rake 'enforce_success[${{needs.Run-Examples.result}}]'
+      - name: Python-Version-Compatibility
+        run:  rake 'enforce_success[${{needs.Python-Version-Compatibility.result}}]'

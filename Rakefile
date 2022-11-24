@@ -25,7 +25,7 @@ task :all_tests_included do
   $log.info "no forgotten dependencies, all jobs are included"
 
   step_names = all_ok['steps'].map {|step| step["name"]}
-  missing_jobs = dependencies - step_names.to_set
+  missing_jobs = dependencies.to_set - step_names.to_set
   fail("FAILURE: All-OK step-by-step verification missing some tests: #{missing_jobs.to_a}") if missing_jobs.size > 0
   $log.info "verified: a step exists for each of the dependencies"
 
