@@ -15,7 +15,7 @@ class ExpectationMaker:
         self.__character = character
 
     def __getattr__( self, name ):
-        childPath = f'{self.__path}.{name}'
+        childPath = '{path}.{name}'.format(path=self.__path, name=name)
         return ExpectationMaker(self.__scenario, self.__scenarioMocks, childPath, self.__character)
 
     def __call__(self, *args, **kwargs):

@@ -7,7 +7,7 @@ class Asynchronous(base.Base):
     def __init__(self, call):
         self.__result = None
         id = str(uuid.uuid4())[-12:]
-        self.__aenter_mock = fake.Fake(f'{call}@{id}.__aenter__')
+        self.__aenter_mock = fake.Fake('{call}@{id}.__aenter__'.format(call=call, id=id))
 
     async def __aenter__(self):
         self.__aenter_mock()
@@ -30,4 +30,4 @@ class Asynchronous(base.Base):
         return self
 
     def __repr__(self):
-        return f'Asynchronous({self.__result})'
+        return 'Asynchronous({})'.format(self.__result)

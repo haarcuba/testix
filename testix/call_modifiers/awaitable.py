@@ -7,7 +7,7 @@ class Awaitable(base.Base):
     def __init__(self, call):
         self.__result = None
         id = str(uuid.uuid4())[-12:]
-        self.__await_mock = fake.Fake(f'await on {call}@{id}')
+        self.__await_mock = fake.Fake('await on {call}@{id}'.format(call=call, id=id))
         self.__exception_factory = None
 
     async def __call__(self):
