@@ -30,7 +30,7 @@ So we want our users to do something like this
    monitor = line_monitor.LineMonitor(['ls', '-l'], on_output=captured_lines.append) # launch `ls -l` to list the files, lines get appended into our captured_lines list
    monitor.monitor() # monitor process until it ends
    for line in captured_lines:
-        print(f'saw this: {line}')
+        print('saw this: {}'.format(line))
    
 
 Now that we have a rough idea, let's write a test which will make this precise. The code below is not the final test, and will not really work, but it's a sketch:

@@ -21,9 +21,9 @@ class TestChatbot:
         self.construct()
         with Scenario() as s:
             for i in range(10):
-                s.sock.recv(4096)                     >> f'request {i}'
-                s.responder_.process(f'request {i}')    >> f'response {i}'
-                s.sock.send(f'response {i}')
+                s.sock.recv(4096)                     >> 'request {}'.format(i)
+                s.responder_.process('request {}'.format(i))    >> 'response {}'.format(i)
+                s.sock.send('response {}'.format(i))
 
             s.sock.recv(4096) >> Throwing(TestixLoopBreaker)
             with pytest.raises(TestixLoopBreaker):
@@ -33,16 +33,16 @@ class TestChatbot:
         self.construct()
         with Scenario() as s:
             for i in range(10):
-                s.sock.recv(4096)                     >> f'request {i}'
-                s.responder_.process(f'request {i}')    >> f'response {i}'
-                s.sock.send(f'response {i}')
+                s.sock.recv(4096)                     >> 'request {}'.format(i)
+                s.responder_.process('request {}'.format(i))    >> 'response {}'.format(i)
+                s.sock.send('response {}'.format(i))
 
             s.sock.recv(4096) >> Throwing(socket.error)
 
             for i in range(10):
-                s.sock.recv(4096)                     >> f'request {i}'
-                s.responder_.process(f'request {i}')    >> f'response {i}'
-                s.sock.send(f'response {i}')
+                s.sock.recv(4096)                     >> 'request {}'.format(i)
+                s.responder_.process('request {}'.format(i))    >> 'response {}'.format(i)
+                s.sock.send('response {}'.format(i))
 
             s.sock.recv(4096) >> Throwing(TestixLoopBreaker)
             with pytest.raises(TestixLoopBreaker):

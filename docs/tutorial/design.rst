@@ -15,7 +15,7 @@ We want to have a ``LineMonitor`` class which:
     .. code:: python
 
        for line in line_monitor:
-            print(f'this just in: {line}')
+            print('this just in: {}'.format(line))
 
 
 Since this is a Test Driven Development tutorial as well as a |testix| tutorial, let's discuss the tests.
