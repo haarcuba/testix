@@ -23,8 +23,8 @@ class TestChatbot:
         self.construct(sock, Responder)
         class EndTestException(Exception): pass
 
-        REQUESTS = ['request {}'.format(i) for i in range(10)]
-        RESPONSES = ['response {}'.format(i) for i in range(10)]
+        REQUESTS = [f'request {i}' for i in range(10)]
+        RESPONSES = [f'response {i}' for i in range(10)]
         responder.process.side_effect = RESPONSES
         sock.recv.side_effect = REQUESTS + [EndTestException]
         

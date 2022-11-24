@@ -5,17 +5,17 @@ import pathlib
 import os
 
 def test_folder(stage):
-    return pathlib.Path('docs/line_monitor/tests/unit/{}'.format(stage))
+    return pathlib.Path(f'docs/line_monitor/tests/unit/{stage}')
 
 def source_folder(stage):
-    return pathlib.Path('docs/line_monitor/source/{}'.format(stage))
+    return pathlib.Path(f'docs/line_monitor/source/{stage}')
 
 def copy(source, destination):
-    logging.info('cp {source} {destination}'.format(source=source, destination=destination))
+    logging.info(f'cp {source} {destination}')
     shutil.copy(source, destination)
 
 def link(source, destination):
-    logging.info('ln -s {source} {destination}'.format(source=source, destination=destination))
+    logging.info(f'ln -s {source} {destination}')
     os.symlink(source, destination)
 
 parser = argparse.ArgumentParser()
@@ -30,16 +30,16 @@ stage = arguments.stage
 previous = stage - 1
 
 test_folder(stage).mkdir(parents=True, exist_ok=True)
-logging.info('created {}'.format(test_folder(stage)))
+logging.info(f'created {test_folder(stage)}')
 source_folder(stage).mkdir(parents=True, exist_ok=True)
-logging.info('created {}'.format(source_folder(stage)))
+logging.info(f'created {source_folder(stage)}')
 
 if arguments.source_mode == 'copy':
     copy(source_folder(previous) / 'line_monitor.py', source_folder(stage) / 'line_monitor.py')
 else:
-    link('../{}/line_monitor.py'.format(previous), source_folder(stage) / 'line_monitor.py')
+    link(f'../{previous}/line_monitor.py', source_folder(stage) / 'line_monitor.py')
 
 if arguments.test_mode == 'copy':
     copy(test_folder(previous) / 'test_line_monitor.py', test_folder(stage) / 'test_line_monitor.py')
 else:
-    link('../{}/test_line_monitor.py'.format(previous), test_folder(stage) / 'test_line_monitor.py')
+    link(f'../{previous}/test_line_monitor.py', test_folder(stage) / 'test_line_monitor.py')
