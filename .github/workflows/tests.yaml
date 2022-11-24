@@ -64,8 +64,12 @@ jobs:
           path: .
       - run: python -V
       - run: python -m pip install wheel/*.whl
+      - name: check out our code to a side directory - not the pwd
+        uses: actions/checkout@v2
+        with:
+          path: 'side'
       - name: test import testix
-        run: python -c 'import testix; print(testix)'
+        run: python side/tools/full_testix_importer.py
   All-OK:
     runs-on: ubuntu-20.04
     needs:
