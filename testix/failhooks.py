@@ -27,6 +27,6 @@ def error( message ):
     raise testixexception.TestixError( message )
 
 def fail( exceptionFactory, message ):
-    return _fail( exceptionFactory, f'\ntestix: {exceptionFactory.__name__}\n'
-                                    f'testix details:\n'
-                                    f'{message}' )
+    return _fail( exceptionFactory, '\ntestix: {}\n'.format(exceptionFactory.__name__) +
+                                    'testix details:\n' +
+                                    '{}'.format(message) )

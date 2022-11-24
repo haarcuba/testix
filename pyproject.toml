@@ -15,16 +15,18 @@ classifiers = [
 
 
 [tool.poetry.dependencies]
-python = "^3.8"
-pytest = "^7.0.1"
+python = ">=3.5"
+pytest = "^6.1.2"
 
 [tool.poetry.dev-dependencies]
-hypothesis = "^6.24.0"
-pytest-asyncio = "^0.16.0"
-pytest-cov = "^3.0.0"
-ipython = "^7.28.0"
-Sphinx = "^5.0.2"
-sphinx-rtd-theme = "^1.0.0"
+hypothesis = {version = "^6.24.0", python = ">=3.8"}
+pytest-asyncio = {version = "^0.16.0", python = ">=3.8"}
+pytest-cov = {version = "^3.0.0", python = ">=3.8"}
+ipython = {version = "^7.28.0", python = ">=3.8"}
+
+[testix.docs]
+Sphinx = {version = "^5.3.0", optional = true, python = "3.8"}
+sphinx-rtd-theme = {version = "^1.1.1", optional = true, python = "3.8"}
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

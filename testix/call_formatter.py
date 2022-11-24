@@ -6,20 +6,20 @@ def format( name, args, kwargs ):
     else:
         argsString = None
     if len( kwargs ) > 0:
-        kwargsString = ', '.join( f'{key} = {repr(value)}' for (key, value) in kwargs.items() )
+        kwargsString = ', '.join('{key} = {value}'.format(key=key, value=repr(value)) for (key, value) in kwargs.items())
     else:
         kwargsString = None
 
     if (argsString, kwargsString) == (None, None):
-        return f'{name}()'
+        return '{}()'.format(name)
 
     if argsString is not None and kwargsString is None:
-        return f'{name}({argsString})'
+        return '{name}({argsString})'.format(name=name, argsString=argsString)
 
     if argsString is None and kwargsString is not None:
-        return f'{name}({kwargsString})'
+        return '{name}({kwargsString})'.format(name=name, kwargsString=kwargsString)
 
-    return f'{name}({argsString}, {kwargsString})'
+    return '{name}({argsString}, {kwargsString})'.format(name=name, argsString=argsString, kwargsString=kwargsString)
 
 def caller_context():
     stack = traceback.extract_stack()
@@ -28,4 +28,4 @@ def caller_context():
             break
 
     frame_summary = stack[index-1]
-    return f'{frame_summary.line} ({frame_summary.filename}:{frame_summary.lineno})'
+    return '{line} ({filename}:{lineno})'.format(line=frame_summary.line, filename=frame_summary.filename, lineno=frame_summary.lineno)

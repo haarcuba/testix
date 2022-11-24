@@ -7,7 +7,7 @@ class Synchronous(base.Base):
     def __init__(self, call):
         self.__result = None
         id = str(uuid.uuid4())[-12:]
-        self.__enter_mock = fake.Fake(f'{call}@{id}.__enter__')
+        self.__enter_mock = fake.Fake('{call}@{id}.__enter__'.format(call=call, id=id))
 
     def __enter__(self):
         self.__enter_mock()
@@ -30,4 +30,4 @@ class Synchronous(base.Base):
         return self
 
     def __repr__(self):
-        return f'Synchronous({self.__result})'
+        return 'Synchronous({})'.format(self.__result)
