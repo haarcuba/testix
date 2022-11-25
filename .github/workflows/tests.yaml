@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: check out our code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: install poetry
         run:  curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
       - name: install testix
@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: check out our code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: install poetry
         run:  curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
       - name: install testix
@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: check out our code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: install poetry
         run:  curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
       - name: build wheel
@@ -65,7 +65,7 @@ jobs:
       - run: python -V
       - run: python -m pip install wheel/*.whl
       - name: check out our code to a side directory - not the pwd
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: 'side'
       - name: test import testix
@@ -80,7 +80,7 @@ jobs:
     if: always()
     steps:
       - name: check out our code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: verify we did not forget any tests
         run:  rake all_tests_included
       - name: Generate-Wheel
