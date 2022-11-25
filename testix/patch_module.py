@@ -21,8 +21,9 @@ class Patcher:
     def undo(self):
         for module, attribute, original in reversed(self.__stack):
             if original is _SENTINEL:
-                continue
-            setattr(module, attribute, original)
+                delattr(module, attribute)
+            else:
+                setattr(module, attribute, original)
 
 @pytest.fixture
 def patch_module():
