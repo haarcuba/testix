@@ -44,3 +44,8 @@ def test_scenario_should_not_reset_fake_modules():
     patcher.undo()
     assert type(Fake('name').length) is Fake
     assert thing.name is 'original'
+
+
+    Fake('name').length = 222
+    with Scenario() as s:
+        assert type(Fake('name').length) is Fake
