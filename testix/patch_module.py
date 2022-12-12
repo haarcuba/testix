@@ -13,7 +13,8 @@ class Patcher:
         else:
             original = _SENTINEL
         if mock is None:
-            mock = fake.Fake(attribute, dont_clear_attributes_a62df12dd67848be82c505d63b928725=True)
+            mock = fake.Fake(attribute)
+            fake.Fake.exempt_from_attribute_sweep(mock.path_a62df12dd67848be82c505d63b928725)
         setattr( module, attribute, mock )
         self.__stack.append( ( module, attribute, original, mock ) )
         return mock

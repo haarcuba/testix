@@ -4,21 +4,23 @@ from testix import failhooks
 
 class Fake:
     __registry = {}
-    __dont_clear = set()
+    __fake_module = set()
 
-    def __new__( cls, path_a62df12dd67848be82c505d63b928725, dont_clear_attributes_a62df12dd67848be82c505d63b928725=False, **attributes ):
+    def __new__( cls, path_a62df12dd67848be82c505d63b928725, **attributes ):
         if path_a62df12dd67848be82c505d63b928725 in Fake.__registry:
             return Fake.__registry[path_a62df12dd67848be82c505d63b928725]
         instance = super(Fake, cls).__new__(cls)
         Fake.__registry[path_a62df12dd67848be82c505d63b928725] = instance
-        if dont_clear_attributes_a62df12dd67848be82c505d63b928725:
-            Fake.__dont_clear.add(path_a62df12dd67848be82c505d63b928725)
         return instance
+
+    @staticmethod
+    def exempt_from_attribute_sweep(path_a62df12dd67848be82c505d63b928725):
+        Fake.__fake_module.add(path_a62df12dd67848be82c505d63b928725)
 
     @staticmethod
     def clear_all_attributes():
         for instance in Fake.__registry.values():
-            if instance.path_a62df12dd67848be82c505d63b928725 in Fake.__dont_clear:
+            if instance.path_a62df12dd67848be82c505d63b928725 in Fake.__fake_module:
                 continue
             Fake.clear_attributes(instance)
 
