@@ -23,6 +23,7 @@ class Patcher:
         for module, attribute, original, mock in reversed(self.__stack):
             if isinstance(mock, fake.Fake):
                 fake.Fake.clear_attributes(mock)
+                fake.Fake.unexempt_from_attribute_sweep(mock.path_a62df12dd67848be82c505d63b928725)
             if original is _SENTINEL:
                 delattr(module, attribute)
             else:

@@ -18,6 +18,10 @@ class Fake:
         Fake.__fake_module.add(path_a62df12dd67848be82c505d63b928725)
 
     @staticmethod
+    def unexempt_from_attribute_sweep(path_a62df12dd67848be82c505d63b928725):
+        Fake.__fake_module.remove(path_a62df12dd67848be82c505d63b928725)
+
+    @staticmethod
     def clear_all_attributes():
         for instance in Fake.__registry.values():
             if instance.path_a62df12dd67848be82c505d63b928725 in Fake.__fake_module:
