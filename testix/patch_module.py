@@ -13,13 +13,15 @@ class Patcher:
         else:
             original = _SENTINEL
         if mock is None:
-            mock = fake.Fake(attribute)
+            mock = fake.Fake(attribute, dont_clear_attributes_a62df12dd67848be82c505d63b928725=True)
         setattr( module, attribute, mock )
-        self.__stack.append( ( module, attribute, original ) )
+        self.__stack.append( ( module, attribute, original, mock ) )
         return mock
 
     def undo(self):
-        for module, attribute, original in reversed(self.__stack):
+        for module, attribute, original, mock in reversed(self.__stack):
+            if isinstance(mock, fake.Fake):
+                fake.Fake.clear_attributes(mock)
             if original is _SENTINEL:
                 delattr(module, attribute)
             else:
