@@ -1,4 +1,5 @@
 from testix import Fake
+from testix import Scenario
 from testix.patch_module import Patcher
 
 class AnObject:
@@ -30,3 +31,21 @@ def test_override_non_existing_attribute():
     assert thing.made_up_attribute is Fake('made_up_attribute')
     patcher.undo()
     assert not hasattr(thing, 'made_up_attribute')
+
+def test_scenario_should_not_reset_fake_modules():
+    patcher = Patcher()
+    thing = AnObject()
+    thing.name = 'original'
+    patcher(thing, 'name')
+    assert thing.name is Fake('name')
+    thing.name.length = 111
+    with Scenario() as s:
+        assert thing.name.length == 111
+    patcher.undo()
+    assert type(Fake('name').length) is Fake
+    assert thing.name is 'original'
+
+
+    Fake('name').length = 222
+    with Scenario() as s:
+        assert type(Fake('name').length) is Fake
