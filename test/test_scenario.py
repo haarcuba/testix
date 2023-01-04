@@ -346,6 +346,19 @@ class TestScenario:
 
                 locker_mock.Lock()
 
+    def test_setitem_support(self):
+        with scenario.Scenario('unexpected call') as s:
+            fake_dict = fake.Fake('fake_dict')
+            with pytest.raises(testixexception.ExpectationException):
+                fake_dict['the_key'] = 'the_value'
+
+        with scenario.Scenario('expectation fulfilled') as s:
+            fake_dict = fake.Fake('fake_dict')
+
+
+            s.fake_dict.__setitem__('the_key', 'the_value')
+            fake_dict['the_key'] = 'the_value'
+
     @pytest.mark.asyncio
     async def test_enforce_awaiting_on_async_expectations(self):
         my_file = fake.Fake('my_file')
