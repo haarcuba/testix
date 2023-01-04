@@ -1,4 +1,5 @@
 import pytest
+import re
 import hypothesis
 import hypothesis.strategies as strategies
 from testix import scenario
@@ -349,13 +350,11 @@ class TestScenario:
     def test_setitem_support(self):
         with scenario.Scenario('unexpected call') as s:
             fake_dict = fake.Fake('fake_dict')
-            with pytest.raises(testixexception.ExpectationException):
+            with pytest.raises(testixexception.ExpectationException, match=re.compile('__setitem__.*the_key.*the_value')):
                 fake_dict['the_key'] = 'the_value'
 
         with scenario.Scenario('expectation fulfilled') as s:
             fake_dict = fake.Fake('fake_dict')
-
-
             s.fake_dict.__setitem__('the_key', 'the_value')
             fake_dict['the_key'] = 'the_value'
 

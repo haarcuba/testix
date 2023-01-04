@@ -42,6 +42,10 @@ class Fake:
         self.__path = path_a62df12dd67848be82c505d63b928725
         self.__set_attributes(attributes)
 
+    def __setitem__(self, key, value):
+        self.__setitem__a62df12dd67848be82c505d63b928725 = Fake('{root}.__setitem__'.format(root=self.__path))
+        self.__setitem__a62df12dd67848be82c505d63b928725(key, value)
+
     @property
     def path_a62df12dd67848be82c505d63b928725(self):
         return self.__path
