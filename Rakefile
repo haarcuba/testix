@@ -5,10 +5,12 @@ $log = Logger.new STDERR
 
 
 
+desc "run example tests"
 task :examples do
     sh "python -m pytest -sv examples/tests/test_*.py"
 end
 
+desc "run unit tests"
 task :units do
     sh "python -m pytest --cov=testix/ --cov-report=term-missing --cov-report=html  -sv test/"
 end
