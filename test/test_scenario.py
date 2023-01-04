@@ -358,6 +358,12 @@ class TestScenario:
             s.fake_dict.__setitem__('the_key', 'the_value')
             fake_dict['the_key'] = 'the_value'
 
+        with scenario.Scenario('different call') as s:
+            fake_dict = fake.Fake('fake_dict')
+            s.fake_dict.__setitem__('the_key', 'the_value')
+            with pytest.raises(testixexception.ExpectationException, match=re.compile('__setitem__.*the_key.*the_value')):
+                fake_dict['the_key'] = 'another_value'
+
     @pytest.mark.asyncio
     async def test_enforce_awaiting_on_async_expectations(self):
         my_file = fake.Fake('my_file')
