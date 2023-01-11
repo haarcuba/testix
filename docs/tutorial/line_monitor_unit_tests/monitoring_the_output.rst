@@ -25,13 +25,13 @@ Let's start by describing a scenario where we read several lines from the
 
 What's going on here?
 
-* We add a demand that our code create a Python stream from the |pseudoterminal|'s read-descriptor before launching the subprocess.
-* We then call `.launch_subprocess()` to meet those demands.
-* We describe the "read-from-|pseudoterminal|-forwared-to-callback" data flow for 3 consecutive lines.
-* We register a ``Fake('my_callback')`` object as our callback - this way, when the code calls the callback,
-  it will be meeting our demands in this test. It's important that ``'my_callback'`` is used as this ``Fake``'s name,
-  since we refer to it in the ``Scenario``.
-* We then call the ``.monitor()`` method - this method should do all the reading and forwarding.
+#. We add a demand that our code create a Python stream from the |pseudoterminal|'s read-descriptor before launching the subprocess.
+#. We then call `.launch_subprocess()` to meet those demands.
+#. We describe the "read-from-|pseudoterminal|-forwared-to-callback" data flow for 3 consecutive lines.
+#. We register a ``Fake('my_callback')`` object as our callback - this way, when the code calls the callback,
+   it will be meeting our demands in this test. It's important that ``'my_callback'`` is used as this ``Fake``'s name,
+   since we refer to it in the ``Scenario``.
+#. We then call the ``.monitor()`` method - this method should do all the reading and forwarding.
 
 We must also remember to mock the built-in `open`:
 

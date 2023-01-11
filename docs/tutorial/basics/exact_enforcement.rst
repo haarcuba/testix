@@ -7,9 +7,9 @@ Exact Enforcement
 |testix| enforces function calls which are specified in a Scenario.
 It enforces
 
-* the order in which calls are made
-* the exact arguments, positional and keyword, which are used
-* unexpected calls are considered a failure
+#. the order in which calls are made
+#. the exact arguments, positional and keyword, which are used
+#. unexpected calls are considered a failure
 
 Wrong Arguments
 ---------------

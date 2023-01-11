@@ -59,8 +59,9 @@ set up, it will generate other mock objects automatically as you go along with
 it. Only "top level" mock objects need to be setup explicitly.
 
 The ``Scenario`` object does essentially two things:
-* setup our expectations (these are the ``s.sock.*`` lines)
-* enforce our expectations (this is done by the ``with`` statement)
+
+#. setup our expectations (these are the ``s.sock.*`` lines)
+#. enforce our expectations (this is done by the ``with`` statement)
 
 Want to know more? Read the :doc:tutorial.
 
@@ -69,11 +70,11 @@ Advantages
 
 |testix| has been written to promote the following
 
-* readability - the expectations are very similar to the actual code that they
-  test (compare ``s.sock.recv(4096)`` with the standard ``sock.recv.assert_called_once_with(4096)``
-* Test Driven Development friendliness: if you use ``sock.recv.assert_called_once_with(4096)``, you must
-  use it after the code has run. With |testix|, you specify what you *expect*, and the asserting 
-  is done for you by magic.
+#. Readability - the expectations are very similar to the actual code that they
+   test (compare ``s.sock.recv(4096)`` with the standard ``sock.recv.assert_called_once_with(4096)``
+#. Test Driven Development friendliness: if you use ``sock.recv.assert_called_once_with(4096)``, you must
+   use it after the code has run. With |testix|, you specify what you *expect*, and the asserting 
+   is done for you by magic.
 
 What are you waiting for? Read the :doc:`Tutorial<tutorial/index>`
 

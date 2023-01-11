@@ -95,9 +95,9 @@ We should write the test first, and then use it to test the student.
 
 If we write our tests first, and **fail them properly**,
 
-* we make sure they actually test what they pretend to to
-* we think hard about how to test this functionality - we gain focus on what our software is supposed to do
-* we take pains to actually think about how the code will be use: we let the test drive the design of the application
+#. we make sure they actually test what they pretend to to
+#. we think hard about how to test this functionality - we gain focus on what our software is supposed to do
+#. we take pains to actually think about how the code will be use: we let the test drive the design of the application
 
 So, it is essential before developing some behaviour, that our tests fail properly.
 

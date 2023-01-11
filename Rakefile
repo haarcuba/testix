@@ -49,7 +49,8 @@ end
 namespace :documentation do
   desc "build html documentaion"
   task :setup do
-    sh "pip install sphinx sphinx-rtd-theme"
+    sh "pip install sphinx"
+    sh "pip install -r docs/requirements.txt"
   end
 
   desc "build html documentaion"

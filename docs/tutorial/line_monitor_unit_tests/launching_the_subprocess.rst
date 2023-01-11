@@ -9,12 +9,13 @@ High Level Design
 
 We will implement ``LineMonitor`` as follows:
 
-* a ``LineMonitor`` sill launch the subprocess using the `subprocess <https://docs.python.org/3/library/subprocess.html>`_ Python standard library.
-* It will attach a |pseudoterminal| to said subprocess (using `pty <https://docs.python.org/3/library/pty.html>`_). If you don't know too much about what a |pseudoterminal| is - don't worry about it, I don't either. 
+#. a ``LineMonitor`` sill launch the subprocess using the `subprocess <https://docs.python.org/3/library/subprocess.html>`_ Python standard library.
+#. It will attach a |pseudoterminal| to said subprocess (using `pty <https://docs.python.org/3/library/pty.html>`_). If you don't know too much about what a |pseudoterminal| is - don't worry about it, I don't either. 
 
-  Essentially it's attaching the subprocess's input and output streams to the father process. Another way of doing this is using pipes, but there are some technical advantages to using a |pseudoterminal|.
-* it will monitor the terminal using ``poll()`` from the standard Python library's `select <https://docs.python.org/3/library/select.html>`_ module. This call allows to you check if the |pseudoterminal| has any data available to read (that is, check if the subprocess has written some output).
-* when data is available, we will read it line by line, and send it to the registered callbacks.
+Essentially it's attaching the subprocess's input and output streams to the father process. Another way of doing this is using pipes, but there are some technical advantages to using a |pseudoterminal|.
+
+#. it will monitor the terminal using ``poll()`` from the standard Python library's `select <https://docs.python.org/3/library/select.html>`_ module. This call allows to you check if the |pseudoterminal| has any data available to read (that is, check if the subprocess has written some output).
+#. when data is available, we will read it line by line, and send it to the registered callbacks.
 
 
 Let's start by working on the launching a subprocess with an attached |pseudoterminal|.
@@ -40,18 +41,18 @@ There's more than one way of doing this, but here we will use |testix|'s helper 
 
 What's going on here?
 
-* First, we use ``patch_module`` to mock imported modules ``subprocess`` and ``pty``, as described above. Note that our test function depends on ``override_imports`` to make everything work.
-* In our ``Scenario`` we demand two things:
+#. First, we use ``patch_module`` to mock imported modules ``subprocess`` and ``pty``, as described above. Note that our test function depends on ``override_imports`` to make everything work.
+#. In our ``Scenario`` we demand two things:
 
     * That our code calls ``pty.openpty()`` to create a |pseudoterminal| and obtain its two file descriptors.
     * That our code then launch a subprocess and point its ``stdout`` to the write file-descriptor of the |pseudoterminal| (we also demand ``close_fds=True`` wince we want to fully specify our subprocess's inputs and outputs).
 
-* Finally, we call our ``.launch_subprocess()`` method to actually do the work -  we can't hope that our code meet our expectations if we never actually call it, right? 
+#. Finally, we call our ``.launch_subprocess()`` method to actually do the work -  we can't hope that our code meet our expectations if we never actually call it, right? 
 
 A few points on this:
 
-* See how we *first* write our expectations and only *then* call the code to deliver on these expectations. This is one way |testix| pushes you into a Test Driven mindset. 
-* In real life, ``pty.openpty()`` returns two file descriptors - which are *integers*. In our test, we made this call return two *strings*. 
+#. See how we *first* write our expectations and only *then* call the code to deliver on these expectations. This is one way |testix| pushes you into a Test Driven mindset. 
+#. In real life, ``pty.openpty()`` returns two file descriptors - which are *integers*. In our test, we made this call return two *strings*. 
 
   We could have, e.g. define two constants equal to some integers, e.g. ``WRITE_FD=20`` and ``READ_FD=30`` and used those - but it wouldn't really matter and would make the test more cluttered.
   Technically, what's important is that ``openpty()`` returns a tuple and we demand that the first item in this tuple is passed over to the right place in the call to ``Popen()``. 
