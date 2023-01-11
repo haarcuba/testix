@@ -22,8 +22,8 @@ to interact with, that we want to test carefully. As an example - suppose our co
 
 When testing we
 
-* don't *really* want to send data over a *real* socket
-* do want to verify that the ``send_some_data`` function called ``sock.send(b'the data')``. 
+#. don't *really* want to send data over a *real* socket
+#. do want to verify that the ``send_some_data`` function called ``sock.send(b'the data')``. 
 
 The solution is to pass ``send_some_data`` an object that implements a ``.send`` method, but which is not an actual socket. Instead this object will just record that ``.send`` was called, and we'll be able to query it to see that it was called with ``b'the data'``. The idea here is that there's no point testing sockets - we know that those work. The point here is to test that *our code does the right thing with the socket*.
 
