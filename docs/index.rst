@@ -59,6 +59,7 @@ set up, it will generate other mock objects automatically as you go along with
 it. Only "top level" mock objects need to be setup explicitly.
 
 The ``Scenario`` object does essentially two things:
+
 * setup our expectations (these are the ``s.sock.*`` lines)
 * enforce our expectations (this is done by the ``with`` statement)
 
