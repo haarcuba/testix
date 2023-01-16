@@ -14,7 +14,10 @@ class ExpectationMaker:
         self.__path = path
         self.__character = character
 
-    def __getattr__( self, name ):
+    def __getattr__(self, name):
+        return self.__next_expectation_maker(name)
+
+    def __next_expectation_maker(self, name):
         childPath = '{path}.{name}'.format(path=self.__path, name=name)
         return ExpectationMaker(self.__scenario, self.__scenarioMocks, childPath, self.__character)
 
@@ -25,6 +28,10 @@ class ExpectationMaker:
             extra = expectations.call.Call(call.extra_path, testix.call_modifiers.trivial.Trivial)
             self.__scenario.addEvent(extra)
         return call
+
+    def __setitem__(self, key, value):
+        expectation_maker = self.__next_expectation_maker('__setitem__')
+        return expectation_maker(key, value)
 
     def __generate_expectation(self, *args, **kwargs):
         if self.__character.normal:
