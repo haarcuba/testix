@@ -8,16 +8,19 @@ class Patcher:
         self.__stack = []
 
     def __call__(self, module, attribute, mock = None):
-        if hasattr( module, attribute ):
-            original = getattr( module, attribute )
-        else:
-            original = _SENTINEL
+        original = self.__save_original_value(module, attribute)
         if mock is None:
             mock = fake.Fake(attribute)
             fake.Fake.exempt_from_attribute_sweep(mock.path_a62df12dd67848be82c505d63b928725)
         setattr( module, attribute, mock )
         self.__stack.append( ( module, attribute, original, mock ) )
         return mock
+
+    def __save_original_value(self, module, attribute):
+        if hasattr(module, attribute):
+            return getattr(module, attribute)
+
+        return _SENTINEL
 
     def undo(self):
         for module, attribute, original, mock in reversed(self.__stack):
