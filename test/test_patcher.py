@@ -51,7 +51,7 @@ def test_scenario_should_not_reset_fake_modules():
     with Scenario() as s:
         assert type(Fake('name').length) is Fake
 
-def test_bugfix_mocking_same_module_twice_raises_exception():
+def test_bugfix_mocking_same_module_twice_raises_exception_issue_106():
     import socket
     patcher = Patcher()
     patcher(some_module, 'socket')

@@ -19,6 +19,8 @@ class Fake:
 
     @staticmethod
     def unexempt_from_attribute_sweep(path_a62df12dd67848be82c505d63b928725):
+        if path_a62df12dd67848be82c505d63b928725 not in Fake.__fake_module:
+            return
         Fake.__fake_module.remove(path_a62df12dd67848be82c505d63b928725)
 
     @staticmethod
