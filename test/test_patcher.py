@@ -59,4 +59,19 @@ def test_bugfix_mocking_same_module_twice_raises_exception_issue_106():
     assert some_module.socket is Fake('socket')
     assert some_module.helper_module.socket is Fake('socket')
     patcher.undo()
+    assert some_module.helper_module.socket is socket
+    assert some_module.socket is socket
+
+def test_bugfix_mocking_same_module_twice_raises_exception_issue_106__complicate_with_attributes():
+    import socket
+    patcher = Patcher()
+    patcher(some_module, 'socket')
+    some_module.socket.hi = 'there'
+    patcher(some_module.helper_module, 'socket')
+    assert some_module.socket is Fake('socket')
+    assert some_module.helper_module.socket is Fake('socket')
+    with Scenario() as s:
+        assert some_module.helper_module.socket.hi == 'there'
+    patcher.undo()
+    assert some_module.helper_module.socket is socket
     assert some_module.socket is socket
