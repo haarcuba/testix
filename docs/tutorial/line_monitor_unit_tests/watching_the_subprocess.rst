@@ -33,7 +33,7 @@ Let's test for it. We have to mock the `select` module, of course, and also chan
 There is a quick here - after running ``patch_module(line_monitor, 'select')``, the ``select`` object 
 inside the tested ``line_monitor`` module is replace by a ``Fake('select')`` fake object. Later,
 we want to demand that ``poller.register()`` be called with the ``select.POLLIN`` constant. As
-things are, this would technically also be the fake objcet
+things are, this would technically also be the fake object
 ``Fake('select.POLLIN')``, since |testix| automatically generates fake objects
 whenever you lookup a ``Fake``'s attribute (unless it's explicitly set up).
 
@@ -44,7 +44,7 @@ While it is possible to demand
 
    s.poller.register('reader_descriptor', Fake('select').POLLIN)
 
-and it will work just fine, I find it less readable. Therefore I'd rather "rescue" the ``POLLIN`` 
+And it will work just fine, I find it less readable. Therefore I'd rather "rescue" the ``POLLIN`` 
 object from the real ``select`` and assign it to the fake ``select``. 
 
 You may notice another quirk - the function ``.fileno()`` returns a file descriptor, which
@@ -79,7 +79,7 @@ Changing ``launch_scenario`` has changed our tests, let's run them, see if they 
     E        expected: select.poll()
     E        actual  : subprocess.Popen(['my', 'command', 'line'], stdout = 'write_to_fd', close_fds = True)
 
-yay :) we have |RED|. Our tests expect the new ``.poll()`` logic, but our code, of course, is still not up to date.
+Yay :) we have |RED|. Our tests expect the new ``.poll()`` logic, but our code, of course, is still not up to date.
 Of course, all of our tests now fail, since they all depend on ``launch_scenario()`` being followed exactly.
 
 Let's get to |GREEN| with this and then continue with testing the actual polling:
@@ -116,7 +116,7 @@ Looking at an excerpt from our tests:
         s.my_callback('line 3')
 
 
-we want to demand that every ``.readline()`` is preceeded by a ``.poll()``, and
+We want to demand that every ``.readline()`` is preceded by a ``.poll()``, and
 to only be performed if there's input available. The ``.poll()`` call returns a
 list of ``[(file_descriptor, events), ...]`` pairs, where events is a bitmask
 of flags indicating the state of the file descriptor (e.g. ``POLLIN | POLLOUT``).
@@ -169,7 +169,7 @@ read.
 
 The idea here is simple - sometimes ``.poll()`` returns a result where the ``POLLIN`` flag is not set - and then we should skip the ``.readline()``.
 
-Do we have |RED|? yes we do:
+Do we have |RED|? Yes we do:
 
 .. code:: console
 
@@ -195,7 +195,7 @@ our |RED|-|GREEN|-|REFACTOR| loop.
    :lines: 21-33
    :emphasize-lines: 3-4,10-13
 
-Ahh, much nicer.
+Ah, much nicer.
 
 Solving the Blocking Problem
 ----------------------------
@@ -231,7 +231,7 @@ Here's how to use it in this case:
    :lines: 28-36
    :emphasize-lines: 2,6,9
 
-using this we get to |RED|
+Using this we get to |RED|
 
 .. code:: console
 
@@ -302,7 +302,7 @@ in continuing to monitor the pipe for more data, and we should close the reader,
    :emphasize-lines: 17,19,21
 
 Note that we demand process polling only after no data was ready to read, 
-hece it only comes after some ``skip_line*scenario`` function.
+here it only comes after some ``skip_line*scenario`` function.
 
 This brings us into |RED| territory. Current we have not taken the case that the process dies into account,
 but as usual, we're taking things slowly. Let's get to |GREEN|.
@@ -337,7 +337,7 @@ Are we in |RED|? Yes we are:
     E        expected: reader.close()
     E        actual  : poller.poll(10)
 
-the test wants the infinite loop to finish and close the reader, but the code just goes on.
+The test wants the infinite loop to finish and close the reader, but the code just goes on.
 
 Let's fix our code:
 
