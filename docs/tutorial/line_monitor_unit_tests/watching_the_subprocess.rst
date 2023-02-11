@@ -182,3 +182,14 @@ Let's get to |GREEN|. This requires us to add the following to our code:
    :linenos:
    :lines: 21-30
    :emphasize-lines: 3-6
+
+This is |GREEN| but not the best code, the ``.monitor()`` function is becoming `too long <https://github.com/PracticeFoxyCode/practice#short-files-short-functions>`_, time for the |REFACTOR| step in
+our |RED|-|GREEN|-|REFACTOR| loop.
+
+.. literalinclude:: ../../line_monitor/source/17/line_monitor.py
+   :linenos:
+   :lines: 21-33
+   :emphasize-lines: 3-4,10-13
+
+Ahh, much nicer.
+
