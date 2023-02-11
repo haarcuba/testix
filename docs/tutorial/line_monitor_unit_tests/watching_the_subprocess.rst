@@ -118,7 +118,7 @@ list of ``[(file_descriptor, events), ...]`` pairs, where events is a bitmask
 of flags indicating the state of the file descriptor (e.g. ``POLLIN | POLLOUT``).
 
 Still, the sequence of ``.poll()`` and ``.readline()`` is sort-of "the new readline",
-it makes up a logical scenario, so let's write it as a scenario function.
+it makes up a logical scenario, so let's write it as a scenario function, ``read_line_scenario``.
 
 Here is our ``test_receive_output_lines_via_callback``, adapted to the new situation.
 
@@ -155,3 +155,25 @@ Well, this is |GREEN|, but adds little value. It's time for a serious test
 that makes sure that ``.readline()`` is called *if and only if* ``POLLIN`` is present.
 Let's get to |RED|.
 
+We introduce a ``skip_line_scenario()``, and introduce it into our existing
+tests, such that they represent the situation when sometimes there is no data to
+read.
+
+.. literalinclude:: ../../line_monitor/tests/unit/15/test_line_monitor.py
+   :linenos:
+   :emphasize-lines: 32-33,50-51,68,70,83
+
+The idea here is simple - sometimes ``.poll()`` returns a result where the ``POLLIN`` flag is not set - and then we should skip the ``.readline()``.
+
+Do we have |RED|? yes we do:
+
+.. code:: console
+
+    E       Failed:
+    E       testix: ExpectationException
+    E       testix details:
+    E       === Scenario (no title) ===
+    E        expected: poller.poll()
+    E        actual  : reader.readline()
+
+Let's get to |GREEN|.
