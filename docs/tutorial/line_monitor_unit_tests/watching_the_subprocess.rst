@@ -143,4 +143,15 @@ Very good. Now let's fix our code to pass the tests. Note that we did not yet ad
 the case where the file descriptor does not have any data to read - that come later. Always
 proceed in small, baby steps - and you'll be fine. Try to do it all at once, and you'll crash and burn.
 
+Getting to |GREEN| is super easy, we add just this one line of code:
+
+.. literalinclude:: ../../line_monitor/source/14/line_monitor.py
+   :linenos:
+   :lines: 21-27
+   :emphasize-lines: 3
+
+
+Well, this is |GREEN|, but adds little value. It's time for a serious test 
+that makes sure that ``.readline()`` is called *if and only if* ``POLLIN`` is present.
+Let's get to |RED|.
 
