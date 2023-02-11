@@ -16,7 +16,7 @@ Furthermore, we originally wanted the ability to have more than one callback.
 
 Let's improve our ``LineMonitor``, starting by handling the underlying subprocess a little more carefully.
 
-We want to create a [polling object](https://docs.python.org/3/library/select.html#polling-objects), and 
+We want to create a `polling object <https://docs.python.org/3/library/select.html#polling-objects>`_, and 
 register the reader's file descriptor using its `.register` method.
 
 Let's test for it. We have to mock the `select` module, of course, and also change our `launch_scenario()`.
@@ -95,4 +95,52 @@ already involve various scenarios calling `.readline()` - doing this TDD
 doesn't mean writing new tests - it means modifying the tests that we have.
 
 This happens sometimes in TDD, and it's perfectly normal. Now, let's get to |RED|.
+
+Looking at an excerpt from our tests:
+
+.. code:: python
+
+    with Scenario() as s:
+        launch_scenario(s)
+        tested.launch_subprocess(['my', 'command', 'line'])
+
+        s.reader.readline() >> 'line 1'
+        s.my_callback('line 1')
+        s.reader.readline() >> 'line 2'
+        s.my_callback('line 2')
+        s.reader.readline() >> 'line 3'
+        s.my_callback('line 3')
+
+
+we want to demand that every ``.readline()`` is preceeded by a ``.poll()``, and
+to only be performed if there's input available. The ``.poll()`` call returns a
+list of ``[(file_descriptor, events), ...]`` pairs, where events is a bitmask
+of flags indicating the state of the file descriptor (e.g. ``POLLIN | POLLOUT``).
+
+Still, the sequence of ``.poll()`` and ``.readline()`` is sort-of "the new readline",
+it makes up a logical scenario, so let's write it as a scenario function.
+
+Here is our ``test_receive_output_lines_via_callback``, adapted to the new situation.
+
+.. literalinclude:: ../../line_monitor/tests/unit/13/test_line_monitor.py
+   :linenos:
+   :lines: 27-34,35-51
+   :emphasize-lines: 2-4,9-11,15,17,19,21
+
+
+.. code:: console
+
+    running this, we get |RED|
+
+    E       testix: ExpectationException
+    E       testix details:
+    E       === Scenario (no title) ===
+    E        expected: poller.poll()
+    E        actual  : reader.readline()
+
+
+Very good. Now let's fix our code to pass the tests. Note that we did not yet add a test for 
+the case where the file descriptor does not have any data to read - that come later. Always
+proceed in small, baby steps - and you'll be fine. Try to do it all at once, and you'll crash and burn.
+
 
