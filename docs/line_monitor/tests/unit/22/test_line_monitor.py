@@ -38,10 +38,6 @@ def skip_line_on_empty_poll_scenario(s):
 def process_lives_scenario(s):
     s.the_process.poll() >> None
 
-def process_died_scenario(s):
-    s.the_process.poll() >> 'some_exit_code'
-    s.reader.close()
-
 def end_test_scenario(s):
     s.poller.poll(IgnoreArgument()) >> Throwing(TestixLoopBreaker)
 

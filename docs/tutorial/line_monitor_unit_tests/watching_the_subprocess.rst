@@ -298,10 +298,18 @@ in continuing to monitor the pipe for more data, and we should close the reader,
 
 .. literalinclude:: ../../line_monitor/tests/unit/22/test_line_monitor.py
    :linenos:
-   :lines: 38-40,48-72
+   :lines: 38-40,44-68
    :emphasize-lines: 17,19,21
 
 Note that we demand process polling only after no data was ready to read, 
 hece it only comes after some ``skip_line*scenario`` function.
 
-This brings us into |RED| territory. 
+This brings us into |RED| territory. Current we have not taken the case that the process dies into account,
+but as usual, we're taking things slowly. Let's get to |GREEN|.
+
+.. literalinclude:: ../../line_monitor/source/23/line_monitor.py
+   :linenos:
+   :lines: 12-29
+   :emphasize-lines: 8,13
+
+We are not in |GREEN| - so let's get into |RED| again, and test for the "process has died scenario".
