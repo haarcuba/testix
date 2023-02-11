@@ -55,7 +55,7 @@ But we should also mention the higher level benefits:
 Returning to the student analogy from ":ref:`importance_of_proper_failure`", we gave the student
 a test to solve, instead of writing a test to fit the student's solution.
 
-In one word - we were *logical*.
+In one word - we were *logical* about it.
 
 This is the proper way to write code. When done properly, it increases both
 development speed and the quality of the product delivered.
