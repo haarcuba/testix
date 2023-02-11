@@ -243,3 +243,10 @@ using this we get to |RED|
 
 Note the ``|IGNORED|`` annotation. Getting to green is now a matter of adding this timeout
 in our code:
+
+.. literalinclude:: ../../line_monitor/source/19/line_monitor.py
+   :linenos:
+   :lines: 30-33
+   :emphasize-lines: 2
+
+And we have |GREEN| again.
