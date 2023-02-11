@@ -246,7 +246,7 @@ in our code:
 
 .. literalinclude:: ../../line_monitor/source/19/line_monitor.py
    :linenos:
-   :lines: 30-35
+   :lines: 30-33
    :emphasize-lines: 2
 
 And we have |GREEN| again.
@@ -312,11 +312,16 @@ but as usual, we're taking things slowly. Let's get to |GREEN|.
    :lines: 12-29
    :emphasize-lines: 8,13
 
-We are not in |GREEN| - so let's get into |RED| again, and add a specific test for the "process has died scenario":
+Note that this is the first time we bothered to save the subprocess ``Popen`` object!
+This is another example of how TDD helps us. If the test passes without us making some move - then 
+we simply don't make it. This helps us write minimalistic code. Remember, code
+that doesn't exist - has no bugs.
+
+We are now in |GREEN| - so let's get into |RED| again, and add a specific test for the "process has died scenario":
 
 .. literalinclude:: ../../line_monitor/tests/unit/24/test_line_monitor.py
    :linenos:
-   :lines: 41-44, 116-135
+   :lines: 41-44, 116-134
    :emphasize-lines: 1-3,20
 
 Note that we no longer need the ``TestixLoopBreaker`` trick - since we now expect the ``.monitor()`` function
@@ -335,3 +340,8 @@ Are we in |RED|? Yes we are:
 the test wants the infinite loop to finish and close the reader, but the code just goes on.
 
 Let's fix our code:
+
+.. literalinclude:: ../../line_monitor/source/25/line_monitor.py
+   :linenos:
+   :lines: 21-32
+   :emphasize-lines: 4-7
