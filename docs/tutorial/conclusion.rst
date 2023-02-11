@@ -1,5 +1,5 @@
-.. include:: ../../colors.rst
-.. include:: ../../common.rst
+.. include:: ../colors.rst
+.. include:: ../common.rst
 
 Conclusion
 ==========
