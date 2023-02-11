@@ -250,3 +250,22 @@ in our code:
    :emphasize-lines: 2
 
 And we have |GREEN| again.
+
+If you try this code, you will find that there's a bug: in real life `.poll()` may return an empty list.
+
+When we find a bug, the TDD way is of course to write a test that reproduces it, and then fix the code.
+In our case, let's add a ``poll_returns_empty_scenario`` and sprinkle it in our existing tests,
+thus covering the behaviour with and without a callback, etc.
+
+.. literalinclude:: ../../line_monitor/tests/unit/20/test_line_monitor.py
+   :linenos:
+   :lines: 35-36,41-62
+   :emphasize-lines: 17
+
+This gets us into |RED| territory
+
+.. code:: console
+
+    E       IndexError: list index out of range
+
+Now let's fix the bug.
