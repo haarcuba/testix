@@ -5,3 +5,4 @@
 #sphinx-readable-theme
 #sphinx-sizzle-theme
 sphinx-theme
+python-box

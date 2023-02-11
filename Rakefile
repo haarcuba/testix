@@ -47,7 +47,7 @@ task :enforce_success, [:status] do |t, args|
 end
 
 namespace :documentation do
-  desc "build html documentaion"
+  desc "install tools needed for documentaion"
   task :setup do
     sh "pip install sphinx"
     sh "pip install -r docs/requirements.txt"

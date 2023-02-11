@@ -59,6 +59,7 @@ We get a proper failure
 
 This is a **proper failure** - the test has done everything right, but the current ``LineMonitor`` implementation does not deliver on its promises.
 
+.. _importance_of_proper_failure:
 
 The Importance of Proper Failure
 --------------------------------
