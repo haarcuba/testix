@@ -11,8 +11,8 @@ class Folders:
         self.root = root
         self.test = root / f'tests/unit/{number}'
         self.source = root / f'source/{number}'
-        self.test.mkdir(exist_ok=True, parents=False)
-        self.source.mkdir(exist_ok=True, parents=False)
+        self.test.mkdir()
+        self.source.mkdir()
 
         self.previous = box.Box()
         self.previous.test = root / f'tests/unit/{number - 1}'

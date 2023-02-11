@@ -15,6 +15,10 @@ you will find it has some disadvantages.
 Furthermore, we originally wanted the ability to have more than one callback.
 
 Let's improve our ``LineMonitor``, starting by handling the underlying subprocess a little more carefully.
+We'll start by checking for available data before we try to read it.
+
+Polling the Read File Descriptor
+--------------------------------
 
 We want to create a `polling object <https://docs.python.org/3/library/select.html#polling-objects>`_, and 
 register the reader's file descriptor using its `.register` method.
@@ -193,3 +197,49 @@ our |RED|-|GREEN|-|REFACTOR| loop.
 
 Ahh, much nicer.
 
+Solving the Blocking Problem
+----------------------------
+
+We are now in a position not to block forever when data does not arrive.
+To do that, we need to add a timeout on the ``.poll`` call - since as it 
+is now, it may still block forever waiting for some event on the file.
+
+Getting to |RED| is simple in principle, e.g. if we want a 10 seconds timeout,
+just change demands of our various scenarios, e.g.
+
+.. code:: python
+
+    def read_line_scenario(s, line):
+        s.poller.poll(10) >> [('reader_descriptor', select.POLLIN)]
+        # note the 10 second timeout above
+        s.reader.readline() >> line
+
+    # similarly for other poll scenario functions
+
+If we do this, however - and later on discover that a 60 second timeout is more reasonable,
+we will have to Test Drive the change from 10 to 60. This seems more annoying that it is helpful.
+Sometimes, tests can be *too* specific. 
+
+|testix| has a way to specifically ignore the values of specific arguments -
+you specify the special value ``IgnoreArgument()`` instead of the overly
+specific ``10``. 
+
+Here's how to use it in this case:
+
+.. literalinclude:: ../../line_monitor/tests/unit/18/test_line_monitor.py
+   :linenos:
+   :lines: 28-36
+   :emphasize-lines: 2,6,9
+
+using this we get to |RED|
+
+.. code:: console
+
+    E       testix: ExpectationException
+    E       testix details:
+    E       === Scenario (no title) ===
+    E        expected: poller.poll(|IGNORED|)
+    E        actual  : poller.poll()
+
+Note the ``|IGNORED|`` annotation. Getting to green is now a matter of adding this timeout
+in our code:
