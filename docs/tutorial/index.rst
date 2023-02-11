@@ -23,5 +23,7 @@ Let's call this library :code:`LineMonitor`.
     fail_properly
     basics/index.rst
     line_monitor_unit_tests/index.rst
+    conclusion.rst
+    more_about_readability.rst
 
 
