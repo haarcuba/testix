@@ -246,10 +246,13 @@ in our code:
 
 .. literalinclude:: ../../line_monitor/source/19/line_monitor.py
    :linenos:
-   :lines: 30-33
+   :lines: 30-35
    :emphasize-lines: 2
 
 And we have |GREEN| again.
+
+Oops, a bug
+~~~~~~~~~~~
 
 If you try this code, you will find that there's a bug: in real life `.poll()` may return an empty list.
 
@@ -269,3 +272,19 @@ This gets us into |RED| territory
     E       IndexError: list index out of range
 
 Now let's fix the bug.
+
+.. literalinclude:: ../../line_monitor/source/21/line_monitor.py
+   :linenos:
+   :lines: 30-35
+   :emphasize-lines: 3-4
+
+We are now |GREEN|, and, since we are working TDD, we have a test for this bug - *and it will not return in the future*.
+
+Has the Subprocess Died?
+------------------------
+
+We are now ready to add functionality to stop the monitor in case the subprocess itself has died.
+We will want our code to use ``.poll()`` on the ``Popen`` object itself,
+and if ``.poll()`` returns a non-None value, stop the monitor.
+
+
