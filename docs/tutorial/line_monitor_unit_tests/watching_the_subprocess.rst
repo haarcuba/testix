@@ -287,4 +287,21 @@ We are now ready to add functionality to stop the monitor in case the subprocess
 We will want our code to use ``.poll()`` on the ``Popen`` object itself,
 and if ``.poll()`` returns a non-None value, stop the monitor.
 
+If you think about it, we can poll the subprocess only when there's
+no data available. It may be that there is data to read and process has died,
+but in that case, we'll just discover it is dead when the data runs out. This 
+way we make sure we read all the data out of the pipe when the process has died,
+even if it takes more than one read.
 
+If, however, there's no data to read, *and* the process is dead - then there's no point
+in continuing to monitor the pipe for more data, and we should close the reader, e.g.
+
+.. literalinclude:: ../../line_monitor/tests/unit/22/test_line_monitor.py
+   :linenos:
+   :lines: 38-40,48-72
+   :emphasize-lines: 17,19,21
+
+Note that we demand process polling only after no data was ready to read, 
+hece it only comes after some ``skip_line*scenario`` function.
+
+This brings us into |RED| territory. 
