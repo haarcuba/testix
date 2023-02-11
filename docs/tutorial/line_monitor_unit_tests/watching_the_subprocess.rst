@@ -176,4 +176,9 @@ Do we have |RED|? yes we do:
     E        expected: poller.poll()
     E        actual  : reader.readline()
 
-Let's get to |GREEN|.
+Let's get to |GREEN|. This requires us to add the following to our code:
+
+.. literalinclude:: ../../line_monitor/source/16/line_monitor.py
+   :linenos:
+   :lines: 21-30
+   :emphasize-lines: 3-6
