@@ -345,3 +345,14 @@ Let's fix our code:
    :linenos:
    :lines: 21-32
    :emphasize-lines: 4-7
+
+We're |GREEN|, but this function has grown too long again, so let's |REFACTOR|.
+
+.. literalinclude:: ../../line_monitor/source/26/line_monitor.py
+   :linenos:
+   :lines: 21-39
+   :emphasize-lines: 4-7,13-15,17-18
+
+Not shorter, but more semantically clear, at least it my opinion. Since we have
+tests, we can refactor without fear - since we can always make sure we
+are still in the |GREEN|!
