@@ -20,13 +20,15 @@ and it then enforces your specifications automatically. It also reduces (albeit
 not entirely) mock setup. 
 
 Other frameworks usually have a flow like this:
-* setup mock
-* let code do something with mock
-* assert mock used in correct way
+
+#. setup mock
+#. let code do something with mock
+#. assert mock used in correct way
 
 |testix| flow is a bit different
-* setup mock objects
-* specify *exactly* what should happen to them using a Scenario context
+
+#. setup mock objects
+#. specify *exactly* what should happen to them using a Scenario context
   
 
 Quick Example
