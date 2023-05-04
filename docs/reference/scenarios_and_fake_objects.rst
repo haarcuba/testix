@@ -78,7 +78,7 @@ Since ``Scenario`` can only track ``Fake`` objects, the tested code must have ac
 
 Another common pattern with |testix| is to override some global names inside the tested module - this essentially overrides ``import`` statements.
 
-Here is an example of overriding the ``socket`` import using |testix|'s ``patch_module`` pytest `fixture <https://docs.pytest.org/en/7.1.x/explanation/fixtures.html#about-fixtures>_`. This test demands that the ``MyServer()`` object create a socket, listen on it, accept a connection, send ``b'hi'`` over this connection, then close it.
+Here is an example of overriding the ``socket`` import using |testix|'s ``patch_module`` pytest `fixture <https://docs.pytest.org/en/7.1.x/explanation/fixtures.html#about-fixtures>`_. This test demands that the ``MyServer()`` object create a socket, listen on it, accept a connection, send ``b'hi'`` over this connection, then close it.
 
 .. literalinclude:: override_import/test_override_socket.py
    :linenos:
