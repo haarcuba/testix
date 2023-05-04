@@ -200,6 +200,8 @@ This demands that the fake is called with ``'b'`` only *after* it was called wit
 The code in ``my_code()`` passes this test.
 
 
+Advanced Expectation Types
+==========================
 
 Context Manager Expectations
 ----------------------------
@@ -211,3 +213,9 @@ Here's an example of how to demand this on a fake object named ``'locker'``, usi
 .. literalinclude:: 4/test_locker_context_manager.py
    :linenos:
    :emphasize-lines: 6
+
+
+Asyncio Expectations
+--------------------
+
+Documentation TBD
