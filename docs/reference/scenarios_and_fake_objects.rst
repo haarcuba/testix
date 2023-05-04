@@ -7,9 +7,9 @@ Basic Usage: Scenarios and Fake Objects
 Scenarios and Fake Objects
 --------------------------
 
-|testix| is a mocking framework designed to support the TDD style of programming. When writing a test with testix, we use a `Scenario()` object to specify *what should happen* or what we *expect* should happen when the tested code is run. We can refer to these as *demands* or *expectations*.
+|testix| is a mocking framework designed to support the TDD style of programming. When writing a test with |testix|, we use a `Scenario()` object to specify *what should happen* or what we *expect* should happen when the tested code is run. We can refer to these as *demands* or *expectations*.
 
-Here's a test that expects the tested code to repeatedly call ``.recv(4096)`` on a socket, until an empty sequece is returned, and then call ``.close()`` on the socket. Furthermore, ``tested.read()`` should return the accumulated data.
+Here's a test that expects the tested code to repeatedly call ``.recv(4096)`` on a socket, until an empty sequence is returned, and then call ``.close()`` on the socket. Furthermore, ``tested.read()`` should return the accumulated data.
 
 .. literalinclude:: 1/test_reader.py
    :linenos:
@@ -21,7 +21,7 @@ Scenarios track fake objects - instances of ``Fake``. Fake objects have a name, 
 
     s.sock.recv(4096) >> b'data1'
 
-means "we require that the ``.recv()`` method be called on the fake object named ``'sock'`` with exactly one argument: the number 4096. When this happens, this function call will return ``b'data1'`` to the caller".
+Means "we require that the ``.recv()`` method be called on the fake object named ``'sock'`` with exactly one argument: the number 4096. When this happens, this function call will return ``b'data1'`` to the caller".
 
 Note this last part - when we define an *expectation*, we may also define the return value returned should the expectation come true.
 
@@ -67,8 +67,8 @@ With this definition, ``my_code(Fake("alpha"))`` will pass the test. The value r
 
     s.alpha.func1(1, 2, a=1, b='hi there')
 
-The Three Common Ways to Generate Fake Objects
-----------------------------------------------
+Overriding Imported Modules With Fake Objects
+---------------------------------------------
 
 Since ``Scenario`` can only track ``Fake`` objects, the tested code must have access to them. We already saw one way this can happen, when we pass in a fake, e.g.
 
@@ -84,6 +84,46 @@ Here is an example of overriding the ``socket`` import using |testix|'s ``patch_
    :linenos:
    :emphasize-lines: 5-7
 
+**NOTE**: The ``patch_module`` helper will, when the test is over, return the original object to its place. It's important to use ``patch_module`` and not do it yourself.
+
+Another important point is that ``patch_module`` overrides global names, go, e.g. if we use ``patch_module`` like this
+
+.. code:: python
+
+    patch_module(my_module, 'xxx')
+
+And ``my_module`` has this code
+
+.. code:: python
+
+   xxx = 300
+
+   def get_xxx():
+       return xxx
+
+Then ``xxx`` will not be 300 for the duration of the test, but instead have a fake object by the same name ``Fake("xxx")``.
+
+This will also be the case if ``my_module`` had
+
+.. code:: python
+
+   from important_constants import xxx
+
+   def get_xxx():
+       return xxx
+
+
+Using ``patch_module`` With Arbitrary Values
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Usually we use ``patch_module`` to override module-level names with Fake objects, but you can specify any object as the override
+
+.. code:: python
+
+    patch_module(my_module, 'xxx', 500) # override xxx value with 500
+
+The Most Common Ways To Create Fake Objects
+-------------------------------------------
 
 So, Fake objects can be created and passed in directly, they can be used to mock imported modules using ``patch_module``, and they can be returned as the result of another Fake object call, e.g. the line
 
@@ -97,7 +137,7 @@ In fact, in this line as well as in the one that follows:
 
         s.server_sock.accept() >> (Fake('connection'), 'some address info')
 
-there is, in fact, another method that creates Fake objects. The preceding line specifies that ``server_sock.accept`` is called - which, under the hood, implies the creation of a ``Fake("server_sock.accept")`` fake object.
+There is, in fact, another method that creates Fake objects. The preceding line specifies that ``server_sock.accept`` is called - which, under the hood, implies the creation of a ``Fake("server_sock.accept")`` fake object.
 
 To summarize, the main modes where fakes are created are:
 
@@ -106,17 +146,16 @@ To summarize, the main modes where fakes are created are:
 #. Replacing a global name (usually an imported module) using ``patch_module``
 #. Implicitly created when addressing a method of a fake object, e.g. ``server_sock.accept`` above.
 
-**NOTE**: The ``patch_module`` helper will, when the test is over, return the original object to its place. It's important to use ``patch_module`` and not do it yourself.
 
 
 
 
 
 Less Strict Expectations
-------------------------
+========================
 
 Less Specific Arguments
-~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 
 Sometimes you want to specify an expectation, but with less strict demands.
 
@@ -133,11 +172,11 @@ You can also use ``IgnoreArgument()`` to specify that you demand some kwarg be u
 
     s.alpha.func1(1, 2, a=IgnoreArgument(), b='hi there')
 
-    # must use (1, 2, a=<any object here>, b='hi tere')
+    # must use (1, 2, a=<any object here>, b='hi there')
 
 
 Unordered Expectations
-~~~~~~~~~~~~~~~~~~~~~~
+----------------------
 
 Most of the time, in my experience, it's a good idea that expectations
 are met in the exact order that they were specified. 
