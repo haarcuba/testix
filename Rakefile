@@ -7,6 +7,7 @@ $log = Logger.new STDERR
 
 desc "run example tests"
 task :examples do
+    sh "python -m pip install -r examples/requirements.txt"
     sh "python -m pytest -sv examples/tests/test_*.py"
 end
 
