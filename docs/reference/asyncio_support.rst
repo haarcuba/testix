@@ -52,3 +52,12 @@ The code which passes this test is
 
 .. literalinclude:: async_tests/async_read.py
    :linenos:
+
+**Note** you do not have to specify a return value with ``>>`` for the
+``__async_with__`` expectation if you want to use the "anonymous" form of the
+``async with`` statement:
+
+.. code:: python
+
+    async with lock(): # no "as" part
+        await handle_critical_data()
