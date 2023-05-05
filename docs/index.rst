@@ -67,6 +67,17 @@ The ``Scenario`` object does essentially two things:
 
 Want to know more? Read the :doc:tutorial.
 
+Some Advanced Features
+----------------------
+
+|testix| natively and elegantly supports testing for
+
+#. Context managers (``with`` statement constructs)
+#. ``async`` code
+#. ``async`` context managers (``async with`` statement constructs)
+#. Hooks - allowing you to simulate asynchronous events that happen between two lines of your code
+
+
 Advantages
 ----------
 
