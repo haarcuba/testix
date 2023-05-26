@@ -1,12 +1,12 @@
 from testix import fake
 import pprint
 
-class ArgumentExpectation( object ):
-	def __init__( self, value ):
+class ArgumentExpectation:
+	def __init__(self, value):
 		self.expectedValue = value
 
-	def ok( self, value ):
-		raise Exception( "must override this" )
+	def ok(self, value):
+		raise Exception("must override this")
 
 	def __repr__( self ):
 		WORKAROUND_PFORMAT_BREAKS_LONG_STRINGS = 100000
