@@ -112,6 +112,18 @@ This will also be the case if ``my_module`` had
    def get_xxx():
        return xxx
 
+Using ``patch_module`` To Mock Builtin Objects
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We can also use ``patch_module`` to override builtin objects, such as the function ``open()``.
+
+.. code:: python
+
+    patch_module(my_module, 'open')
+
+    # sometime later
+    s.open('some_file.txt', 'w') >> Fake('open_file')
+
 
 Using ``patch_module`` With Arbitrary Values
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -200,11 +212,8 @@ This demands that the fake is called with ``'b'`` only *after* it was called wit
 The code in ``my_code()`` passes this test.
 
 
-Advanced Expectation Types
-==========================
-
 Context Manager Expectations
-----------------------------
+============================
 
 Sometimes we want to demand that an object is used as a context manager in a ``with`` statement.
 
@@ -213,9 +222,3 @@ Here's an example of how to demand this on a fake object named ``'locker'``, usi
 .. literalinclude:: 4/test_locker_context_manager.py
    :linenos:
    :emphasize-lines: 6
-
-
-Asyncio Expectations
---------------------
-
-Documentation TBD
