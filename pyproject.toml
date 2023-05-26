@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "testix"
-version = "10.3.0"
+version = "10.3.1"
 description = "Mocking framework Python with *exact* Scenarios"
 authors = ["Yoav Kleinberger <haarcuba@gmail.com>"]
 license = "MIT"
@@ -31,3 +31,22 @@ sphinx-rtd-theme = {version = "^1.1.1", optional = true, python = "3.8"}
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+
+[project]
+name = "testix"
+readme = "README.md"
+requires-python = ">=3.5"
+license = {file = "LICENSE"}
+keywords = ["mock", "TDD", "testix", "tests", "Test Driven Development"]
+authors = [
+  {name = "Yoav Kleinberger", email = "haarcuba@gmail.com"},
+]
+maintainers = [
+  {name = "Yoav Kleinberger", email = "haarcuba@gmail.com"},
+]
+
+[project.urls]
+Homepage = "https://testix.readthedocs.io/en/latest"
+Documentation = "https://testix.readthedocs.io/en/latest"
+Repository = "https://github.com/haarcuba/testix.git"
