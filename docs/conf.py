@@ -4,8 +4,8 @@ copyright = '2022, Yoav Kleinberger'
 author = 'Yoav Kleinberger'
 
 # The full version, including alpha/beta/rc tags
-release = '10.2.1'
-version = '10.2.1'
+release = '10.3.1'
+version = '10.3.1'
 
 
 # -- General configuration ---------------------------------------------------
