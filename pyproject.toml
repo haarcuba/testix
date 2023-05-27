@@ -1,9 +1,12 @@
 [tool.poetry]
 name = "testix"
-version = "10.3.1"
+version = "10.3.2"
 description = "Mocking framework Python with *exact* Scenarios"
 authors = ["Yoav Kleinberger <haarcuba@gmail.com>"]
 license = "MIT"
+homepage = "https://testix.readthedocs.io/en/latest"
+documentation = "https://testix.readthedocs.io/en/latest"
+repository = "https://github.com/haarcuba/testix.git"
 classifiers = [
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
@@ -45,8 +48,3 @@ authors = [
 maintainers = [
   {name = "Yoav Kleinberger", email = "haarcuba@gmail.com"},
 ]
-
-[project.urls]
-Homepage = "https://testix.readthedocs.io/en/latest"
-Documentation = "https://testix.readthedocs.io/en/latest"
-Repository = "https://github.com/haarcuba/testix.git"
