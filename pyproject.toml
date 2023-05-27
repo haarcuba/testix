@@ -1,6 +1,7 @@
 [tool.poetry]
 name = "testix"
-version = "10.3.2"
+readme = "README.md"
+version = "10.3.3"
 description = "Mocking framework Python with *exact* Scenarios"
 authors = ["Yoav Kleinberger <haarcuba@gmail.com>"]
 license = "MIT"
@@ -38,7 +39,6 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "testix"
-readme = "README.md"
 requires-python = ">=3.5"
 license = {file = "LICENSE"}
 keywords = ["mock", "TDD", "testix", "tests", "Test Driven Development"]
