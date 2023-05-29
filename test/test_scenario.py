@@ -155,10 +155,10 @@ class TestScenario:
 
     def test_Everlasting_Unorderd_and_Regular_Calls( self ):
         with scenario.Scenario() as s:
-            s.everlasting( 10 ).returns( 'ten' ).unordered().everlasting()
-            s.everlasting( 11 ).returns( 'eleven' ).unordered().everlasting()
-            s.unordered( 20 ).returns( 'twenty' ).unordered()
-            s.unordered( 19 ).returns( 'nineteen' ).unordered()
+            s.everlasting( 10 ).unordered().everlasting() >> 'ten'
+            s.everlasting( 11 ).unordered().everlasting() >> 'eleven'
+            s.unordered( 20 ).unordered() >> 'twenty'
+            s.unordered( 19 ).unordered() >> 'nineteen'
             s.ordered( 1 ).returns( 'one' )
             s.ordered( 2 ).returns( 'two' )
             s.ordered( 3 ).returns( 'three' )
@@ -176,10 +176,19 @@ class TestScenario:
             assert everlasting( 10 ) == 'ten'
             assert ordered( 3 ) == 'three'
             assert everlasting( 11 ) == 'eleven'
-            assert unordered( 20 ) == 'twenty'
             assert everlasting( 10 ) == 'ten'
             assert unordered( 19 ) == 'nineteen'
+            assert unordered( 20 ) == 'twenty'
             assert everlasting( 10 ) == 'ten'
+
+            with pytest.raises(testixexception.TestixException):
+                unordered( 20 )
+
+            with pytest.raises(testixexception.TestixException):
+                ordered( 1 )
+
+            with pytest.raises(testixexception.TestixException):
+                everlasting( 'wtf' )
 
     def test_Everlasting_Calls_Have_ArgumentExpectations( self ):
         with scenario.Scenario() as s:
