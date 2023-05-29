@@ -211,6 +211,25 @@ This demands that the fake is called with ``'b'`` only *after* it was called wit
 
 The code in ``my_code()`` passes this test.
 
+Of course you can still use the ``>>`` operator to specify return values for your expectation.
+
+Everlasting Expectations
+------------------------
+
+Sometimes we don't want to test for a specific number of calls, but 
+we do want to make sure that a function call is of a particular form.
+
+We can modify an ``.unordered()`` expectation with ``.everlasting()`` and 
+this essentially modifies the expectation to mean "this call is expected zero or more times, in any order".
+
+Here's a small example
+
+.. literalinclude:: test_everlasting.py
+   :linenos:
+   :emphasize-lines: 7,13-15,18,21-22
+
+Of course you can still use the ``>>`` operator to specify return values for your expectation.
+
 
 Context Manager Expectations
 ============================
