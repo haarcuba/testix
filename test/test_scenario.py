@@ -143,6 +143,7 @@ class TestScenario:
 
     def test_EverlastingCall( self ):
         with scenario.Scenario() as s:
+            s.some_object( 'everlasting means zero or more times - in this case, zero' ).unordered().everlasting()
             s.some_object( 10 ).unordered().everlasting()
             s.some_object( 11 ).unordered().everlasting()
             some_object = fake.Fake('some_object')
