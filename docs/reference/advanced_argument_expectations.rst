@@ -15,8 +15,30 @@ Means we expect the ``.set()`` method to be called on the fake object ``Fake('cl
 
 In most cases this is exactly what we want. However, sometimes we want something else. Let's see what |testix| supports.
 
+Ignoring A Specific Argument
+----------------------------
 
-Ignoring The Call Details
+Sometimes we don't care about the value of a specific argument. For example,
+we might want to verify that our code calls ``time.sleep()`` but we don't
+want to test for a specific number of seconds.
+
+Here's how to do this in |testix|:
+
+.. code:: python
+
+    with Scenario() as s:
+        s.time.sleep(IgnoreArgument())
+        # must call time.sleep() with one argument, but any value for this argument will be OK
+
+You can also use this in a kwarg expectation
+
+.. code:: python
+
+    with Scenario() as s:
+        s.greeter.greet('hello!', person=IgnoreArgument())
+        # must use 'hello!', but any value for person will be OK
+
+Ignoring All Call Details
 -------------------------
 
 What if we want to make sure a method is called, but we don't care about the arguments at all?
