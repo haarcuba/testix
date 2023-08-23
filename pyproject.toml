@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "testix"
 readme = "README.md"
-version = "10.3.3"
+version = "11.0.0"
 description = "Mocking framework Python with *exact* Scenarios"
 authors = ["Yoav Kleinberger <haarcuba@gmail.com>"]
 license = "MIT"
