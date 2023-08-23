@@ -26,7 +26,7 @@ pytest = ">=6.1.2"
 hypothesis = {version = "^6.24.0", python = ">=3.8"}
 pytest-asyncio = {version = "^0.16.0", python = ">=3.8"}
 pytest-cov = {version = "^3.0.0", python = ">=3.8"}
-ipython = {version = "^7.28.0", python = ">=3.8"}
+ipython = {version = "^8.10.0", python = ">=3.8"}
 
 [testix.docs]
 Sphinx = {version = "^5.3.0", optional = true, python = "3.8"}
