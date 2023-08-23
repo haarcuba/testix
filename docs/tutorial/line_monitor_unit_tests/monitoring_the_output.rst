@@ -84,7 +84,7 @@ Testing infinite, ``while True`` loops is a problem, but we can get around it
 by injecting an exception that will terminate the loop. Just as we can determine what
 calls to ``Fake`` objects return, we can make them raise exceptions.
 
-|testix| even comes with an exception class just for this use case, ``TestixLoopBreaker`.`
+|testix| even comes with an exception class just for this use case, ``LoopBreaker``.
 Let's introduce another ``.readline()`` expectation into our test, using |testix|'s ``Throwing`` construct:
 
 .. literalinclude:: ../../line_monitor/tests/unit/6/test_line_monitor.py
@@ -93,16 +93,17 @@ Let's introduce another ``.readline()`` expectation into our test, using |testix
    :emphasize-lines: 13,16-17
 
 NOTE - we once more *change the test first*. Also note that we can use
-``Throwing`` to raise any type of exception we want, not just ``TestixLoopBreaker``.
+``Throwing`` to raise any type of exception we want, not just ``LoopBreaker``.
 
 This gets us back into the |RED|.
 
 .. code-block:: console
 
-   E           Failed: DID NOT RAISE <class 'testix.TestixLoopBreaker'>
+   E           Failed: DID NOT RAISE <class 'testix.loop_breaker.LoopBreaker'>
+
 
 Since our code calls ``.readline()`` 3 times exactly, the fourth call,
-which would have resulted in ``TestixLoopBreaker`` being raised, did not happen.
+which would have resulted in ``LoopBreaker`` being raised, did not happen.
 
 Let's fix our code:
 
