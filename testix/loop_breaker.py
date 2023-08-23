@@ -1,0 +1,2 @@
+class LoopBreaker(Exception):
+    pass

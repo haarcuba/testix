@@ -37,10 +37,10 @@ def test_receive_output_lines_via_callback(override_imports):
         s.my_callback('line 2')
         s.reader.readline() >> 'line 3'
         s.my_callback('line 3')
-        s.reader.readline() >> Throwing(TestixLoopBreaker)
+        s.reader.readline() >> Throwing(loop_breaker.LoopBreaker)
 
         tested.register_callback(Fake('my_callback'))
-        with pytest.raises(TestixLoopBreaker):
+        with pytest.raises(loop_breaker.LoopBreaker):
             tested.monitor()
 
 def test_monitoring_with_no_callback(override_imports):
@@ -52,9 +52,9 @@ def test_monitoring_with_no_callback(override_imports):
         s.reader.readline() >> 'line 1'
         s.reader.readline() >> 'line 2'
         s.reader.readline() >> 'line 3'
-        s.reader.readline() >> Throwing(TestixLoopBreaker)
+        s.reader.readline() >> Throwing(loop_breaker.LoopBreaker)
 
-        with pytest.raises(TestixLoopBreaker):
+        with pytest.raises(loop_breaker.LoopBreaker):
             tested.monitor()
 
 def test_callback_registered_mid_monitoring(override_imports):
@@ -68,7 +68,7 @@ def test_callback_registered_mid_monitoring(override_imports):
         s.reader.readline() >> 'line 3'
         s << Hook(tested.register_callback, Fake('my_callback')) # the hook will execute right after the 'line 3' readline finishes
         s.my_callback('line 3') # callback is now registered, so it should be called
-        s.reader.readline() >> Throwing(TestixLoopBreaker)
+        s.reader.readline() >> Throwing(loop_breaker.LoopBreaker)
 
-        with pytest.raises(TestixLoopBreaker):
+        with pytest.raises(loop_breaker.LoopBreaker):
             tested.monitor()
