@@ -31,8 +31,8 @@ def test_receive_output_lines_via_callback(override_imports):
         s.my_callback('line 2')
         s.reader.readline() >> 'line 3'
         s.my_callback('line 3')
-        s.reader.readline() >> Throwing(TestixLoopBreaker) # this tells the Fake('reader') to raise an instance of TestixLoopBreaker()
+        s.reader.readline() >> Throwing(loop_breaker.LoopBreaker) # this tells the Fake('reader') to raise an instance of TestixLoopBreaker()
 
         tested.register_callback(Fake('my_callback'))
-        with pytest.raises(TestixLoopBreaker):
+        with pytest.raises(loop_breaker.LoopBreaker):
             tested.monitor()

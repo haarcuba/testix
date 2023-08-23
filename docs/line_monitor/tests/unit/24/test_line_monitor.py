@@ -43,7 +43,7 @@ def process_died_scenario(s):
     s.reader.close()
 
 def end_test_scenario(s):
-    s.poller.poll(IgnoreArgument()) >> Throwing(TestixLoopBreaker)
+    s.poller.poll(IgnoreArgument()) >> Throwing(loop_breaker.LoopBreaker)
 
 def test_receive_output_lines_via_callback(override_imports):
     tested = line_monitor.LineMonitor()
@@ -68,7 +68,7 @@ def test_receive_output_lines_via_callback(override_imports):
         end_test_scenario(s)
 
         tested.register_callback(Fake('my_callback'))
-        with pytest.raises(TestixLoopBreaker):
+        with pytest.raises(loop_breaker.LoopBreaker):
             tested.monitor()
 
 def test_monitoring_with_no_callback(override_imports):
@@ -89,7 +89,7 @@ def test_monitoring_with_no_callback(override_imports):
         process_lives_scenario(s)
         end_test_scenario(s)
 
-        with pytest.raises(TestixLoopBreaker):
+        with pytest.raises(loop_breaker.LoopBreaker):
             tested.monitor()
 
 def test_callback_registered_mid_monitoring(override_imports):
@@ -109,7 +109,7 @@ def test_callback_registered_mid_monitoring(override_imports):
         s.my_callback('line 3') # callback is now registered, so it should be called
         end_test_scenario(s)
 
-        with pytest.raises(TestixLoopBreaker):
+        with pytest.raises(loop_breaker.LoopBreaker):
             tested.monitor()
 
 
