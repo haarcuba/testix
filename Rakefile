@@ -13,7 +13,7 @@ end
 
 desc "run unit tests"
 task :units do
-    sh "python -m pytest --cov=testix/ --cov-report=term-missing --cov-report=html  -sv test/"
+    sh "python -m pytest -rA --cov=testix/ --cov-report=term-missing --cov-report=html  -sv test/"
 end
 
 desc "make sure we did not forget to include any tests"
