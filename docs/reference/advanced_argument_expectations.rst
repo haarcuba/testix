@@ -93,6 +93,28 @@ The ``test_this_will_fail()`` test would have passed, because ``joe`` is equal t
     E        expected: mylist.append(|IS <classroom.Person object at 0x7f5162c2c5e0>|)
     E        actual  : mylist.append(<classroom.Person object at 0x7f5162c2c250>)
 
+Raising Exceptions
+------------------
+
+Sometimes you want to test that your code handles an exception correctly. Handling it "correctly"
+may be allowing it to propagate, or catching it and doing something specific with it.
+
+Either way, you can make a ``Fake`` raise an exception using the ``Throwing`` modifier. Here is an example:
+
+.. literalinclude:: argument_expectations/test_particle_classifier.py
+   :linenos:
+   :emphasize-lines: 11
+
+This test will enforce *both* that ``Fake('spin_verifier')`` is called, and that an exception is raised.
+
+NOTE: if you don't care about some details, e.g. the string inside ``Exception`` here, 
+you can just use ``Throwing(Exception)``. The ``Throwing`` modifier calls its argument, and raises the resulting object,
+so in this case it will just raise a plain ``Exception()``.
+
+Here is the code that passes this test:
+
+.. literalinclude:: argument_expectations/particle_classifier.py
+   :linenos:
 
 Capturing Arguments
 -------------------
