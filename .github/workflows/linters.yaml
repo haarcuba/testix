@@ -1,0 +1,23 @@
+name: Enforce Conventions
+
+on:
+  push:
+
+jobs:
+  linters-and-formatters:
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Enforce Conventions
+        uses: pre-commit/action@v3.0.1
+        with:
+          extra_args:
+            --all-files
