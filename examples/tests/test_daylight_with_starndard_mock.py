@@ -1,5 +1,5 @@
-from unittest.mock import patch
 from unittest.mock import Mock
+import unittest.mock
 
 from examples import daylight
 
@@ -13,7 +13,7 @@ class Test_Daylight:
     def module_patch(self, patch_module):
         patch_module(daylight, 'datetime')
 
-    @patch('examples.daylight.datetime')
+    @unittest.mock.patch('examples.daylight.datetime')
     def test_Main(self, datetime):
         fakeDay = FakeDay()
         fakeDay.hour = 12
@@ -26,7 +26,7 @@ class Test_Daylight:
         datetime.datetime.today.assert_called_once_with()
         datetime.timedelta.assert_called_once()
 
-    @patch('examples.daylight.datetime')
+    @unittest.mock.patch('examples.daylight.datetime')
     def test_EarlyInTheMorningUsesSameDate(self, datetime):
         fakeDay = FakeDay()
         fakeDay.hour = 2

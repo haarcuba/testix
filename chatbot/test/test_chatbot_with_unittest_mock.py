@@ -1,5 +1,5 @@
 import pytest
-from unittest.mock import patch
+import unittest.mock
 from unittest.mock import Mock, call
 import chatbot.chatbot
 import chatbot.responder
@@ -10,12 +10,12 @@ class TestChatbot:
         self.tested = chatbot.chatbot.Chatbot(sock)
         Responder.assert_called_once_with()
 
-    @patch('chatbot.responder.Responder')
+    @unittest.mock.patch('chatbot.responder.Responder')
     def test_construction(self, Responder):
         sock = Mock()
         self.construct(sock, Responder)
 
-    @patch('chatbot.responder.Responder')
+    @unittest.mock.patch('chatbot.responder.Responder')
     def test_request_response_loop(self, Responder):
         sock = Mock()
         responder = Mock()

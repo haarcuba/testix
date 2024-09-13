@@ -2,7 +2,7 @@ import pytest
 import socket
 from testix.frequentlyused import *  # noqa: F403
 from testix import patch_module  # noqa: F401
-from chatbot import chatbot
+from chatbot import chatbot  # foxylint-imports:ignore
 
 
 class TestChatbot:

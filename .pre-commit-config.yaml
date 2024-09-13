@@ -32,8 +32,8 @@ repos:
     rev: releases/1.0.0
     hooks:
       - id: foxylint-imports
-        #args:
-          #- "--exclude=./etoro-emails/**/*.py"
-          #- "--accept=/from logger import logger/"
-          #- "--accept=/from xm_livechat.*import/"
-          #- "--accept=/from testix import/"
+        args:
+          - "--accept=/from testix.*import/"
+          - "--accept=/from examples import/"
+          - "--accept=/from unittest.*import/"
+          - "--exclude=./testix/__init__.py"

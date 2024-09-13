@@ -1,7 +1,7 @@
 import pytest
 from testix.frequentlyused import *  # noqa: F403
 from testix import patch_module  # noqa: F401
-from examples import calculator
+from examples import calculator  # foxylint-imports:ignore
 
 
 class Test_Calculator:
