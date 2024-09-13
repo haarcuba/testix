@@ -1,6 +1,7 @@
 import subprocess
 import pty
 
+
 class LineMonitor:
     def register_callback(self, callback):
         pass

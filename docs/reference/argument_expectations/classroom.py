@@ -5,6 +5,7 @@ class Person:
     def __eq__(self, other):
         return self.name == other.name
 
+
 class Classroom:
     def __init__(self, people: list):
         self._people = people

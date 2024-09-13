@@ -20,7 +20,7 @@ We'll start by checking for available data before we try to read it.
 Polling the Read File Descriptor
 --------------------------------
 
-We want to create a `polling object <https://docs.python.org/3/library/select.html#polling-objects>`_, and 
+We want to create a `polling object <https://docs.python.org/3/library/select.html#polling-objects>`_, and
 register the reader's file descriptor using its `.register` method.
 
 Let's test for it. We have to mock the `select` module, of course, and also change our `launch_scenario()`.
@@ -30,7 +30,7 @@ Let's test for it. We have to mock the `select` module, of course, and also chan
    :lines: 6-20
    :emphasize-lines: 6-7,12-14
 
-There is a quick here - after running ``patch_module(line_monitor, 'select')``, the ``select`` object 
+There is a quick here - after running ``patch_module(line_monitor, 'select')``, the ``select`` object
 inside the tested ``line_monitor`` module is replace by a ``Fake('select')`` fake object. Later,
 we want to demand that ``poller.register()`` be called with the ``select.POLLIN`` constant. As
 things are, this would technically also be the fake object
@@ -44,14 +44,14 @@ While it is possible to demand
 
    s.poller.register('reader_descriptor', Fake('select').POLLIN)
 
-And it will work just fine, I find it less readable. Therefore I'd rather "rescue" the ``POLLIN`` 
-object from the real ``select`` and assign it to the fake ``select``. 
+And it will work just fine, I find it less readable. Therefore I'd rather "rescue" the ``POLLIN``
+object from the real ``select`` and assign it to the fake ``select``.
 
 You may notice another quirk - the function ``.fileno()`` returns a file descriptor, which
 is an integer. However, in our test we make it return a string value, ``'reader_descriptor'``,
 and later test that this value is transmitted to the ``.register()`` call on the polling object.
 
-Of course it is possible to write something like 
+Of course it is possible to write something like
 
 .. code:: python
 
@@ -89,8 +89,8 @@ Let's get to |GREEN| with this and then continue with testing the actual polling
    :linenos:
    :emphasize-lines: 3,17-18
 
-Now our tests pass once again. We have |GREEN|, but we haven't really added the actual 
-feature we want to develop. We want the monitor to stop monitoring once the underlying 
+Now our tests pass once again. We have |GREEN|, but we haven't really added the actual
+feature we want to develop. We want the monitor to stop monitoring once the underlying
 subprocess is dead, and not get blocked trying to read a line that will never come.
 
 This will involve using the poll object to poll the read descriptor to see
@@ -143,7 +143,7 @@ Here is our ``test_receive_output_lines_via_callback``, adapted to the new situa
     E        actual  : reader.readline()
 
 
-Very good. Now let's fix our code to pass the tests. Note that we did not yet add a test for 
+Very good. Now let's fix our code to pass the tests. Note that we did not yet add a test for
 the case where the file descriptor does not have any data to read - that come later. Always
 proceed in small, baby steps - and you'll be fine. Try to do it all at once, and you'll crash and burn.
 
@@ -155,7 +155,7 @@ Getting to |GREEN| is super easy, we add just this one line of code:
    :emphasize-lines: 3
 
 
-Well, this is |GREEN|, but adds little value. It's time for a serious test 
+Well, this is |GREEN|, but adds little value. It's time for a serious test
 that makes sure that ``.readline()`` is called *if and only if* ``POLLIN`` is present.
 Let's get to |RED|.
 
@@ -201,7 +201,7 @@ Solving the Blocking Problem
 ----------------------------
 
 We are now in a position not to block forever when data does not arrive.
-To do that, we need to add a timeout on the ``.poll`` call - since as it 
+To do that, we need to add a timeout on the ``.poll`` call - since as it
 is now, it may still block forever waiting for some event on the file.
 
 Getting to |RED| is simple in principle, e.g. if we want a 10 seconds timeout,
@@ -218,11 +218,11 @@ just change demands of our various scenarios, e.g.
 
 If we do this, however - and later on discover that a 60 second timeout is more reasonable,
 we will have to Test Drive the change from 10 to 60. This seems more annoying that it is helpful.
-Sometimes, tests can be *too* specific. 
+Sometimes, tests can be *too* specific.
 
 |testix| has a way to specifically ignore the values of specific arguments -
 you specify the special value ``IgnoreArgument()`` instead of the overly
-specific ``10``. 
+specific ``10``.
 
 Here's how to use it in this case:
 
@@ -289,7 +289,7 @@ and if ``.poll()`` returns a non-None value, stop the monitor.
 
 If you think about it, we can poll the subprocess only when there's
 no data available. It may be that there is data to read and process has died,
-but in that case, we'll just discover it is dead when the data runs out. This 
+but in that case, we'll just discover it is dead when the data runs out. This
 way we make sure we read all the data out of the pipe when the process has died,
 even if it takes more than one read.
 
@@ -301,7 +301,7 @@ in continuing to monitor the pipe for more data, and we should close the reader,
    :lines: 38-40,44-68
    :emphasize-lines: 17,19,21
 
-Note that we demand process polling only after no data was ready to read, 
+Note that we demand process polling only after no data was ready to read,
 here it only comes after some ``skip_line*scenario`` function.
 
 This brings us into |RED| territory. Current we have not taken the case that the process dies into account,
@@ -313,7 +313,7 @@ but as usual, we're taking things slowly. Let's get to |GREEN|.
    :emphasize-lines: 8,13
 
 Note that this is the first time we bothered to save the subprocess ``Popen`` object!
-This is another example of how TDD helps us. If the test passes without us making some move - then 
+This is another example of how TDD helps us. If the test passes without us making some move - then
 we simply don't make it. This helps us write minimalistic code. Remember, code
 that doesn't exist - has no bugs.
 

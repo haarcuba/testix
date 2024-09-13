@@ -1,12 +1,14 @@
 import chatapp.client
 import time
 
+
 class OnMessage:
     def __init__(self):
         self.messages = []
 
     def __call__(self, client, message, peer):
         self.messages.append({'message': message, 'peer': peer})
+
 
 def test_send_and_receive_messages():
     alice_callback = OnMessage()
@@ -21,4 +23,4 @@ def test_send_and_receive_messages():
     time.sleep(LET_SERVER_RELAY_MESSAGES)
 
     assert alice_callback.messages == [{'message': 'hi Alice', 'peer': 'Bob'}]
-    assert bob_callback.messages   == [{'message': 'hi Bob',   'peer': 'Alice'}]
+    assert bob_callback.messages == [{'message': 'hi Bob', 'peer': 'Alice'}]

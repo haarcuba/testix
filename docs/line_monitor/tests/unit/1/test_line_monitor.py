@@ -2,10 +2,12 @@ from testix import *
 import pytest
 import line_monitor
 
+
 @pytest.fixture
 def override_imports(patch_module):
-    patch_module(line_monitor, 'subprocess') # this replaces the subprocess object inside line_monitor with a Fake("subprocess") object
-    patch_module(line_monitor, 'pty') # does the same for the pty module
+    patch_module(line_monitor, 'subprocess')  # this replaces the subprocess object inside line_monitor with a Fake("subprocess") object
+    patch_module(line_monitor, 'pty')  # does the same for the pty module
+
 
 def test_lauch_subprocess_with_pseudoterminal(override_imports):
     tested = line_monitor.LineMonitor()

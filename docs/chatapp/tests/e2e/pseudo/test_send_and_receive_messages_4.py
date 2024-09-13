@@ -3,6 +3,7 @@ import chatapp.client
 import chatapp.server
 import time
 
+
 class OnMessage:
     def __init__(self):
         self.messages = []
@@ -10,12 +11,14 @@ class OnMessage:
     def __call__(self, client, message, peer):
         self.messages.append({'message': message, 'peer': peer})
 
+
 @pytest.fixture
 def chat_app_server():
     server = chatapp.server.Server(bind_to=('', 3333))
     server.start()
     yield 'http://localhost:3333'
     server.stop()
+
 
 def test_send_and_receive_messages(chat_app_server):
     alice_callback = OnMessage()
@@ -30,4 +33,4 @@ def test_send_and_receive_messages(chat_app_server):
     time.sleep(LET_SERVER_RELAY_MESSAGES)
 
     assert alice_callback.messages == [{'message': 'hi Alice', 'peer': 'Bob'}]
-    assert bob_callback.messages   == [{'message': 'hi Bob',   'peer': 'Alice'}]
+    assert bob_callback.messages == [{'message': 'hi Bob', 'peer': 'Alice'}]

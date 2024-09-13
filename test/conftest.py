@@ -1,3 +1,3 @@
 from testix import failhooks
 
-failhooks.setMode( 'raise' )
+failhooks.setMode('raise')

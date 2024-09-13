@@ -16,11 +16,11 @@ Wrong Arguments
 
 So, e.g. if we have a test like this:
 
-   
+
 .. literalinclude:: other_tests/more_advanced/3/test_exact_enforcement.py
    :linenos:
 
-The code *must* be some variation of 
+The code *must* be some variation of
 
 
 .. code:: python
@@ -28,7 +28,7 @@ The code *must* be some variation of
         names = name_source.get_names('all', order='lexicographic', ascending=True)
         # and at some point later...
         name_destination.put_names(names)
-        
+
 any of these will cause a failure:
 
 .. code:: python
@@ -63,7 +63,7 @@ and |testix| will report
 That is, the ``Scenario``'s various expectations were met, but then the code
 "surprised" |testix| with another call on a ``Fake`` object.
 
-As we said before, the right way to specify |testix| Scenarios as to 
+As we said before, the right way to specify |testix| Scenarios as to
 specify what you want *exactly* - *no more, no less*.
 
 Ways Around Exactness

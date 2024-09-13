@@ -17,7 +17,7 @@ The Test-First Mocking Framework
 
 |testix| is special because it allows you to specify what your mock objects do,
 and it then enforces your specifications automatically. It also reduces (albeit
-not entirely) mock setup. 
+not entirely) mock setup.
 
 Other frameworks usually have a flow like this:
 
@@ -29,7 +29,7 @@ Other frameworks usually have a flow like this:
 
 #. setup mock objects
 #. specify *exactly* what should happen to them using a Scenario context
-  
+
 
 Quick Example
 -------------
@@ -86,10 +86,10 @@ Advantages
 #. Readability - the expectations are very similar to the actual code that they
    test (compare ``s.sock.recv(4096)`` with the standard ``sock.recv.assert_called_once_with(4096)``
 #. Test Driven Development friendliness: if you use ``sock.recv.assert_called_once_with(4096)``, you must
-   use it after the code has run. With |testix|, you specify what you *expect*, and the asserting 
+   use it after the code has run. With |testix|, you specify what you *expect*, and the asserting
    is done for you by magic.
 
-What are you waiting for? 
+What are you waiting for?
 
 
 Go to the :doc:`reference<reference/index>` or read the :doc:`Tutorial<tutorial/index>`

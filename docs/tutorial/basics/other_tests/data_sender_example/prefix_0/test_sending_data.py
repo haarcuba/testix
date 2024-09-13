@@ -2,6 +2,7 @@ from testix import *
 
 import data_sender
 
+
 def test_sending_data():
     fake_socket = Fake('sock')
     with Scenario() as s:

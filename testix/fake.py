@@ -6,7 +6,7 @@ class Fake:
     __registry = {}
     __fake_module = set()
 
-    def __new__( cls, path_a62df12dd67848be82c505d63b928725, **attributes ):
+    def __new__(cls, path_a62df12dd67848be82c505d63b928725, **attributes):
         if path_a62df12dd67848be82c505d63b928725 in Fake.__registry:
             return Fake.__registry[path_a62df12dd67848be82c505d63b928725]
         instance = super(Fake, cls).__new__(cls)
@@ -40,7 +40,7 @@ class Fake:
 
     scenario.Scenario.init_hook = clear_all_attributes
 
-    def __init__( self, path_a62df12dd67848be82c505d63b928725, **attributes ):
+    def __init__(self, path_a62df12dd67848be82c505d63b928725, **attributes):
         self.__path = path_a62df12dd67848be82c505d63b928725
         self.__set_attributes(attributes)
 
@@ -56,20 +56,20 @@ class Fake:
         for key, value in attributes.items():
             setattr(self, key, value)
 
-    def __call__( self, * args, ** kwargs ):
-        return self.__returnResultFromScenario( * args, ** kwargs )
+    def __call__(self, *args, **kwargs):
+        return self.__returnResultFromScenario(*args, **kwargs)
 
-    def __returnResultFromScenario( self, * args, ** kwargs ):
+    def __returnResultFromScenario(self, *args, **kwargs):
         if scenario.current() is None:
-            failhooks.error( "can not find a scenario object" )
-        return scenario.current().resultFor( self.__path, * args, ** kwargs )
+            failhooks.error("can not find a scenario object")
+        return scenario.current().resultFor(self.__path, *args, **kwargs)
 
-    def __str__( self ):
-        return 'FakeObject( "%s", %s )' % ( self.__path, id( self ) )
+    def __str__(self):
+        return 'FakeObject( "%s", %s )' % (self.__path, id(self))
 
-    def __repr__( self ):
-        return str( self )
+    def __repr__(self):
+        return str(self)
 
-    def __getattr__( self, name ):
-        childsName = '%s.%s' % ( self.__path, name )
+    def __getattr__(self, name):
+        childsName = '%s.%s' % (self.__path, name)
         return Fake(childsName)

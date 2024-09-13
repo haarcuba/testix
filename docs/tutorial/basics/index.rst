@@ -4,7 +4,7 @@
 |testix| Basics
 ===============
 
-It's time to start writing unit tests using |testix|. 
+It's time to start writing unit tests using |testix|.
 In this section we'll cover all the basics, then move on
 to our more complete ``LineMonitor`` example.
 
@@ -14,4 +14,3 @@ to our more complete ``LineMonitor`` example.
     more_advance_tests
     exact_enforcement
     recap_1
-

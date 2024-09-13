@@ -23,7 +23,7 @@ Note that the test function itself is `async` and that you have to use the
 ``pytest.mark.asyncio`` decorator on the test - this decorator makes
 sure the test runs inside an ``asyncio`` event loop.
 
-Note that the ``__await_on__`` changes the expectation ``.my_fake('some data')`` into *two* expectations - the function call, and the use of ``await``-ing. You can see this, if, e.g., you cut ``my_code(thing)`` short by replacing its first line with ``return 'sync value'``. This is the correct value, so the ``assert`` statement passes, however the ``Scenario`` context will inform you that 
+Note that the ``__await_on__`` changes the expectation ``.my_fake('some data')`` into *two* expectations - the function call, and the use of ``await``-ing. You can see this, if, e.g., you cut ``my_code(thing)`` short by replacing its first line with ``return 'sync value'``. This is the correct value, so the ``assert`` statement passes, however the ``Scenario`` context will inform you that
 
 .. code:: console
 

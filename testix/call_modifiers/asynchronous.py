@@ -3,6 +3,7 @@ from testix import fake_privacy_violator
 import uuid
 from . import base
 
+
 class Asynchronous(base.Base):
     def __init__(self, call):
         self.__result = None

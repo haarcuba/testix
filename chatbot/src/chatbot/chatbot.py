@@ -1,8 +1,9 @@
 import socket
-from . import responder 
+from . import responder
+
 
 class Chatbot:
-    def __init__( self, peer ):
+    def __init__(self, peer):
         self._peer = peer
         self._responder = responder.Responder()
 

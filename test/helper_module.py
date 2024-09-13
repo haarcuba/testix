@@ -1,1 +1,1 @@
-import socket
+import socket  # noqa: F401

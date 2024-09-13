@@ -1,5 +1,6 @@
 import line_monitor
 
+
 def test_line_monitor():
     captured_lines = []
     tested = line_monitor.LineMonitor()

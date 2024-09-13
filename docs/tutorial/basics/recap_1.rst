@@ -17,5 +17,5 @@ We can also now recognize some major advantages over the mock objects from the P
 
 #. |testix| lends itself naturally to the Test Driven approach to development (TDD) through its ``Scenario`` concept and the "no less - no more" approach that makes it harder to change the functionality of code without changing the test first.
 #. test syntax is more visually similar to the code under test, e.g. the ``s.sock.send(b'the data')`` is visually similar to the same as the actual code ``socket.send(data)``. This makes tests more readable and easy to understand.
-#. Whatever expectations you define for you mock objects - they will be 
+#. Whatever expectations you define for you mock objects - they will be
    *exactly enforced* - defining expectations and enforcing them *is one and the same*.

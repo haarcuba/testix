@@ -23,14 +23,14 @@ Results ultimately in
 
     E   ModuleNotFoundError: No module named 'line_monitor'
 
-That is because none of the code for ``line_monitor`` exits yet. This is a sort of failure, but it's not very interesting. 
+That is because none of the code for ``line_monitor`` exits yet. This is a sort of failure, but it's not very interesting.
 
-What we want is for the test to fail *properly* - we want it to fail *not* because our system doesn't exist - we want it to fail because our system does not implement the correct behaviour yet. 
+What we want is for the test to fail *properly* - we want it to fail *not* because our system doesn't exist - we want it to fail because our system does not implement the correct behaviour yet.
 
 In concrete terms, we want it to fail because a subprocess has seemingly been launched, but its output has not been captured by our monitor. In short, we want it to fail on our
 ``assert`` statements, not due to some technicalities
 
-So, let's write some basic code that achieves just that.  We create a ``line_monitor.py`` file 
+So, let's write some basic code that achieves just that.  We create a ``line_monitor.py`` file
 within our ``import`` path with skeleton code:
 
 .. _skeleton_line_monitor:
@@ -75,7 +75,7 @@ This is admittedly rare, but I've seen it happen.
 
 The more common scenario however is that we wrote the test, wrote the skeleton
 code, ran the test - and it failed, but *not in the way we planned*. This means
-that the test does not, in fact, test what we want. 
+that the test does not, in fact, test what we want.
 
 If we write our test *after* we've developed our code, how will we ever know
 that the test actually tests what we think it is testing? You'd be amazed at

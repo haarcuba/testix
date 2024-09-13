@@ -1,5 +1,6 @@
 from testix import *
 
+
 def test_fake_context():
     locker_mock = Fake('locker')
     with Scenario() as s:

@@ -1,11 +1,12 @@
 import traceback
 
-def format( name, args, kwargs ):
-    if len( args ) > 0:
-        argsString = ', '.join( [ repr( arg ) for arg in args ] )
+
+def format(name, args, kwargs):
+    if len(args) > 0:
+        argsString = ', '.join([repr(arg) for arg in args])
     else:
         argsString = None
-    if len( kwargs ) > 0:
+    if len(kwargs) > 0:
         kwargsString = ', '.join('{key} = {value}'.format(key=key, value=repr(value)) for (key, value) in kwargs.items())
     else:
         kwargsString = None
@@ -21,11 +22,12 @@ def format( name, args, kwargs ):
 
     return '{name}({argsString}, {kwargsString})'.format(name=name, argsString=argsString, kwargsString=kwargsString)
 
+
 def caller_context():
     stack = traceback.extract_stack()
     for index, frame_summary in enumerate(stack):
         if 'return self.__returnResultFromScenario' in frame_summary.line:
             break
 
-    frame_summary = stack[index-1]
+    frame_summary = stack[index - 1]
     return '{line} ({filename}:{lineno})'.format(line=frame_summary.line, filename=frame_summary.filename, lineno=frame_summary.lineno)

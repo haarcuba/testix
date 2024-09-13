@@ -2,6 +2,7 @@ import subprocess
 import pty
 import select
 
+
 class LineMonitor:
     def __init__(self):
         self._callback = None

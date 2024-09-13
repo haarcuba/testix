@@ -23,14 +23,14 @@ to interact with, that we want to test carefully. As an example - suppose our co
 When testing we
 
 #. don't *really* want to send data over a *real* socket
-#. do want to verify that the ``send_some_data`` function called ``sock.send(b'the data')``. 
+#. do want to verify that the ``send_some_data`` function called ``sock.send(b'the data')``.
 
 The solution is to pass ``send_some_data`` an object that implements a ``.send`` method, but which is not an actual socket. Instead this object will just record that ``.send`` was called, and we'll be able to query it to see that it was called with ``b'the data'``. The idea here is that there's no point testing sockets - we know that those work. The point here is to test that *our code does the right thing with the socket*.
 
 The Standard Library Way - `unittest.mock`
 ------------------------------------------
 
-The approach taken by the standard `unittest.mock <https://docs.python.org/3/library/unittest.mock.html>`_ module from the Python standard library, 
+The approach taken by the standard `unittest.mock <https://docs.python.org/3/library/unittest.mock.html>`_ module from the Python standard library,
 is to provide us with a generic ``Mock`` class which records every call that is made to it, and has some helper functions
 to help as `assret` that some things happened.
 
@@ -65,7 +65,7 @@ Note that first we need to fail the test - so ``send_some_data`` here is only a 
    :caption: data_sender.py skeleton implementation
 
 
-What's going on here? First, we create a `Fake` object ``sock`` - this is |testix| generic mock object - note that we 
+What's going on here? First, we create a `Fake` object ``sock`` - this is |testix| generic mock object - note that we
 define a name for it explicitly - ``'sock'``. We then start a ``Scenario()`` context manager in the ``with Scenario() as s`` statement.
 
 A Scenario is a way to specify the required behaviour - what do we demand happen to our fake objects? In this case,
@@ -200,4 +200,3 @@ Now the test passes.
     $ python -m pytest -v docs/tutorial/other_tests/data_sender_example/prefix_2
 
     docs/tutorial/other_tests/data_sender_example/prefix_2/test_sending_data.py::test_sending_data PASSED
-

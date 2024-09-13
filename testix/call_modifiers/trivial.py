@@ -1,5 +1,6 @@
 from . import base
 
+
 class Trivial(base.Base):
     def __init__(self, call):
         self.__result = None
