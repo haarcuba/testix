@@ -1,7 +1,7 @@
 name: Enforce Conventions
 
 on:
-  push:
+  pull_request:
 
 jobs:
   linters-and-formatters:
