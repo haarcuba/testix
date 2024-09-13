@@ -2,9 +2,11 @@ from testix import *
 import pytest
 import my_server
 
-@pytest.fixture(autouse=True) # if autouse is not used here, you will have to specify override_imports as an argument to test_my_server() below
+
+@pytest.fixture(autouse=True)  # if autouse is not used here, you will have to specify override_imports as an argument to test_my_server() below
 def override_imports(patch_module):
-    patch_module(my_server, 'socket') # replace socket with Fake('socket')
+    patch_module(my_server, 'socket')  # replace socket with Fake('socket')
+
 
 def test_my_server():
     with Scenario() as s:
@@ -17,4 +19,3 @@ def test_my_server():
 
         tested = my_server.MyServer()
         tested.serve_request()
-

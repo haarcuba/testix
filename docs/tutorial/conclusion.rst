@@ -23,7 +23,7 @@ We can finally run our end-to-end test:
 
 
 
-We have plenty of tests, and 100% code coverage. 
+We have plenty of tests, and 100% code coverage.
 
 .. code:: console
 
@@ -38,7 +38,7 @@ We have plenty of tests, and 100% code coverage.
     ---------------------------------------------------------------------------
     docs/line_monitor/source/26/line_monitor.py      38      0   100%
 
-Since we practiced Test Driven Development: 
+Since we practiced Test Driven Development:
 
 #. *Every single line* of our code is justified.
 #. Every edge case we thought about is documented - via our tests. While tests written in Python are less readable than actual documentation written in English - they are much, much more reliable. If we have a good CI system to run our tests - this form of documentation does not get outdated.
@@ -60,6 +60,6 @@ In one word - we were *logical* about it.
 This is the proper way to write code. When done properly, it increases both
 development speed and the quality of the product delivered.
 
-Now you know. 
+Now you know.
 
 **Use this knowledge. Write good code.**

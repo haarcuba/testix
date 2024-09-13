@@ -3,9 +3,11 @@ import pytest
 
 import async_read
 
+
 @pytest.fixture(autouse=True)
 def override_import(patch_module):
     patch_module(async_read, 'aiofiles')
+
 
 @pytest.mark.asyncio
 async def test_read_write_from_async_file():

@@ -12,5 +12,3 @@ def test_send_and_receive_messages():
 
     assert alice_messages == ['hi Alice']
     assert bob_messages == ['hi Bob']
-
-

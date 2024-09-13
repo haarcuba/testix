@@ -1,10 +1,11 @@
-import argparse
 import pathlib
 import importlib
 import logging
 
+
 def main():
     import testix
+
     root = pathlib.Path(testix.__file__).parent.parent
     logging.basicConfig(level=logging.INFO)
     for file in root.glob('testix/**/*.py'):
@@ -18,6 +19,7 @@ def main():
         importlib.import_module(full_name)
 
     logging.info('all imports OK')
+
 
 if __name__ == '__main__':
     main()

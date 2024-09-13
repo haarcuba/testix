@@ -2,9 +2,11 @@ from testix import *
 import pytest
 import robot
 
+
 @pytest.fixture
 def mock_imports(patch_module):
-    patch_module(robot, 'atexit') # mock atexit module
+    patch_module(robot, 'atexit')  # mock atexit module
+
 
 def test_atexit_handler(mock_imports):
     with Scenario() as s:

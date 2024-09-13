@@ -1,14 +1,15 @@
 from . import multiplier
 
-class Calculator( object ):
-    def __init__( self, initialValue ):
+
+class Calculator(object):
+    def __init__(self, initialValue):
         self._value = initialValue
 
-    def add( self, addend ):
+    def add(self, addend):
         self._value += addend
 
-    def result( self ):
+    def result(self):
         return self._value
 
-    def multiply( self, factor ):
-        self._value = multiplier.multiply( first = self._value, second = factor )
+    def multiply(self, factor):
+        self._value = multiplier.multiply(first=self._value, second=factor)

@@ -7,11 +7,11 @@ End-to-End Test
 ================
 
 
-When we say "Test First" - this means that we go 
+When we say "Test First" - this means that we go
 about thinking about our code by thinking about how to test
 that it works.
 
-When we say "Test Driven" - this means that we 
+When we say "Test Driven" - this means that we
 let our thinking about tests *define* how the code will work.
 
 In this way, the tests *drive* our development.
@@ -31,7 +31,7 @@ So we want our users to do something like this
    monitor.monitor() # monitor process until it ends
    for line in captured_lines:
         print(f'saw this: {line}')
-   
+
 
 Now that we have a rough idea, let's write a test which will make this precise. The code below is not the final test, and will not really work, but it's a sketch:
 
@@ -49,4 +49,4 @@ Note that in the process of developing the *test*, we chose the names of various
 
 This is what we mean when we say that tests *drive* development.
 
-However, to truly work Test Driven - we need to make this test *fail properly*. 
+However, to truly work Test Driven - we need to make this test *fail properly*.

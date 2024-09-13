@@ -11,29 +11,29 @@ Specifying Return Values
 how a ``Fake`` object named ``"sock"`` should be used by our code.
 
 When we say ``s.sock.send(b'the data')`` we express the expectation that the code
-under test will call the ``.send()`` method with exactly one argument, whose value 
+under test will call the ``.send()`` method with exactly one argument, whose value
 should equal exactly ``b'the data'``.
 
-When the code does this with ``"sock"``'s ``.send()`` method, however, what value 
+When the code does this with ``"sock"``'s ``.send()`` method, however, what value
 is returned by method call?
 
-The answer in this case is ``None`` - but |testix| also allows us to define 
-this return value. This is useful when you want to test thing related to what 
+The answer in this case is ``None`` - but |testix| also allows us to define
+this return value. This is useful when you want to test thing related to what
 function calls on ``Fake`` objects return, e.g. thing about testing
-some code that receives data on one socket, and sends the length of said data 
-to another socket. 
+some code that receives data on one socket, and sends the length of said data
+to another socket.
 
 We therefore expect that there will be a ``.recv()`` call on one socket which
-returns some data, this data in turn is converted to a number (its length), 
+returns some data, this data in turn is converted to a number (its length),
 which is then encoded and sent on the outgoing socket.
 
 Here's how to test this in |testix|
 
 .. literalinclude:: other_tests/more_advanced/1/test_forward_lengths.py
    :linenos:
-   :emphasize-lines: 10 
+   :emphasize-lines: 10
 
-We see here a pattern which is common with |testix| - specifying an 
+We see here a pattern which is common with |testix| - specifying an
 entire scenario of what should happen, then making it happen by calling
 the code under test.
 
@@ -92,4 +92,3 @@ This makes |testix| very conducive to Test Driven Development - if you change th
 When approaching adding new features - start with defining a test for them.
 
 We'll discuss exactness some more next.
-

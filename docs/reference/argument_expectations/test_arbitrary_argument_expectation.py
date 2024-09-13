@@ -3,13 +3,16 @@ from testix import *
 
 import temporary_storage
 
+
 @pytest.fixture(autouse=True)
 def mock_builtin(patch_module):
     patch_module(temporary_storage, 'open')
 
+
 class StartsWith(ArgumentExpectation):
     def ok(self, value):
         return value.startswith(self.expectedValue)
+
 
 def test_person_connects_somehow():
     with Scenario() as s:

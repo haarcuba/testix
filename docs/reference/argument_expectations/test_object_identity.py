@@ -3,6 +3,7 @@ from testix import *
 
 import classroom
 
+
 def test_this_will_pass():
     joe = classroom.Person('Joe')
     with Scenario() as s:
@@ -10,6 +11,7 @@ def test_this_will_pass():
 
         tested = classroom.Classroom(Fake('mylist'))
         tested.enter_original(joe)
+
 
 def test_this_will_fail():
     joe = classroom.Person('Joe')

@@ -4,19 +4,24 @@ import logging
 import pathlib
 import os
 
+
 def test_folder(stage):
     return pathlib.Path(f'docs/line_monitor/tests/unit/{stage}')
 
+
 def source_folder(stage):
     return pathlib.Path(f'docs/line_monitor/source/{stage}')
+
 
 def copy(source, destination):
     logging.info(f'cp {source} {destination}')
     shutil.copy(source, destination)
 
+
 def link(source, destination):
     logging.info(f'ln -s {source} {destination}')
     os.symlink(source, destination)
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument('stage', type=int)

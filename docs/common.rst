@@ -6,4 +6,3 @@
 .. |RED| replace:: :boldred:`RED`
 .. |GREEN| replace:: :boldgreen:`GREEN`
 .. |REFACTOR| replace:: :boldblue:`REFACTOR`
-

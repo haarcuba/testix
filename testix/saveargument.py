@@ -2,8 +2,9 @@ from testix import argumentexpectations
 
 _saved = {}
 
+
 class SaveArgument(argumentexpectations.ArgumentExpectation):
-    def __init__( self, saveTo ):
+    def __init__(self, saveTo):
         self.__saveTo = saveTo
         argumentexpectations.ArgumentExpectation.__init__(self, None)
 
@@ -11,8 +12,9 @@ class SaveArgument(argumentexpectations.ArgumentExpectation):
         _saved[self.__saveTo] = value
         return True
 
-    def __repr__( self ):
+    def __repr__(self):
         return '|SAVE|'
+
 
 def saved():
     global _saved

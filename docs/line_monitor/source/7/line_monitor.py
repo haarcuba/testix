@@ -1,6 +1,7 @@
 import subprocess
 import pty
 
+
 class LineMonitor:
     def __init__(self):
         self._callback = None

@@ -2,6 +2,7 @@ from testix import *
 
 import reader
 
+
 def test_read_all_from_socket():
     with Scenario() as s:
         s.sock.recv(IgnoreArgument()) >> b'data1'

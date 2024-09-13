@@ -3,8 +3,10 @@ import pytest
 
 import particle_classifier
 
+
 def my_exception_factory():
     return Exception('bad spin value')
+
 
 def test_allow_spin_verifier_to_raise_exceptions():
     with Scenario() as s:

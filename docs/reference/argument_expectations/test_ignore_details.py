@@ -2,6 +2,7 @@ from testix import *
 
 import server
 
+
 def test_person_connects_somehow():
     with Scenario() as s:
         s.database.connect(IgnoreCallDetails())

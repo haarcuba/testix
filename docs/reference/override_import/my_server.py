@@ -1,4 +1,5 @@
-import socket # when the test runs, this is actually Fake('socket')
+import socket  # when the test runs, this is actually Fake('socket')
+
 
 class MyServer:
     def __init__(self):

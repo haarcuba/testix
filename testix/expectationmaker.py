@@ -1,11 +1,11 @@
 from . import call_character
-from testix import testixexception
 import testix.expectations.call
 from testix import expectations
 import testix.call_modifiers.synchronous
 import testix.call_modifiers.asynchronous
 import testix.call_modifiers.awaitable
 import testix.call_modifiers.trivial
+
 
 class ExpectationMaker:
     def __init__(self, scenario, scenarioMocks, path, character: call_character.CallCharacter):

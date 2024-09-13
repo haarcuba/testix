@@ -59,7 +59,7 @@ As you can see, the ``.connect()`` method is called three times, but with differ
 Testing for Object Identity
 ---------------------------
 
-Sometimes we want to ensure a method is called with a specific object. We are not satisfied with it being 
+Sometimes we want to ensure a method is called with a specific object. We are not satisfied with it being
 called with an *equal* object, we want the *same actual object*. That is, we are interested in testing ``actual is expected`` and not ``actual == expected``.
 
 We can do this with ``ArgumentIs``. Here is an example:
@@ -107,7 +107,7 @@ Either way, you can make a ``Fake`` raise an exception using the ``Throwing`` mo
 
 This test will enforce *both* that ``Fake('spin_verifier')`` is called, and that an exception is raised.
 
-NOTE: if you don't care about some details, e.g. the string inside ``Exception`` here, 
+NOTE: if you don't care about some details, e.g. the string inside ``Exception`` here,
 you can just use ``Throwing(Exception)``. The ``Throwing`` modifier calls its argument, and raises the resulting object,
 so in this case it will just raise a plain ``Exception()``.
 
@@ -120,9 +120,9 @@ Capturing Arguments
 -------------------
 
 Sometimes we don't want to *demand* anything about a method's arguments, but we do want to *capture* them.
-This is useful for when we want to simulate the triggering of an internal callback. 
+This is useful for when we want to simulate the triggering of an internal callback.
 
-For example, suppose we have a class which implements some logic when the process ends via an `atexit <https://docs.python.org/3/library/atexit.html>_` handler. 
+For example, suppose we have a class which implements some logic when the process ends via an `atexit <https://docs.python.org/3/library/atexit.html>_` handler.
 Testing this might seem hard, since we don't want to actually make the process (which is running our test) exit.
 
 Here's how to do it using |testix|'s ``SaveArgument`` feature.
@@ -134,7 +134,7 @@ Here's how to do it using |testix|'s ``SaveArgument`` feature.
 
 We use ``saveargument.SaveArgument()`` to capture the argument passed to ``atexit.register()``, and name this captured argument ``the_handler``.
 
-We later retrieve the captured callback via the ``saveargument.saved()`` dictionary. 
+We later retrieve the captured callback via the ``saveargument.saved()`` dictionary.
 
 This enables us to trigger the callback ourselves by calling ``handler()`` - which satisfies our demand ``s.cleanup_logic(1, 2, 3)``.
 
@@ -143,7 +143,7 @@ This enables us to trigger the callback ourselves by calling ``handler()`` - whi
 Implementing Arbitrary Argument Matching
 ----------------------------------------
 
-Sometimes you need some complicated logic that |testix| doesn't support 
+Sometimes you need some complicated logic that |testix| doesn't support
 out of the box.
 
 You can define your own argument expectation classes with some arbitrary logic, and use them in your tests, by implementing classes derived from the ``ArgumentExpectation`` base class, which is essentially an interface:

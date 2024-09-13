@@ -1,4 +1,4 @@
-#sphinx_bernard_theme 
+#sphinx_bernard_theme
 #renku-sphinx-theme
 #insegel
 #cloud-sptheme

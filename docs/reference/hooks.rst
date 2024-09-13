@@ -20,7 +20,7 @@ after the callback is registered to be passed on to it.
     with Scenario() as s:
         s.input_stream.readline() >> 'line 1'
         s.input_stream.readline() >> 'line 2'
-        s << Hook(tested.register_callback, Fake('my_callback')) 
+        s << Hook(tested.register_callback, Fake('my_callback'))
         # the hook will execute right after the 'line 2' readline finishes
         # we therefore expect that after reading the next line, the callback will be called
         s.input_stream.readline() >> 'line 3'

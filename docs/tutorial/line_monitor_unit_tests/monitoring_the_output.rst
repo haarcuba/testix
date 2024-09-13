@@ -6,7 +6,7 @@ Monitoring The Output
 
 Next we want to test the following behaviour: we
 register a callback with our ``LineMonitor`` object using its ``.register_callback()`` method,
-and it calls our callback with each line of output 
+and it calls our callback with each line of output
 it reads from the |pseudoterminal|.
 
 Python streams have a useful ``.readline()`` method, so let's wrap the read file-descriptor of the |pseudoterminal| with a stream. It turns out
@@ -40,7 +40,7 @@ We must also remember to mock the built-in `open`:
    :lines: 5-9
    :emphasize-lines: 5
 
-We can already see a problem: the scenario is actually built out of two parts - 
+We can already see a problem: the scenario is actually built out of two parts -
 the part which tests ``.launch_subprocess()``, and the part which tests ``.monitor()``.
 
 Furthermore, since we have our previous test in ``test_lauch_subprocess_with_pseudoterminal``, which doesn't expect the call to ``open()``,
@@ -66,7 +66,7 @@ OK this seems reasonable, let's get some |RED|! Running this both our tests fail
     E        expected: open('read_from_fd', encoding = 'latin-1')
     E        actual  : subprocess.Popen(['my', 'command', 'line'], stdout = 'write_to_fd', close_fds = True)
 
-We changed our expectations from ``.launch_subprocess()`` to call ``open()``, but we did not change the implementation yet, so |testix| is surprised to find that we actually call ``subprocess.Popen`` - and makes our test fail. 
+We changed our expectations from ``.launch_subprocess()`` to call ``open()``, but we did not change the implementation yet, so |testix| is surprised to find that we actually call ``subprocess.Popen`` - and makes our test fail.
 
 Good, let's fix it and get to |GREEN|. We introduce the following to our code:
 
@@ -191,6 +191,6 @@ check that it failed properly. Happily, this is the case for this particular tes
 Let's Recap
 -----------
 
-We now have our first implementation of the ``LineMonitor``. It essentially works, 
+We now have our first implementation of the ``LineMonitor``. It essentially works,
 but it's still has its problems. We'll tackle these problems later in this tutorial,
 but first, let's do a short recap.

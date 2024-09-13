@@ -16,7 +16,7 @@ Here's a test that expects the tested code to repeatedly call ``.recv(4096)`` on
 
 Scenarios track fake objects - instances of ``Fake``. Fake objects have a name, e.g. ``Fake('sock')`` - and you can demand various method calls on a fake object, e.g.
 
-    
+
 .. code:: python
 
     s.sock.recv(4096) >> b'data1'
@@ -62,7 +62,7 @@ This will ensure that the ``.func1()`` method is called on the ``Fake("alpha")``
         a.func1(1, 2, a=1, b='hi there')
 
 With this definition, ``my_code(Fake("alpha"))`` will pass the test. The value returned from ``.func1()`` in this case will be ``None``. If you want to specify a return value, use ``>>`` as before
-    
+
 .. code:: python
 
     s.alpha.func1(1, 2, a=1, b='hi there')
@@ -191,7 +191,7 @@ Unordered Expectations
 ----------------------
 
 Most of the time, in my experience, it's a good idea that expectations
-are met in the exact order that they were specified. 
+are met in the exact order that they were specified.
 
 .. code:: python
 
@@ -216,10 +216,10 @@ Of course you can still use the ``>>`` operator to specify return values for you
 Everlasting Expectations
 ------------------------
 
-Sometimes we don't want to test for a specific number of calls, but 
+Sometimes we don't want to test for a specific number of calls, but
 we do want to make sure that a function call is of a particular form.
 
-We can modify an ``.unordered()`` expectation with ``.everlasting()`` and 
+We can modify an ``.unordered()`` expectation with ``.everlasting()`` and
 this essentially modifies the expectation to mean "this call is expected zero or more times, in any order".
 
 Here's a small example

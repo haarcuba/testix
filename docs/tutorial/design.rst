@@ -53,7 +53,7 @@ In our case, since the project is quite small,
 the integration test will actually test the scope of the entire project.
 and so it is more appropriately called an End-to-End (E2E) Test.
 
-In real projects, E2E tests usually include 
+In real projects, E2E tests usually include
 
 #. an actual deployment, which is as similar as possible to real life deployments.
 #. various UI testing techniques, e.g. launching a web-browser to use some webapp

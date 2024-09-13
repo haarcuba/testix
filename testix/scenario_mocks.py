@@ -3,8 +3,9 @@ from . import fake_privacy_violator
 from . import call_character
 import copy
 
+
 class ScenarioMocks:
-    def __init__( self, scenario ):
+    def __init__(self, scenario):
         self.__awaitable = False
         self.__scenario = scenario
         self.__character = call_character.CallCharacter()
@@ -16,7 +17,7 @@ class ScenarioMocks:
         path = fake_privacy_violator.path(fake)
         return getattr(self, path)
 
-    def __getattr__( self, name ):
+    def __getattr__(self, name):
         modifiers_ = copy.copy(self.__character)
         self.__reset_modifiers()
         return expectationmaker.ExpectationMaker(self.__scenario, self, name, modifiers_)
@@ -24,7 +25,7 @@ class ScenarioMocks:
     def __reset_modifiers(self):
         self.__character = call_character.CallCharacter()
 
-    def __lshift__( self, expectation ):
+    def __lshift__(self, expectation):
         self.__scenario.addEvent(expectation)
         return self
 

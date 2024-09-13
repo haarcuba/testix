@@ -1,2 +1,2 @@
-import socket
-import helper_module
+import socket  # noqa: F401
+import helper_module  # noqa: F401
