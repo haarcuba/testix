@@ -8,7 +8,7 @@ jobs:
       - name: check out our code
         uses: actions/checkout@v3
       - name: install poetry
-        run:  curl -sSL https://install.python-poetry.org | python -
+        uses: Gr1N/setup-poetry@v8
       - name: install testix
         run:  poetry install
       - name: unit tests
