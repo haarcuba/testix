@@ -3,45 +3,43 @@ on:
   pull_request:
 jobs:
   Unit-Tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
-      - name: check out our code
-        uses: actions/checkout@v3
-      - name: install poetry
-        run:  curl -sSL https://install.python-poetry.org | python -
-      - name: install testix
-        run:  poetry install
+      - uses: actions/checkout@v3
+      - name: basic setup
+        uses: ./.github/actions/basic_setup
+      - run:  poetry install
       - name: unit tests
         run:  poetry run rake units
   Run-Examples:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: check out our code
         uses: actions/checkout@v3
       - name: install poetry
-        run:  curl -sSL https://install.python-poetry.org | python -
+        run:  curl -sSL https://install.python-poetry.org | python3 -
       - name: install testix
         run:  poetry install
       - name: examples
         run:  poetry run rake examples
   Generate-Wheel:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: check out our code
         uses: actions/checkout@v3
       - name: install poetry
-        run:  curl -sSL https://install.python-poetry.org | python -
+        run:  curl -sSL https://install.python-poetry.org | python3 -
       - name: build wheel
         run:  poetry build -f wheel
       - name: archive wheel
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: wheel
           path: dist/*.whl
   Python-Version-Compatibility:
     needs:
       - Generate-Wheel
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         python_version:
@@ -57,7 +55,7 @@ jobs:
         with:
           python-version: ${{matrix.python_version}}
       - name: download wheel
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: .
       - run: python -V

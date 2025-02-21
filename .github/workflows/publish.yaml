@@ -7,8 +7,8 @@ jobs:
         steps:
             - uses: actions/checkout@v3
             - run:  ls
-            - name: install poetry
-              run:  curl -sSL https://install.python-poetry.org | python -
+            - name: basic setup
+              uses: ./.github/actions/basic_setup
             - run:  poetry run pip install twine
             - run:  rm -fr dist/
             - run:  poetry build -f wheel

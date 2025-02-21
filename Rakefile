@@ -50,7 +50,6 @@ end
 namespace :documentation do
   desc "install tools needed for documentaion"
   task :setup do
-    sh "pip install sphinx"
     sh "pip install -r docs/requirements.txt"
   end
 

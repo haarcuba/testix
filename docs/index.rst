@@ -10,9 +10,6 @@ The Test-First Mocking Framework
 
 .. _pytest: https://docs.pytest.org/en/latest/
 
-.. warning::
-
-   These docs are under development!
 
 
 |testix| is special because it allows you to specify what your mock objects do,
