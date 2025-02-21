@@ -37,8 +37,8 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # a list of builtin themes.
 import sphinx_theme
 
-html_theme = 'stanford_theme'
-html_theme_path = [sphinx_theme.get_html_theme_path('stanford-theme')]
+extensions.append("sphinx_wagtail_theme")
+html_theme = 'sphinx_wagtail_theme'
 #
 
 
