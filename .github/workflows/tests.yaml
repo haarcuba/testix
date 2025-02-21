@@ -67,7 +67,7 @@ jobs:
       - name: test import testix
         run: python side/tools/full_testix_importer.py
   All-OK:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     needs:
         - Generate-Wheel
         - Unit-Tests
