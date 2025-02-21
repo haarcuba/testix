@@ -1,0 +1,21 @@
+name: BasicSetup
+description: basic setup
+inputs:
+  python_version:
+    description: 'Python version'
+    type: string
+    required: false
+    default: '3.12'
+
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ inputs.python_version }}
+    - uses: Gr1N/setup-poetry@v8
+    - name: Install Project
+      run: poetry install
+      shell: bash

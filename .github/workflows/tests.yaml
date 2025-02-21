@@ -3,14 +3,12 @@ on:
   pull_request:
 jobs:
   Unit-Tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
-      - name: check out our code
-        uses: actions/checkout@v3
-      - name: install poetry
-        run:  curl -sSL https://install.python-poetry.org | python3 -
-      - name: install testix
-        run:  poetry install
+      - uses: actions/checkout@v3
+      - name: basic setup
+        uses: ./.github/actions/basic_setup
+      - run:  poetry install
       - name: unit tests
         run:  poetry run rake units
   Run-Examples:
@@ -25,7 +23,7 @@ jobs:
       - name: examples
         run:  poetry run rake examples
   Generate-Wheel:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: check out our code
         uses: actions/checkout@v3
@@ -41,7 +39,7 @@ jobs:
   Python-Version-Compatibility:
     needs:
       - Generate-Wheel
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         python_version:
@@ -69,7 +67,7 @@ jobs:
       - name: test import testix
         run: python side/tools/full_testix_importer.py
   All-OK:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs:
         - Generate-Wheel
         - Unit-Tests
