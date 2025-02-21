@@ -22,7 +22,7 @@ classifiers = [
 python = ">=3.8"
 pytest = "^8.1.1"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 hypothesis = {version = "^6.24.0", python = ">=3.8"}
 pytest-asyncio = {version = "^0.16.0", python = ">=3.8"}
 pytest-cov = {version = "^3.0.0", python = ">=3.8"}
