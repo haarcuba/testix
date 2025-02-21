@@ -4,6 +4,8 @@
 #cloud-sptheme
 #sphinx-readable-theme
 #sphinx-sizzle-theme
-sphinx-wagtail-theme
+#sphinx-wagtail-theme
+sphinx
+sphinx-rtd-theme
 sphinx-theme
 python-box
