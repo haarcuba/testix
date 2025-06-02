@@ -358,6 +358,18 @@ class TestScenario:
             async with locker_mock.lock():
                 assert await my_file.read(500) == 'some text'
 
+    @pytest.mark.asyncio
+    async def test_async_for_loop(self):
+        with scenario.Scenario() as s:
+            s.__async_for__.alpha >> ['line1', 'line2', 'line3']
+
+            alpha = fake.Fake('alpha')
+            lines = []
+            async for line in alpha:
+                lines.append(line)
+
+            assert lines == ['line1', 'line2', 'line3']
+
     def test_enforce_use_of_with_statement_with_async_context_manager_expectation(self):
         locker_mock = fake.Fake('locker')
         with pytest.raises(testixexception.ScenarioException, match='locker.Lock.*__aenter__'):
