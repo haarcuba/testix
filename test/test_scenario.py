@@ -360,7 +360,7 @@ class TestScenario:
 
     @pytest.mark.asyncio
     async def test_async_for_loop(self):
-        with scenario.Scenario() as s:
+        with scenario.Scenario('expect async for on fake object') as s:
             s.__async_for__.alpha >> ['line1', 'line2', 'line3']
 
             alpha = fake.Fake('alpha')
