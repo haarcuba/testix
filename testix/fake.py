@@ -76,7 +76,6 @@ class Fake:
 
     def __aiter__(self):
         async_iterator_fake = self.async_iterator_a62df12dd67848be82c505d63b928725
-        print(f"XXXXXXXXXXX {async_iterator_fake=}")
         async def fakeIterator():
             iterable = async_iterator_fake()
             for item in iterable:
