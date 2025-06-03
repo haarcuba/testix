@@ -385,6 +385,11 @@ class TestScenario:
                 async for line in alpha:
                     lines.append(line)
 
+    @pytest.mark.asyncio
+    async def test_async_for_loop__rshift_on_fake_without_call__only_allowed_with_async_for(self):
+        with pytest.raises(testixexception.TestixError, match='Unsupported.*__async_for__'):
+            with scenario.Scenario('expect async for on fake object') as s:
+                s.alpha >> ['line1', 'line2', 'line3']
 
 
     def test_enforce_use_of_with_statement_with_async_context_manager_expectation(self):
