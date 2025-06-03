@@ -1,4 +1,5 @@
 require 'yaml'
+require 'set'
 require 'logger'
 
 $log = Logger.new STDERR
