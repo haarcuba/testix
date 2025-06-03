@@ -49,6 +49,8 @@ class ExpectationMaker:
         return expectations.call.Call(self.__path, modifier, *args, **kwargs)
 
     def __rshift__(self, iterable):
+        if not self.__character.is_async_for:
+            raise testix.testixexception.TestixError('Unsupported: direct use of >> on fake is only supported in conjuction with __async_for__ modifier')
         async_iterator_path = f'{self.__path}.async_iterator_a62df12dd67848be82c505d63b928725'
         call = expectations.call.Call(async_iterator_path, testix.call_modifiers.trivial.Trivial)
         call >> iterable
