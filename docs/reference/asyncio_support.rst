@@ -61,3 +61,23 @@ The code which passes this test is
 
     async with lock(): # no "as" part
         await handle_critical_data()
+
+AsyncIO Async For Loops
+-----------------------
+
+You can specify your expectation for an object to be used in an `async for` loop by using the ``__async_for__`` modifier. This allows you to test code that uses async iterators. Here's an example of a test with the code that passes it:
+
+.. literalinclude:: async_tests/test_async_for_loop.py
+   :linenos:
+   :emphasize-lines: 7,21-22
+
+The ``__async_for__`` modifier expects you to specify an iterable of values to be yielded when `async for` is used on your fake object.
+
+**NOTE**
+
+The ``__async_for__`` modifier works *directly* on fake objects, not method calls. For example, ``s.__async_for__.alpha.beta()`` is not supported. If you need something like that, do it in stages:
+
+.. code:: python
+
+    s.alpha.beta() >> Fake('gamma')
+    s.__async_for__.gamma >> ['sequence', 'of', 'values']

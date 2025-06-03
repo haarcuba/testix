@@ -43,3 +43,8 @@ class ScenarioMocks:
     def __async_with__(self):
         self.__character.is_async_context = True
         return self
+
+    @property
+    def __async_for__(self):
+        self.__character.is_async_for = True
+        return self
