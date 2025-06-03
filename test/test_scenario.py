@@ -376,6 +376,17 @@ class TestScenario:
             with scenario.Scenario('expect async for on a method call') as s:
                 s.__async_for__.alpha.beta() >> ['line1', 'line2', 'line3']
 
+    @pytest.mark.asyncio
+    async def test_async_for_expectation_is_a_must(self):
+        with pytest.raises(testixexception.ExpectationException, match='async for on alpha'):
+            with scenario.Scenario('use async for without expectation') as s:
+                alpha = fake.Fake('alpha')
+                lines = []
+                async for line in alpha:
+                    lines.append(line)
+
+
+
     def test_enforce_use_of_with_statement_with_async_context_manager_expectation(self):
         locker_mock = fake.Fake('locker')
         with pytest.raises(testixexception.ScenarioException, match='locker.Lock.*__aenter__'):

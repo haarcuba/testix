@@ -2,6 +2,9 @@ import traceback
 
 
 def format(name, args, kwargs):
+    if 'async_iterator_a62df12dd67848be82c505d63b928725' in name:
+        root, _ = name.split('.')
+        return '(async for on {root})'.format(root=root)
     if len(args) > 0:
         argsString = ', '.join([repr(arg) for arg in args])
     else:
