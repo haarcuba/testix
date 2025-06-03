@@ -11,5 +11,5 @@ class CallCharacter:
 
     @property
     def normal(self):
-        remarkable = self.awaitable or self.is_context
+        remarkable = self.awaitable or self.is_context or self.is_async_for
         return not remarkable

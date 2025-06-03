@@ -1,6 +1,7 @@
 from testix import *
 import pytest
 
+
 @pytest.mark.asyncio
 async def test_async_iterator():
     with scenario.Scenario() as s:
@@ -20,4 +21,3 @@ class AsyncCapitalizer:
     async def __aiter__(self):
         async for item in self._iterable:
             yield item.upper()
-
