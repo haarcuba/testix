@@ -370,15 +370,11 @@ class TestScenario:
 
             assert lines == ['line1', 'line2', 'line3']
 
-        with scenario.Scenario('expect async for on a method call') as s:
-            s.__async_for__.alpha.beta() >> ['line1', 'line2', 'line3']
-
-            alpha = fake.Fake('alpha')
-            lines = []
-            async for line in alpha.beta():
-                lines.append(line)
-
-            assert lines == ['line1', 'line2', 'line3']
+    @pytest.mark.asyncio
+    async def test_async_for_loop_unsupported_for_call_chain(self):
+        with pytest.raises(testixexception.TestixError, match='Unsupported'):
+            with scenario.Scenario('expect async for on a method call') as s:
+                s.__async_for__.alpha.beta() >> ['line1', 'line2', 'line3']
 
     def test_enforce_use_of_with_statement_with_async_context_manager_expectation(self):
         locker_mock = fake.Fake('locker')

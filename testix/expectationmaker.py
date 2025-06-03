@@ -1,9 +1,9 @@
 from . import call_character
 import testix.expectations.call
+import testix.testixexception
 from testix import expectations
 import testix.call_modifiers.synchronous
 import testix.call_modifiers.asynchronous
-import testix.call_modifiers.async_for
 import testix.call_modifiers.awaitable
 import testix.call_modifiers.trivial
 
@@ -43,8 +43,8 @@ class ExpectationMaker:
             modifier = testix.call_modifiers.synchronous.Synchronous
         if self.__character.is_async_context:
             modifier = testix.call_modifiers.asynchronous.Asynchronous
-        # if self.__character.is_async_for:
-            # modifier = testix.call_modifiers.async_for.AsyncFor
+        if self.__character.is_async_for:
+            raise testix.testixexception.TestixError(f'Unsupported: async for expectations are supported but not with a function call, see documentation on how to use them properly')
 
         return expectations.call.Call(self.__path, modifier, *args, **kwargs)
 
