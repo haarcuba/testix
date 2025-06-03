@@ -3,6 +3,7 @@ import testix.expectations.call
 from testix import expectations
 import testix.call_modifiers.synchronous
 import testix.call_modifiers.asynchronous
+import testix.call_modifiers.async_for
 import testix.call_modifiers.awaitable
 import testix.call_modifiers.trivial
 
@@ -42,5 +43,11 @@ class ExpectationMaker:
             modifier = testix.call_modifiers.synchronous.Synchronous
         if self.__character.is_async_context:
             modifier = testix.call_modifiers.asynchronous.Asynchronous
+        if self.__character.is_async_for:
+            modifier = testix.call_modifiers.async_for.AsyncFor
 
         return expectations.call.Call(self.__path, modifier, *args, **kwargs)
+
+    def __lshift__(self, expectation):
+        self.__scenarioMocks << expectation
+        return self.__scenarioMocks
