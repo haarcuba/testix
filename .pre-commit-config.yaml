@@ -36,4 +36,4 @@ repos:
           - "--accept=/from testix.*import/"
           - "--accept=/from examples import/"
           - "--accept=/from unittest.*import/"
-          - "--exclude=./testix/__init__.py"
+          - "--exclude=./src/testix/__init__.py"
