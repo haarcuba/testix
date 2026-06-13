@@ -8,13 +8,13 @@ $log = Logger.new STDERR
 
 desc "run example tests"
 task :examples do
-    sh "python -m pip install -r examples/requirements.txt"
+    sh "uv pip install -r examples/requirements.txt"
     sh "python -m pytest -sv examples/tests/test_*.py"
 end
 
 desc "run unit tests"
 task :units do
-    sh "python -m pytest -rA --cov=testix/ --cov-report=term-missing --cov-report=html  -sv test/"
+    sh "python -m pytest -rA --cov=src/testix/ --cov-report=term-missing --cov-report=html  -sv test/"
 end
 
 desc "make sure we did not forget to include any tests"
@@ -51,7 +51,7 @@ end
 namespace :documentation do
   desc "install tools needed for documentaion"
   task :setup do
-    sh "pip install -r docs/requirements.txt"
+    sh "uv pip install -r docs/requirements.txt"
   end
 
   desc "build html documentaion"

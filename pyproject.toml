@@ -1,44 +1,8 @@
-[tool.poetry]
-name = "testix"
-readme = "README.md"
-version = "12.1.0"
-description = "Mocking framework Python with *exact* Scenarios"
-authors = ["Yoav Kleinberger <haarcuba@gmail.com>"]
-license = "MIT"
-homepage = "https://testix.readthedocs.io/en/latest"
-documentation = "https://testix.readthedocs.io/en/latest"
-repository = "https://github.com/haarcuba/testix.git"
-classifiers = [
-        "Programming Language :: Python",
-        "Programming Language :: Python :: 3",
-        "Intended Audience :: Developers",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
-        "Topic :: Software Development :: Testing",
-]
-
-
-[tool.poetry.dependencies]
-python = ">=3.8"
-pytest = "^8.1.1"
-
-[tool.poetry.group.dev.dependencies]
-hypothesis = {version = "^6.24.0", python = ">=3.8"}
-pytest-asyncio = {version = "^0.16.0", python = ">=3.8"}
-pytest-cov = {version = "^3.0.0", python = ">=3.8"}
-ipython = {version = "^7.28.0", python = ">=3.8"}
-
-[testix.docs]
-Sphinx = {version = "^5.3.0", optional = true, python = "3.8"}
-sphinx-rtd-theme = {version = "^1.1.1", optional = true, python = "3.8"}
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
-
-
 [project]
 name = "testix"
+version = "12.1.0"
+description = "Mocking framework Python with *exact* Scenarios"
+readme = "README.md"
 requires-python = ">=3.8"
 license = {file = "LICENSE"}
 keywords = ["mock", "TDD", "testix", "tests", "Test Driven Development"]
@@ -48,3 +12,34 @@ authors = [
 maintainers = [
   {name = "Yoav Kleinberger", email = "haarcuba@gmail.com"},
 ]
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Testing",
+]
+dependencies = [
+    "pytest>=8.1.1",
+]
+
+[project.urls]
+Homepage = "https://testix.readthedocs.io/en/latest"
+Documentation = "https://testix.readthedocs.io/en/latest"
+Repository = "https://github.com/haarcuba/testix.git"
+
+[dependency-groups]
+dev = [
+    "hypothesis>=6.24.0",
+    "pytest-asyncio>=0.16.0",
+    "pytest-cov>=3.0.0",
+    "ipython>=7.28.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/testix"]
